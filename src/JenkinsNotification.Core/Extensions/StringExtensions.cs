@@ -57,53 +57,7 @@
                 ? Enum.TryParse(self, out result) ? result : defaultValue
                 : defaultValue;
         }
-
-        /// <summary>
-        /// 文字列が数値かどうかを判定します。
-        /// </summary>
-        /// <param name="self">自分自身</param>
-        /// <param name="allowDecimal">小数を許容するかどうか</param>
-        /// <param name="allowLeadingSigne">先頭の±記号を許容するかどうか</param>
-        /// <param name="allowThousands">千の位ごとのカンマを許容するかどうか</param>
-        /// <returns>判定結果(true:文字列は数値です。, false:文字列は数値以外を含みます。)</returns>
-        /// <remarks>
-        /// <see cref="allowDecimal"/> がtrue の場合、文字列に小数点が含まれていても数値として扱います。
-        /// ただし、"小数点のみ"、"小数が複数"など、数値とみなされない場合もfalse を返します。<para/><para/>
-        /// 
-        /// <see cref="allowLeadingSigne"/> がtrue の場合、文字列の先頭が±記号であっても数値として扱います。
-        /// ただし、"末尾に記号"、"±以外の記号"が含まれる場合は、false を返します。<para/><para/>
-        /// 
-        /// <see cref="allowThousands"/> がtrue の場合、文字列に千の位のカンマが含まれていても数値として扱います。
-        /// </remarks>
-        public static bool IsNumeric(this string self, bool allowDecimal, bool allowLeadingSigne, bool allowThousands)
-        {
-            var numberStyles = NumberStyles.None;
-            if (allowDecimal) numberStyles |= NumberStyles.AllowDecimalPoint;
-            if (allowLeadingSigne) numberStyles |= NumberStyles.AllowLeadingSign;
-            if (allowThousands) numberStyles |= NumberStyles.AllowThousands;
-
-            double result;
-            var isNumeric = double.TryParse(self, numberStyles, null, out result);
-            return isNumeric;
-        }
-
-        /// <summary>
-        /// DBコマンド<see cref="DbCommand"/> からSQLクエリ文字列を生成します。
-        /// </summary>
-        /// <param name="self">自分自身</param>
-        /// <returns>ログ出力用のSQLクエリ文字列</returns>
-        public static string SqlLogText(this DbCommand self)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine(self.CommandText);
-
-            foreach (DbParameter parameter in self.Parameters)
-            {
-                sb.AppendLine($"-- @{parameter.ParameterName}: {parameter.DbType} [{parameter.Value}]");
-            }
-            return sb.ToString();
-        }
-
+        
         /// <summary>
         /// 文字列を整数値に変換します。
         /// </summary>

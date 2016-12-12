@@ -140,5 +140,80 @@
         }
 
         #endregion
+
+        #region ToEnum Method test
+
+        /// <summary>
+        /// <see cref="Test_ToEnum_Theory{TEnum}"/> のテストデータを取得します。
+        /// </summary>
+        public static IEnumerable<object[]> ToEnumTheoryTestData
+            => new List<object[]>
+               {
+                   new object[] {"通常の成功パターン", DayOfWeek.Sunday, "Sunday", DayOfWeek.Saturday},
+                   new object[] {"変換に失敗してdefaultValue を取得する。defaultValue を指定する。", DayOfWeek.Saturday, "NoneDay", DayOfWeek.Saturday},
+                   new object[] {"変換に失敗してdefaultValue を取得する。defaultValue 未指定", default(DayOfWeek), "NoneDay", null},
+               };
+
+        /// <summary>
+        /// <see cref="StringExtensions.ToEnum{TEnum}" /> をテストします。
+        /// </summary>
+        /// <typeparam name="TEnum">判定したい列挙体の型</typeparam>
+        /// <param name="caseName">テストしたい内容、ケースの名称</param>
+        /// <param name="expected">期待される結果</param>
+        /// <param name="target">判定する値</param>
+        /// <param name="defaultValue">変換に失敗した場合の戻り値</param>
+        [Theory]
+        [MemberData(nameof(ToEnumTheoryTestData))]
+        public void Test_ToEnum_Theory<TEnum>(string caseName, TEnum expected, string target, TEnum? defaultValue)
+            where TEnum : struct
+        {
+            // arrange
+            // act
+            var realResult = defaultValue.HasValue ? target.ToEnum(defaultValue.Value) : target.ToEnum<TEnum>();
+
+            // assert
+            Output.WriteLine($"{caseName}{Environment.NewLine}結果:{realResult}, 期待値:{expected}");
+            Assert.Equal(realResult, expected);
+        }
+
+        #endregion
+
+        #region ToInt Method test
+
+        /// <summary>
+        /// <see cref="Test_ToInt_Theory"/> のテストデータを取得します。
+        /// </summary>
+        public static IEnumerable<object[]> ToIntTheoryTestData
+            => new List<object[]>
+               {
+                   new object[] {"通常通りに変換できること。", 123, "123", null},
+                   new object[] {"マイナスも変換できること。", -45, "-45", null},
+                   new object[] {"小数は変換できないこと。", 0, "1.0", null},
+                   new object[] {"カンマ区切りは変換できないこと。", 0, "1'000", null},
+                   new object[] {"変換失敗時の戻り値を指定する。", 4321, "failed", 4321},
+                   new object[] {"int型の最大値を超えた変換はできないこと。", 0, "100000000000000000000000000000000", null},
+               };
+
+        /// <summary>
+        /// <see cref="StringExtensions.ToInt" /> をテストします。
+        /// </summary>
+        /// <param name="caseName">テストしたい内容、ケースの名称</param>
+        /// <param name="expected">期待される結果</param>
+        /// <param name="target">判定する値</param>
+        /// <param name="defaultValue">変換に失敗した場合の戻り値</param>
+        [Theory]
+        [MemberData(nameof(ToIntTheoryTestData))]
+        public void Test_ToInt_Theory(string caseName, int expected, string target, int? defaultValue)
+        {
+            // arrange
+            // act
+            var realResult = defaultValue.HasValue ? target.ToInt(defaultValue.Value) : target.ToInt();
+
+            // assert
+            Output.WriteLine($"{caseName}{Environment.NewLine}結果:{realResult}, 期待値:{expected}");
+            Assert.Equal(expected, realResult);
+        }
+
+        #endregion
     }
 }
