@@ -15,3 +15,5 @@
 /src/JenkinsNotificationTool/obj/Debug
 /Tests/JenkinsNotificationTool.Tests/bin/Debug
 /Tests/JenkinsNotificationTool.Tests/obj/Debug
+/src/JenkinsNotification.CustomControls
+/src/JenkinsNotificationTool
