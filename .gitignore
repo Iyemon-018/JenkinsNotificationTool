@@ -3,3 +3,15 @@
 ################################################################################
 
 /packages
+/Sample/NotifyIconSample/bin/Debug
+/Sample/NotifyIconSample/obj/Debug
+/Sample/WebSocket4Net_Sample/bin/Debug
+/Sample/WebSocket4Net_Sample/obj/Debug
+/src/JenkinsNotification.Core/bin/Debug
+/src/JenkinsNotification.Core/obj/Debug
+/src/JenkinsNotification.CustomControls/bin/Debug
+/src/JenkinsNotification.CustomControls/obj/Debug
+/src/JenkinsNotificationTool/bin/Debug
+/src/JenkinsNotificationTool/obj/Debug
+/Tests/JenkinsNotificationTool.Tests/bin/Debug
+/Tests/JenkinsNotificationTool.Tests/obj/Debug
