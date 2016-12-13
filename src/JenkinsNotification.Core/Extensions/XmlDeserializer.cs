@@ -1,8 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Extensions
 {
-    using System;
     using System.IO;
-    using JenkinsNotification.Core.Properties;
+    using Properties;
 
     /// <summary>
     /// Xml デシリアライズ拡張メソッドクラスです。
@@ -26,21 +25,12 @@
                 throw new FileNotFoundException(Resources.FileNotFoundMessage, filePath);
             }
 
-            T result = null;
+            T result;
 
-            try
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                    result = (T) serializer.Deserialize(fs);
-                }
-            }
-            catch (InvalidOperationException exception)
-            {
-                // ファイルのデシリアライズに失敗
-                // TODO write log
-                //throw;
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                result = (T)serializer.Deserialize(fs);
             }
 
             return result;
