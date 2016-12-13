@@ -26,7 +26,6 @@
             if (self.InnerException != null)
             {
                 var innerStackTraceMessages = self.InnerException.ToStackTraceMessages();
-                result.Add(self.InnerException.Message);
                 result.AddRange(innerStackTraceMessages);
             }
             return result;
