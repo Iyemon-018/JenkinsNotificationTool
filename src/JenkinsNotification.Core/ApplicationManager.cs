@@ -35,7 +35,7 @@
         /// <summary>
         /// バルーン表示サービス
         /// </summary>
-        private readonly IBalloonTipService _balloonTipService;
+        private IBalloonTipService _balloonTipService;
 
         #endregion
 
@@ -44,10 +44,8 @@
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="balloonTipService">バルーン表示サービス</param>
-        private ApplicationManager(IBalloonTipService balloonTipService)
+        private ApplicationManager()
         {
-            _balloonTipService = balloonTipService;
         }
 
         #endregion
@@ -57,7 +55,7 @@
         /// <summary>
         /// 唯一のインスタンスを取得します。
         /// </summary>
-        public static ApplicationManager Instance { get; private set; }
+        public static ApplicationManager Instance => new ApplicationManager();
 
         /// <summary>
         /// アプリケーション構成情報を取得します。
@@ -68,16 +66,24 @@
         /// バルーン表示サービスを取得します。
         /// </summary>
         public IBalloonTipService BalloonTipService => _balloonTipService;
-        
+
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// アプリケーション機能の初期化処理を実行します。
+        /// バルーン表示サービスを初期化します。
         /// </summary>
         /// <param name="balloonTipService">バルーン表示サービス</param>
-        public static void Initialize(IBalloonTipService balloonTipService)
+        public static void InitializeBalloonTipService(IBalloonTipService balloonTipService)
+        {
+            Instance._balloonTipService = balloonTipService;
+        }
+
+        /// <summary>
+        /// アプリケーション機能の初期化処理を実行します。
+        /// </summary>
+        public static void Initialize()
         {
             using (TimeTracer.StartNew("アプリケーション初期化シークエンスを実行する。"))
             {
@@ -85,11 +91,6 @@
                 // 構成ファイルを読み込む。
                 //
                 ApplicationConfiguration.LoadCurrent();
-
-                //
-                // このインスタンスを生成する。
-                //
-                Instance = new ApplicationManager(balloonTipService);
             }
         }
 

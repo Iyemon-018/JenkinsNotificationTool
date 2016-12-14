@@ -88,6 +88,15 @@ namespace JenkinsNotification.Core.Properties {
         }
         
         /// <summary>
+        ///   指定した型は列挙体ではありません。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string EnumTypeUnmatchMessage {
+            get {
+                return ResourceManager.GetString("EnumTypeUnmatchMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   指定したファイルは存在しません。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string FileNotFoundMessage {

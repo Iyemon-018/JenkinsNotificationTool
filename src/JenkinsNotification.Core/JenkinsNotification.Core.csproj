@@ -101,6 +101,7 @@
     <Compile Include="Configurations\Verify\NotifyConfigurationVerify.cs" />
     <Compile Include="Configurations\Verify\VerifyResult.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlDeserializer.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Services\IViewService.cs" />
     <Compile Include="Services\ViewService.cs" />
     <Compile Include="Utility\ConfigurationUtility.cs" />
+    <Compile Include="Utility\EnumUtility.cs" />
     <Compile Include="Utility\FileUtility.cs" />
     <Compile Include="Utility\PathUtility.cs" />
     <Compile Include="Utility\Products.cs" />

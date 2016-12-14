@@ -1,10 +1,10 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core.Properties="clr-namespace:JenkinsNotification.Core.Properties;assembly=JenkinsNotification.Core"
-    xmlns:local="clr-namespace:JenkinsNotification.CustomControls"
-    xmlns:local.Properties="clr-namespace:JenkinsNotification.CustomControls.Properties"
-    xmlns:system="clr-namespace:System;assembly=mscorlib">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core.Properties="clr-namespace:JenkinsNotification.Core.Properties;assembly=JenkinsNotification.Core"
+                    xmlns:local="clr-namespace:JenkinsNotification.CustomControls"
+                    xmlns:local.Converters="clr-namespace:JenkinsNotification.CustomControls.Converters"
+                    xmlns:local.Properties="clr-namespace:JenkinsNotification.CustomControls.Properties"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/JenkinsNotification.CustomControls;component/Themes/Color.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -22,8 +22,9 @@
     <local.Properties:Resources x:Key="CustomControls.Resources" />
     <!--  #End Region このアプリケーションで使用する文言などのリソース定義  -->
 
-    <!--  #Region アプリケーション全体で使用するConverter定義  -->
 
+    <!--  #Region アプリケーション全体で使用するConverter定義  -->
+    <local.Converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     <!--  #End Region アプリケーション全体で使用するConverter定義  -->
 
 
@@ -36,6 +37,35 @@
     <system:Double x:Key="View.Main.FontSize">12</system:Double>
 
     <!--  #End Region アプリケーションで使用するフォント定義  -->
+
+
+    <!--  #Region 標準コンポーネントのStyle定義  -->
+
+    <!--  TextBlockのStyle  -->
+    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!--  Button のStyle  -->
+    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="12,2" />
+    </Style>
+
+    <!--  CheckBox のStyle  -->
+    <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!--  ComboBox のStyle  -->
+    <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <!--  #End Region 標準コンポーネントのStyle定義  -->
 
 
     <!--  #Region 独自コンポーネントのStyle定義  -->

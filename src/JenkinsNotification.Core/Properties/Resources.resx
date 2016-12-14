@@ -129,6 +129,10 @@
     <value>受信履歴に表示する最大データ数は、{0}～{1} を設定してください。</value>
     <comment>構成情報ファイルの受信履歴最大データ数の範囲エラーメッセージです。</comment>
   </data>
+  <data name="EnumTypeUnmatchMessage" xml:space="preserve">
+    <value>指定した型は列挙体ではありません。</value>
+    <comment>期待した型が列挙体で実際の型がそれ以外だった場合のエラーメッセージです。</comment>
+  </data>
   <data name="FileNotFoundMessage" xml:space="preserve">
     <value>指定したファイルは存在しません。</value>
     <comment>ファイルが存在しない場合のエラーメッセージです。</comment>

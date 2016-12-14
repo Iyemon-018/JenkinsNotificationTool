@@ -10,17 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace JenkinsNotification.Debug.LogViewer
+namespace JenkinsNotification.Debug.LogViewer.Views
 {
+    using JenkinsNotification.Core.ComponentModels;
+    using JenkinsNotification.CustomControls;
+    using JenkinsNotification.Debug.LogViewer.ViewModels;
+
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
+    /// LogView.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    [ViewModel(typeof(LogViewModel))]
+    public partial class LogView : View
     {
-        public MainWindow()
+        public LogView()
         {
             InitializeComponent();
         }

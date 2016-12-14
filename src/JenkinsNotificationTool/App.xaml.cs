@@ -62,7 +62,8 @@
             //
             // アプリケーション機能の初期化を実施する。
             //
-            ApplicationManager.Initialize(new BalloonTipService(view.TaskbarIcon));
+            ApplicationManager.Initialize();
+            ApplicationManager.InitializeBalloonTipService(new BalloonTipService(view.TaskbarIcon));
         }
 
         /// <summary>

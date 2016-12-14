@@ -50,9 +50,11 @@
       <HintPath>..\..\packages\Prism.Mvvm.1.0.0\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -87,6 +89,8 @@
     <Compile Include="Core\Extensions\StringExtensionsTests.cs" />
     <Compile Include="Core\Extensions\XmlDeserializerSerializerTests.cs" />
     <Compile Include="Core\Services\MockDialogService.cs" />
+    <Compile Include="Core\Utility\EnumUtilityTests.cs" />
+    <Compile Include="CustomControls\Converters\InvertBooleanConverterTests.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Core\ComponentModels\ViewModelTests.cs" />
     <Compile Include="TestBase.cs" />
