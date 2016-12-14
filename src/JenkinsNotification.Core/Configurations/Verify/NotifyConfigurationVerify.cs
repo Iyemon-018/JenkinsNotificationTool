@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Configurations.Verify
 {
     using System;
+    using JenkinsNotification.Core.Utility;
     using Properties;
 
     /// <summary>
@@ -35,19 +36,23 @@
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
-            //
-            // 受信履歴の最大数の検証を行う。
-            //
-            var displayHistoryCount = config.DisplayHistoryCount;
-            if ((displayHistoryCount < DisplayHistoryMinimum) || (DisplayHistoryMaximum < config.DisplayHistoryCount))
+            using (TimeTracer.StartNew("通知関連の構成情報を検証する。"))
             {
-                return VerifyResult.Error(string.Format(Resources.DisplayHistoryCountOutOfRangeMessage,
-                                                         DisplayHistoryMinimum,
-                                                         DisplayHistoryMaximum));
+                //
+                // 受信履歴の最大数の検証を行う。
+                //
+                var displayHistoryCount = config.DisplayHistoryCount;
+                if ((displayHistoryCount < DisplayHistoryMinimum)
+                    || (DisplayHistoryMaximum < config.DisplayHistoryCount))
+                {
+                    return VerifyResult.Error(string.Format(Resources.DisplayHistoryCountOutOfRangeMessage,
+                                                            DisplayHistoryMinimum,
+                                                            DisplayHistoryMaximum));
+                }
+
+                // 全ての検証が正常に終了した。
+                return new VerifyResult();
             }
-            
-            // 全ての検証が正常に終了した。
-            return new VerifyResult();
         }
 
         #endregion

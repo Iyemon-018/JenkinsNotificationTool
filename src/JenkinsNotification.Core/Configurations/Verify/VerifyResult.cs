@@ -1,5 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Configurations.Verify
 {
+    using JenkinsNotification.Core.Logs;
+
     /// <summary>
     /// 構成情報の検証結果クラスです。
     /// </summary>
@@ -51,6 +53,7 @@
         /// <returns>検証異常の結果オブジェクト</returns>
         public static VerifyResult Error(string errorMessage)
         {
+            LogManager.Error($"構成情報の検証エラーが発生した。({errorMessage})");
             return new VerifyResult(false, errorMessage);
         }
 

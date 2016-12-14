@@ -7,6 +7,7 @@
     using Core.Services;
     using Core.ViewModels.Api;
     using BalloonTips;
+    using JenkinsNotification.Core.Logs;
 
     /// <summary>
     /// バルーン通知サービス クラスです。
@@ -72,6 +73,8 @@
         public void NotifyJobResult(IJobExecuteResult executeResult)
         {
             var balloon = new JobExecuteResultBalloonTip(executeResult);
+            LogManager.Info($"ジョブ実行結果通知バルーンを表示する。(Job:{executeResult.Name}" +
+                            $" #{executeResult.BuildNumber}, {executeResult.Status}, {executeResult.Result}");
             _taskbarIcon.ShowCustomBalloon(balloon,
                                            _config.NotifyConfiguration.PopupAnimationType,
                                            (int?)_config.NotifyConfiguration.PopupTimeout?.TotalMilliseconds);
@@ -95,6 +98,7 @@
         /// <param name="symbol">表示アイコン</param>
         private void Notify(string title, string message, BalloonIcon symbol)
         {
+            LogManager.Info($"バルーンメッセージを通知する。({title}[{symbol}] : {message})");
             _taskbarIcon.ShowBalloonTip(title, message, symbol);
         }
 

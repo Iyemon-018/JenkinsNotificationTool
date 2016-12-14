@@ -9,8 +9,10 @@
     using System.Windows;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
+    using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Properties;
     using JenkinsNotification.Core.Services;
+    using JenkinsNotification.Core.Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
     /// <summary>
@@ -77,15 +79,18 @@
         /// <param name="balloonTipService">バルーン表示サービス</param>
         public static void Initialize(IBalloonTipService balloonTipService)
         {
-            //
-            // 構成ファイルを読み込む。
-            //
-            ApplicationConfiguration.LoadCurrent();
+            using (TimeTracer.StartNew("アプリケーション初期化シークエンスを実行する。"))
+            {
+                //
+                // 構成ファイルを読み込む。
+                //
+                ApplicationConfiguration.LoadCurrent();
 
-            //
-            // このインスタンスを生成する。
-            //
-            Instance = new ApplicationManager(balloonTipService);
+                //
+                // このインスタンスを生成する。
+                //
+                Instance = new ApplicationManager(balloonTipService);
+            }
         }
 
         /// <summary>
@@ -117,6 +122,7 @@
         /// </summary>
         public void Shutdown()
         {
+            LogManager.Info("☆☆ アプリケーションをシャットダウンする。");
             Application.Current.Shutdown();
         }
 

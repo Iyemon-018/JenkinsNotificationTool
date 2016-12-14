@@ -2,7 +2,7 @@
 {
     using Configurations.Verify;
     using Extensions;
-    using JenkinsNotification.Core.Properties;
+    using Properties;
 
     /// <summary>
     /// 構成ファイルに関するユーティリティ機能クラスです。
@@ -21,14 +21,19 @@
         /// <exception cref="ConfigurationVerifyException">構成ファイルの検証結果が異常だった場合にスローされます。</exception>
         public static T Load<T>(string filePath, IConfigurationVerify<T> verify) where T : class, new()
         {
-            var config = filePath.Deserialize<T>();
-            var result = verify.Verify(config);
-            if (!result.Correct)
+            using (TimeTracer.StartNew($"構成ファイルを読み込みます。Path:{filePath}"))
             {
-                throw new ConfigurationVerifyException(Resources.ConfigurationVerifyLoadedErrorMessage, filePath, result);
-            }
+                var config = filePath.Deserialize<T>();
+                var result = verify.Verify(config);
+                if (!result.Correct)
+                {
+                    throw new ConfigurationVerifyException(Resources.ConfigurationVerifyLoadedErrorMessage,
+                                                           filePath,
+                                                           result);
+                }
 
-            return config;
+                return config;
+            }
         }
 
         /// <summary>
@@ -41,12 +46,17 @@
         /// <exception cref="ConfigurationVerifyException">構成ファイルの検証結果が異常だった場合にスローされます。</exception>
         public static void Save<T>(T config, string filePath, IConfigurationVerify<T> verify) where T : class
         {
-            var result = verify.Verify(config);
-            if (!result.Correct)
+            using (TimeTracer.StartNew($"構成ファイルを保存します。Path:{filePath}"))
             {
-                throw new ConfigurationVerifyException(Resources.ConfigurationVerifySaveErrorMessage, filePath, result);
+                var result = verify.Verify(config);
+                if (!result.Correct)
+                {
+                    throw new ConfigurationVerifyException(Resources.ConfigurationVerifySaveErrorMessage,
+                                                           filePath,
+                                                           result);
+                }
+                config.Serialize(filePath);
             }
-            config.Serialize(filePath);
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Configurations.Verify
 {
     using System;
+    using JenkinsNotification.Core.Utility;
 
     /// <summary>
     /// 構成情報<see cref="ApplicationConfiguration"/> の検証ロジッククラスです。
@@ -19,20 +20,23 @@
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
-            //
-            // 通知関連の構成情報を検証する。
-            //
-            var notifyConfigVerify = new NotifyConfigurationVerify();
-            var result = notifyConfigVerify.Verify(config.NotifyConfiguration);
-            if (!result.Correct)
+            using (TimeTracer.StartNew("アプリケーション構成情報の検証を実行する。"))
             {
-                // 検証エラー
+                //
+                // 通知関連の構成情報を検証する。
+                //
+                var notifyConfigVerify = new NotifyConfigurationVerify();
+                var result = notifyConfigVerify.Verify(config.NotifyConfiguration);
+                if (!result.Correct)
+                {
+                    // 検証エラー
+                    return result;
+                }
+
+                // TODO 他の設定ファイルの検証も実装する。
+
                 return result;
             }
-
-            // TODO 他の設定ファイルの検証も実装する。
-
-            return result;
         }
 
         #endregion

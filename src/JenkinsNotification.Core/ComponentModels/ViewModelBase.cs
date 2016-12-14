@@ -9,6 +9,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using JenkinsNotification.Core.Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
     /// <summary>
@@ -58,40 +59,43 @@
         {
             lock (_validationLock)
             {
-                var context = new ValidationContext(this, null, null);
-                var validationResults = new List<ValidationResult>();
-
-                //
-                // プロパティを検証する。
-                // 検証結果はvalidationErrors に格納される。
-                //
-                var validate = Validator.TryValidateObject(this, context, validationResults, true);
-
-                // まとめて検証結果をクリアする。
-                _errorsContainer.ClearAll();
-
-                if (!validate)
+                using (TimeTracer.StartNew($"{GetType().Name} のオブジェクト検証を実施する。"))
                 {
-                    //
-                    // グループごとの検証結果を生成する。
-                    // Key:プロパティ名, Value:Key プロパティの検証結果コレクション
-                    // 検証結果をコンテナに登録する。
-                    //
-                    var byPropertyNames = from result in validationResults
-                                          from memberName in result.MemberNames
-                                          group result by memberName
-                                          into g
-                                          select g;
-                    foreach (var property in byPropertyNames)
-                    {
-                        _errorsContainer.SetErrors(property.Key, property.Select(x => x.ErrorMessage));
-                    }
-                }
+                    var context = new ValidationContext(this, null, null);
+                    var validationResults = new List<ValidationResult>();
 
-                //
-                // 派生先で独自の検証ロジックを実行する。
-                //
-                OnValidate();
+                    //
+                    // プロパティを検証する。
+                    // 検証結果はvalidationErrors に格納される。
+                    //
+                    var validate = Validator.TryValidateObject(this, context, validationResults, true);
+
+                    // まとめて検証結果をクリアする。
+                    _errorsContainer.ClearAll();
+
+                    if (!validate)
+                    {
+                        //
+                        // グループごとの検証結果を生成する。
+                        // Key:プロパティ名, Value:Key プロパティの検証結果コレクション
+                        // 検証結果をコンテナに登録する。
+                        //
+                        var byPropertyNames = from result in validationResults
+                                              from memberName in result.MemberNames
+                                              group result by memberName
+                                              into g
+                                              select g;
+                        foreach (var property in byPropertyNames)
+                        {
+                            _errorsContainer.SetErrors(property.Key, property.Select(x => x.ErrorMessage));
+                        }
+                    }
+
+                    //
+                    // 派生先で独自の検証ロジックを実行する。
+                    //
+                    OnValidate();
+                }
             }
         }
 
@@ -184,24 +188,27 @@
         {
             lock (_validationLock)
             {
-                var context = new ValidationContext(this) {MemberName = propertyName};
-                var validationErrors = new List<ValidationResult>();
+                using (TimeTracer.StartNew($"{propertyName} の検証を行う。"))
+                {
+                    var context = new ValidationContext(this) {MemberName = propertyName};
+                    var validationErrors = new List<ValidationResult>();
 
-                //
-                // プロパティを検証する。
-                // 検証結果はvalidationErrors に格納される。
-                //
-                if (Validator.TryValidateProperty(value, context, validationErrors))
-                {
-                    // 検証結果が正常だったため、エラー内容をクリアする。
-                    _errorsContainer.ClearErrors(propertyName);
-                }
-                else
-                {
-                    // 検証異常だった内容をコンテナに保存する。
-                    // この内容はリスナーに通知される。
-                    var errors = validationErrors.Select(x => x.ErrorMessage);
-                    _errorsContainer.SetErrors(propertyName, errors);
+                    //
+                    // プロパティを検証する。
+                    // 検証結果はvalidationErrors に格納される。
+                    //
+                    if (Validator.TryValidateProperty(value, context, validationErrors))
+                    {
+                        // 検証結果が正常だったため、エラー内容をクリアする。
+                        _errorsContainer.ClearErrors(propertyName);
+                    }
+                    else
+                    {
+                        // 検証異常だった内容をコンテナに保存する。
+                        // この内容はリスナーに通知される。
+                        var errors = validationErrors.Select(x => x.ErrorMessage);
+                        _errorsContainer.SetErrors(propertyName, errors);
+                    }
                 }
             }
         }
@@ -214,8 +221,6 @@
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
-
-        #endregion
 
         /// <summary>
         /// エンティティの子要素を追加します。
@@ -234,6 +239,8 @@
         {
             _children.AddRange(children);
         }
+        
+        #endregion
 
         #region INotifyDataErrorInfo メンバーの実装
 

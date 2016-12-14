@@ -4,6 +4,7 @@
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Input;
+    using JenkinsNotification.Core.Logs;
 
     /// <summary>
     /// メッセージを表示するためのダイアログ ウィンドウ コンポーネントです。
@@ -215,6 +216,7 @@
         private void Close(MessageBoxResult result)
         {
             Result = result;
+            LogManager.Info($"メッセージダイアログを閉じる。[{result}]({Message})");
             SystemCommands.CloseWindow(this);
         }
 

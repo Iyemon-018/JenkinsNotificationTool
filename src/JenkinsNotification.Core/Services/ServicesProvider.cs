@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Services
 {
     using System;
+    using JenkinsNotification.Core.Logs;
 
     /// <summary>
     /// 各種サービスを提供するクラスです。
@@ -33,6 +34,9 @@
         {
             if (dialogService == null) throw new ArgumentNullException(nameof(dialogService));
             if (viewService == null) throw new ArgumentNullException(nameof(viewService));
+            
+            LogManager.Info($"ダイアログ表示サービスを設定します。{dialogService.GetType()}");
+            LogManager.Info($"画面表示サービスを設定します。{viewService.GetType()}");
 
             _dialogService = dialogService;
             _viewService   = viewService;

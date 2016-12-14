@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using JenkinsNotification.Core.Logs;
 
     /// <summary>
     /// ファイル操作関連のユーティリティ機能クラスです。
@@ -22,6 +23,7 @@
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
+                LogManager.Info($"ディレクトリを新規作成しました。(Path:{path})");
             }
         }
 
@@ -65,20 +67,23 @@
         /// </returns>
         public static IEnumerable<string> GetFilesForPreviousSpan(string directory, TimeSpan previousDate)
         {
-            if (!Directory.Exists(directory))
+            using (TimeTracer.StartNew($"{previousDate:g} よりも後日に作成されたファイル パスを取得する。"))
             {
-                // 該当フォルダなし。
-                return Enumerable.Empty<string>();
-            }
+                if (!Directory.Exists(directory))
+                {
+                    // 該当フォルダなし。
+                    return Enumerable.Empty<string>();
+                }
 
-            //
-            // 一度、Key=ファイルパス, Value=作成日時 の連想配列に変換し、
-            // 日時でフィルターし、その結果をファイルパス配列に変換して返す。
-            //
-            return Directory.GetFiles(directory)
-                            .ToDictionary(x => x, File.GetCreationTime)
-                            .Where(x => DateTime.Compare(DateTime.Today.Add(previousDate), x.Value.Date) == 1)
-                            .Select(x => x.Key);
+                //
+                // 一度、Key=ファイルパス, Value=作成日時 の連想配列に変換し、
+                // 日時でフィルターし、その結果をファイルパス配列に変換して返す。
+                //
+                return Directory.GetFiles(directory)
+                                .ToDictionary(x => x, File.GetCreationTime)
+                                .Where(x => DateTime.Compare(DateTime.Today.Add(previousDate), x.Value.Date) == 1)
+                                .Select(x => x.Key);
+            }
         }
 
         /// <summary>
@@ -91,6 +96,7 @@
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
+                LogManager.Info($"ファイル[{Path.GetFileName(filePath)}]を削除しました。(Path:{filePath})");
             }
         }
         

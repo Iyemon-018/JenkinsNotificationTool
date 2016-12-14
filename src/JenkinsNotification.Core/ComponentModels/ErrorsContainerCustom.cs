@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+    using JenkinsNotification.Core.Logs;
     using Microsoft.Practices.Prism.ViewModel;
     using PropertySupport = Microsoft.Practices.Prism.Mvvm.PropertySupport;
 
@@ -64,6 +65,7 @@
         public void SetError<TProperty>(Expression<Func<TProperty>> propertyExpression, T validationResult)
         {
             var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
+            LogManager.Debug($"{GetType().Name}.{propertyName} をエラーにする。({validationResult})");
             SetError(propertyName, validationResult);
         }
 

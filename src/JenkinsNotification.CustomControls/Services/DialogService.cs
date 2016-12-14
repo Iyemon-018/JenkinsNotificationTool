@@ -3,6 +3,7 @@
     using System.Windows;
     using Core.Services;
     using Core.Utility;
+    using JenkinsNotification.Core.Logs;
 
     /// <summary>
     /// ダイアログ表示のサービス クラスです。
@@ -64,6 +65,7 @@
         private MessageBoxResult Show(string message, MessageBoxButton button, MessageBoxImage icon)
         {
             var title = Products.Current.Title;
+            LogManager.Info($"メッセージダイアログを表示する。({title}[{icon}] : {message})");
             var owner = ViewUtility.GetActiveWindow();
             return owner == null
                 ? MessageDialog.Show(message, title, button, icon)

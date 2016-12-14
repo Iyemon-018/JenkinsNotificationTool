@@ -148,13 +148,13 @@
         /// トレースメッセージを出力します。
         /// </summary>
         /// <param name="message">出力するメッセージ</param>
-        /// <param name="filePath">出力元のファイルパス(設定不要)</param>
-        /// <param name="memberName">出力元のメンバー名(設定不要)</param>
-        /// <param name="lineNumber">出力元のファイル行数(設定不要)</param>
+        /// <param name="filePath">出力元のファイルパス</param>
+        /// <param name="memberName">出力元のメンバー名</param>
+        /// <param name="lineNumber">出力元のファイル行数</param>
         public static void Trace(string message,
-                                 [CallerFilePath] string filePath = null,
-                                 [CallerMemberName] string memberName = null,
-                                 [CallerLineNumber] int lineNumber = 0)
+                                 string filePath = null,
+                                 string memberName = null,
+                                 int lineNumber = 0)
         {
             Instance.Output(LogLevel.Trace, message, filePath, memberName, lineNumber);
         }
