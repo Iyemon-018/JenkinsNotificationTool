@@ -18,3 +18,4 @@
 /src/JenkinsNotification.CustomControls
 /src/JenkinsNotificationTool
 /.vs
+/Debug/JenkinsNotification.Debug.LogViewer/obj/Debug
