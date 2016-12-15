@@ -85,6 +85,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Core\Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Core\Extensions\ExceptionExtensionsTest.cs" />
     <Compile Include="Core\Extensions\StringExtensionsTests.cs" />
     <Compile Include="Core\Extensions\XmlDeserializerSerializerTests.cs" />
