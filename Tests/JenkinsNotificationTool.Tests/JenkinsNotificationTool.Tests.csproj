@@ -85,11 +85,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Core\Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Core\Extensions\ExceptionExtensionsTest.cs" />
     <Compile Include="Core\Extensions\StringExtensionsTests.cs" />
     <Compile Include="Core\Extensions\XmlDeserializerSerializerTests.cs" />
     <Compile Include="Core\Services\MockDialogService.cs" />
     <Compile Include="Core\Utility\EnumUtilityTests.cs" />
+    <Compile Include="Core\Utility\FileUtilityTests.cs" />
     <Compile Include="CustomControls\Converters\InvertBooleanConverterTests.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Core\ComponentModels\ViewModelTests.cs" />

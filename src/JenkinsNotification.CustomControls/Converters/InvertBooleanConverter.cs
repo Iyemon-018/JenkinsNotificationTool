@@ -12,7 +12,6 @@
     [ValueConversion(typeof(bool), typeof(bool))]
     public class InvertBooleanConverter : IValueConverter
     {
-
         #region Methods
 
         /// <summary>

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using JenkinsNotification.Core.Extensions;
     using Properties;
 
     /// <summary>
@@ -33,7 +34,7 @@
         /// <exception cref="System.InvalidOperationException"><typeparamref name="TEnum"/> が列挙体の型でない場合にスローされます。</exception>
         public static ObservableCollection<TEnum> ToObservableCollection<TEnum>() where TEnum : struct
         {
-            return new ObservableCollection<TEnum>(ToEnumerable<TEnum>());
+            return ToEnumerable<TEnum>().ToObservableCollection();
         }
 
         #endregion
