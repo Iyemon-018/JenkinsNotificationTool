@@ -1,18 +1,13 @@
 ﻿namespace JenkinsNotification.Core
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
     using System.Reflection;
-    using System.Threading.Tasks;
     using System.Windows;
-    using JenkinsNotification.Core.ComponentModels;
-    using JenkinsNotification.Core.Configurations;
-    using JenkinsNotification.Core.Logs;
-    using JenkinsNotification.Core.Properties;
-    using JenkinsNotification.Core.Services;
-    using JenkinsNotification.Core.Utility;
+    using ComponentModels;
+    using Configurations;
+    using Logs;
+    using Services;
+    using Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
     /// <summary>
@@ -30,12 +25,12 @@
     /// </remarks>
     public sealed class ApplicationManager
     {
-        #region Fields
+        #region Const
 
         /// <summary>
-        /// バルーン表示サービス
+        /// 唯一のインスタンス
         /// </summary>
-        private IBalloonTipService _balloonTipService;
+        private static readonly ApplicationManager _instance = new ApplicationManager();
 
         #endregion
 
@@ -55,7 +50,8 @@
         /// <summary>
         /// 唯一のインスタンスを取得します。
         /// </summary>
-        public static ApplicationManager Instance => new ApplicationManager();
+        // ReSharper disable once ConvertToAutoProperty
+        public static ApplicationManager Instance => _instance;
 
         /// <summary>
         /// アプリケーション構成情報を取得します。
@@ -65,20 +61,11 @@
         /// <summary>
         /// バルーン表示サービスを取得します。
         /// </summary>
-        public IBalloonTipService BalloonTipService => _balloonTipService;
+        public IBalloonTipService BalloonTipService { get; private set; }
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// バルーン表示サービスを初期化します。
-        /// </summary>
-        /// <param name="balloonTipService">バルーン表示サービス</param>
-        public static void InitializeBalloonTipService(IBalloonTipService balloonTipService)
-        {
-            Instance._balloonTipService = balloonTipService;
-        }
 
         /// <summary>
         /// アプリケーション機能の初期化処理を実行します。
@@ -92,6 +79,15 @@
                 //
                 ApplicationConfiguration.LoadCurrent();
             }
+        }
+
+        /// <summary>
+        /// バルーン表示サービスを初期化します。
+        /// </summary>
+        /// <param name="balloonTipService">バルーン表示サービス</param>
+        public static void InitializeBalloonTipService(IBalloonTipService balloonTipService)
+        {
+            Instance.BalloonTipService = balloonTipService;
         }
 
         /// <summary>

@@ -38,7 +38,7 @@
             DependencyProperty.Register("ButtonType"
                                       , typeof(MessageBoxButton)
                                       , typeof(MessageDialog)
-                                      , new FrameworkPropertyMetadata(MessageBoxButton.OK, ButtonTypePropertyChanged));
+                                      , new FrameworkPropertyMetadata(MessageBoxButton.YesNoCancel, ButtonTypePropertyChanged));
 
         /// <summary>
         /// 依存関係プロパティ <see cref="IconType"/> を識別します。
