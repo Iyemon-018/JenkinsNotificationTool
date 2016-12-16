@@ -20,4 +20,4 @@
 *.suo
 /Debug/JenkinsNotification.Debug.LogViewer/obj/Debug
 /Debug/JenkinsNotification.Debug.LogViewer/bin/Debug
-/.vs/JenkinsNotificationTool/v14/.suo
+*.user
