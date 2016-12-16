@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using JenkinsNotification.Core.Extensions;
     using JenkinsNotification.Core.Logs;
 
     /// <summary>
@@ -20,10 +21,24 @@
         /// <param name="path">ディレクトリパス</param>
         public static void CreateDirectory(string path)
         {
-            if (!Directory.Exists(path))
+            if (path.HasText() && !Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
                 LogManager.Info($"ディレクトリを新規作成しました。(Path:{path})");
+            }
+        }
+
+        /// <summary>
+        /// 指定したパスのディレクトリを削除します。
+        /// </summary>
+        /// <param name="path">削除するディレクトリ パス</param>
+        /// <param name="recursive"><paramref name="path"/> のディレクトリ、サブディレクトリ、およびファイルを削除する場合は true。それ以外の場合は false。</param>
+        public static void DeleteDirectory(string path, bool recursive = false)
+        {
+            if (path.HasText() && Directory.Exists(path))
+            {
+                Directory.Delete(path, recursive);
+                LogManager.Info($"ディレクトリを{(recursive ? "サブディレクトリ、ファイルも含めて": string.Empty)}削除しました。(Path:{path})");
             }
         }
 
