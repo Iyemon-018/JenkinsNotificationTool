@@ -20,3 +20,4 @@
 /.vs
 /Debug/JenkinsNotification.Debug.LogViewer/obj/Debug
 /Debug/JenkinsNotification.Debug.LogViewer/bin/Debug
+.suo
