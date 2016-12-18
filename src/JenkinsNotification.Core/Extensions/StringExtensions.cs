@@ -1,24 +1,13 @@
 ﻿namespace JenkinsNotification.Core.Extensions
 {
     using System;
-    using System.Data.Common;
-    using System.Globalization;
-    using System.Text;
 
     /// <summary>
     /// <see cref="string"/> 型の拡張メソッドを定義します。
     /// </summary>
     public static class StringExtensions
     {
-        /// <summary>
-        /// 文字列が空文字かどうかを判定します。
-        /// </summary>
-        /// <param name="self">自分自身</param>
-        /// <returns>空文字、もしくはnull の場合、true を返します。それ以外の場合、false を返します。</returns>
-        public static bool IsEmpty(this string self)
-        {
-            return string.IsNullOrEmpty(self);
-        }
+        #region Methods
 
         /// <summary>
         /// 文字列が設定されているかどうかを判定します。
@@ -40,6 +29,16 @@
         public static bool IsDefined<TEnum>(this string self) where TEnum : struct
         {
             return !self.IsEmpty() && Enum.IsDefined(typeof(TEnum), self);
+        }
+
+        /// <summary>
+        /// 文字列が空文字かどうかを判定します。
+        /// </summary>
+        /// <param name="self">自分自身</param>
+        /// <returns>空文字、もしくはnull の場合、true を返します。それ以外の場合、false を返します。</returns>
+        public static bool IsEmpty(this string self)
+        {
+            return string.IsNullOrEmpty(self);
         }
 
         /// <summary>
@@ -68,7 +67,7 @@
         {
             return Enum.Parse(enumType, self);
         }
-        
+
         /// <summary>
         /// 文字列を整数値に変換します。
         /// </summary>
@@ -80,5 +79,7 @@
             int result;
             return int.TryParse(self, out result) ? result : defaultValue;
         }
+
+        #endregion
     }
 }

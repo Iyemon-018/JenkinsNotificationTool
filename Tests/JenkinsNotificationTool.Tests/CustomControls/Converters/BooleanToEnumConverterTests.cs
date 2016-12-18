@@ -7,13 +7,15 @@
     using JenkinsNotification.CustomControls.Converters;
     using Xunit;
     using Xunit.Abstractions;
-    
+
     /// <summary>
     /// <see cref="BooleanToEnumConverter" /> のテストクラスです。
     /// </summary>
     /// <seealso cref="JenkinsNotificationTool.Tests.TestBase" />
     public class BooleanToEnumConverterTests : TestBase
     {
+        #region Ctor
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -21,6 +23,8 @@
         public BooleanToEnumConverterTests(ITestOutputHelper output) : base(output)
         {
         }
+
+        #endregion
 
         #region Converter method test
 
@@ -48,7 +52,7 @@
                        DayOfWeek.Sunday.ToString(),
                        CultureInfo.CurrentCulture
                    },
-                   new object[]
+                   new[]
                    {
                        "(異常系) パラメータを指定していない場合、DependencyProperty.UnsetValue を返すこと。",
                        DependencyProperty.UnsetValue,
@@ -57,7 +61,7 @@
                        null,
                        CultureInfo.CurrentCulture
                    },
-                   new object[]
+                   new[]
                    {
                        "(異常系) バインディングソースの値が列挙体でない場合、DependencyProperty.UnsetValue を返すこと。",
                        DependencyProperty.UnsetValue,
@@ -65,7 +69,7 @@
                        typeof(bool),
                        DayOfWeek.Sunday.ToString(),
                        CultureInfo.CurrentCulture
-                   },
+                   }
                };
 
         /// <summary>
@@ -113,7 +117,7 @@
                        DayOfWeek.Sunday.ToString(),
                        CultureInfo.CurrentCulture
                    },
-                   new object[]
+                   new[]
                    {
                        "(正常系) false を渡すとDependencyProperty.UnsetValue を返すこと。",
                        DependencyProperty.UnsetValue,
@@ -122,7 +126,7 @@
                        DayOfWeek.Sunday.ToString(),
                        CultureInfo.CurrentCulture
                    },
-                   new object[]
+                   new[]
                    {
                        "(異常系) パラメータを指定していない場合、DependencyProperty.UnsetValue を返すこと。",
                        DependencyProperty.UnsetValue,
@@ -131,7 +135,7 @@
                        null,
                        CultureInfo.CurrentCulture
                    },
-                   new object[]
+                   new[]
                    {
                        "(異常系) バインディングターゲットの値がbool型でない場合、DependencyProperty.UnsetValue を返すこと。",
                        DependencyProperty.UnsetValue,
@@ -139,9 +143,18 @@
                        typeof(DayOfWeek),
                        DayOfWeek.Sunday.ToString(),
                        CultureInfo.CurrentCulture
-                   },
+                   }
                };
 
+        /// <summary>
+        /// <see cref="BooleanToEnumConverter.ConvertBack" /> をテストします。
+        /// </summary>
+        /// <param name="caseName">テストケースの内容</param>
+        /// <param name="expected">期待される戻り値</param>
+        /// <param name="value">バインディング ターゲットによって生成される値。</param>
+        /// <param name="targetType">変換後の型。</param>
+        /// <param name="parameter">使用するコンバーター パラメーター。</param>
+        /// <param name="culture">コンバーターで使用するカルチャ。</param>
         [Theory]
         [MemberData(nameof(ConvertBackTheoryTestData))]
         public void Test_ConvertBack_Theory(string caseName, object expected, object value, Type targetType, object parameter, CultureInfo culture)

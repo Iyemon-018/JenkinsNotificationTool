@@ -5,7 +5,6 @@
     using System.Windows;
     using System.Windows.Threading;
     using JenkinsNotification.Core;
-    using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;

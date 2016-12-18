@@ -12,6 +12,8 @@
     [ValueConversion(typeof(Enum), typeof(bool), ParameterType = typeof(Enum))]
     public class BooleanToEnumConverter : IValueConverter
     {
+        #region Methods
+
         /// <summary>
         /// 値を変換します。
         /// </summary>
@@ -60,5 +62,7 @@
 
             return !actualValue ? DependencyProperty.UnsetValue : parameter.ToString().ToEnum(targetType);
         }
+
+        #endregion
     }
 }

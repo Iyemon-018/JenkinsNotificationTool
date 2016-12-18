@@ -5,6 +5,10 @@
     using System.Windows.Controls;
     using System.Windows.Media;
 
+    /// <summary>
+    /// 設定項目とヘッダー、説明をひとまとめにしたコンポーネント クラスです。
+    /// </summary>
+    /// <seealso cref="System.Windows.Controls.ContentControl" />
     public class ItemContent : ContentControl
     {
         #region Const
@@ -73,7 +77,7 @@
         static ItemContent()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(typeof(ItemContent)));
-            PaddingProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(new Thickness(4,2,2,4)));
+            PaddingProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(new Thickness(4, 2, 2, 4)));
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(HorizontalAlignment.Stretch));
             VerticalContentAlignmentProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(VerticalAlignment.Stretch));
         }

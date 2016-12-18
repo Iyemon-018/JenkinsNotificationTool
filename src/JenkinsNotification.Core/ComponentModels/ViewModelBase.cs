@@ -7,8 +7,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using JenkinsNotification.Core.Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
@@ -22,6 +22,11 @@
         #region Fields
 
         /// <summary>
+        /// このエンティティの子要素コレクション
+        /// </summary>
+        private readonly List<ViewModelBase> _children = new List<ViewModelBase>();
+
+        /// <summary>
         /// エラー情報を保持するコンテナ
         /// </summary>
         private readonly ErrorsContainerCustom<string> _errorsContainer;
@@ -30,11 +35,6 @@
         /// <see cref="_errorsContainer"/> の非同期ロックオブジェクト
         /// </summary>
         private readonly object _validationLock = new object();
-
-        /// <summary>
-        /// このエンティティの子要素コレクション
-        /// </summary>
-        private readonly List<ViewModelBase> _children = new List<ViewModelBase>();
 
         #endregion
 
@@ -46,6 +46,7 @@
         protected ViewModelBase()
         {
             _errorsContainer = new ErrorsContainerCustom<string>(OnErrorChanged);
+            PropertyChangedEventManager.AddHandler(this, Self_OnPropertyChanged, string.Empty);
         }
 
         #endregion
@@ -100,6 +101,24 @@
         }
 
         /// <summary>
+        /// エンティティの子要素を追加します。
+        /// </summary>
+        /// <param name="child"><see cref="ViewModelBase"/> オブジェクトの子要素</param>
+        protected void AddChild(ViewModelBase child)
+        {
+            _children.Add(child);
+        }
+
+        /// <summary>
+        /// エンティティの子要素コレクションを追加します。
+        /// </summary>
+        /// <param name="children"><see cref="ViewModelBase"/> オブジェクトの子要素コレクション</param>
+        protected void AddChildren(IEnumerable<ViewModelBase> children)
+        {
+            _children.AddRange(children);
+        }
+
+        /// <summary>
         /// リスナーにプロパティのエラーを通知します。
         /// </summary>
         /// <typeparam name="TProperty">プロパティを通知するインスタンスの型</typeparam>
@@ -148,6 +167,15 @@
         protected virtual void OnValidate()
         {
             // Do nothing this class.
+        }
+
+        /// <summary>
+        /// このオブジェクトのプロパティの値が変更された際に呼ばれるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        protected virtual void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
         }
 
         /// <summary>
@@ -222,24 +250,6 @@
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
-        /// <summary>
-        /// エンティティの子要素を追加します。
-        /// </summary>
-        /// <param name="child"><see cref="ViewModelBase"/> オブジェクトの子要素</param>
-        protected void AddChild(ViewModelBase child)
-        {
-            _children.Add(child);
-        }
-
-        /// <summary>
-        /// エンティティの子要素コレクションを追加します。
-        /// </summary>
-        /// <param name="children"><see cref="ViewModelBase"/> オブジェクトの子要素コレクション</param>
-        protected void AddChildren(IEnumerable<ViewModelBase> children)
-        {
-            _children.AddRange(children);
-        }
-        
         #endregion
 
         #region INotifyDataErrorInfo メンバーの実装
