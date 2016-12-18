@@ -1,5 +1,6 @@
 ﻿namespace JenkinsNotificationTool.ViewModels
 {
+    using JenkinsNotification.Core;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Services;
     using JenkinsNotificationTool.Properties;
@@ -48,6 +49,7 @@
             ConfigurationCommand = new DelegateCommand(() =>
                                                        {
                                                            // TODO 構成情報画面を表示する。
+                                                           ViewService.Show(ScreenKey.Configuration);
                                                        });
 
 

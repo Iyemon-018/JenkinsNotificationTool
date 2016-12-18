@@ -46,6 +46,7 @@
             //
             // アプリケーションで使いまわすインジェクション サービスを設定する。
             //
+            ViewService.RegisterView(ScreenKey.Configuration, typeof(ConfigurationView));
             var servicesProvider = new ServicesProvider(new DialogService(), new ViewService());
             ApplicationManager.SetDefaultViewModelLocater(servicesProvider);
 

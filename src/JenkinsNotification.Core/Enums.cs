@@ -88,4 +88,30 @@
         /// </summary>
         Fatal,
     }
+
+    /// <summary>
+    /// 表示可能な画面識別子です。
+    /// </summary>
+    public enum ScreenKey
+    {
+        /// <summary>
+        /// タスクトレイに常駐している状態です。
+        /// </summary>
+        TaskTray,
+
+        /// <summary>
+        /// 構成情報の設定画面です。
+        /// </summary>
+        Configuration,
+
+        /// <summary>
+        /// 通知履歴表示画面です。
+        /// </summary>
+        NotificationHistory,
+
+        /// <summary>
+        /// ジョブ詳細情報表示画面です。
+        /// </summary>
+        Details,
+    }
 }
