@@ -7,7 +7,7 @@
     using JenkinsNotification.CustomControls.Converters;
     using Xunit;
     using Xunit.Abstractions;
-
+    
     /// <summary>
     /// <see cref="BooleanToEnumConverter" /> のテストクラスです。
     /// </summary>
