@@ -38,6 +38,18 @@
         #region Methods
 
         /// <summary>
+        /// 指定した画面を閉じます。
+        /// </summary>
+        /// <param name="key">閉じる画面識別子</param>
+        public void Close(ScreenKey key)
+        {
+            if (_viewCash.ContainsKey(key))
+            {
+                _viewCash[key].Close();
+            }
+        }
+
+        /// <summary>
         /// 指定した画面識別子の<see cref="Window" /> を取得します。
         /// </summary>
         /// <param name="key">画面識別子</param>

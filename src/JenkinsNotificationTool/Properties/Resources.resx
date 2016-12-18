@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+    <comment>キャンセルの文言です。</comment>
+  </data>
   <data name="ConditionalReceiveNotifyDescription" xml:space="preserve">
     <value>受信したジョブ実行結果を表示する条件を設定します。
 チェックOFFの場合、ジョブ結果が失敗の場合のみ通知されます。
@@ -135,6 +139,11 @@
     <value>予期せぬエラーをキャッチしました。</value>
     <comment>DispatcherUnhandledException イベントで補足した場合の例外メッセージです。</comment>
   </data>
+  <data name="ErrorConfigurationValue" xml:space="preserve">
+    <value>設定内容にエラーがあります。
+設定項目を確認して適切な値を設定してください。</value>
+    <comment>構成情報の設定値エラーメッセージです。</comment>
+  </data>
   <data name="ExitConfirmMessage" xml:space="preserve">
     <value>アプリケーションを終了します。よろしいですか？</value>
     <comment>アプリケーション終了確認メッセージです。</comment>
@@ -142,6 +151,11 @@
   <data name="Fade" xml:space="preserve">
     <value>フェード</value>
     <comment>フェードの文言です。</comment>
+  </data>
+  <data name="FailedSaveConfiguration" xml:space="preserve">
+    <value>設定ファイルの保存中にエラーが発生しました。
+設定ファイルをエディタなどで開いている場合はエディタを閉じてから、もう一度保存ボタンをクリックしてください。</value>
+    <comment>設定ファイルの保存失敗時のエラーメッセージです。</comment>
   </data>
   <data name="FewRecievedHistoryCount" xml:space="preserve">
     <value>50</value>
@@ -158,6 +172,10 @@
   <data name="HowToDisplayBalloonHeader" xml:space="preserve">
     <value>バルーン表示方法</value>
     <comment>バルーン表示の設定項目のヘッダー文言です。</comment>
+  </data>
+  <data name="InformationSaveConfiguration" xml:space="preserve">
+    <value>設定内容を保存しました。</value>
+    <comment>構成情報の保存成功メッセージです。</comment>
   </data>
   <data name="LongTimeNotifyBalloonTimeout" xml:space="preserve">
     <value>30 秒</value>
@@ -195,6 +213,10 @@
     <value>100</value>
     <comment>実行結果受信履歴一覧に表示する適切な数です。</comment>
   </data>
+  <data name="QuestionSaveConfiguration" xml:space="preserve">
+    <value>現在の設定内容を保存します。よろしいですか？</value>
+    <comment>構成情報の更新確認メッセージです。</comment>
+  </data>
   <data name="RecievedHistoryCountDescription" xml:space="preserve">
     <value>受信履歴一覧に表示する履歴データの数を選択します。</value>
     <comment>実行結果受信履歴一覧に表示する設定項目の説明です。</comment>
@@ -202,6 +224,10 @@
   <data name="RecievedHistoryCountHeader" xml:space="preserve">
     <value>受信履歴表示数</value>
     <comment>実行結果受信履歴一覧に表示する設定項目のヘッダー文言です。</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+    <comment>保存の文言です。</comment>
   </data>
   <data name="Scroll" xml:space="preserve">
     <value>スクロール</value>

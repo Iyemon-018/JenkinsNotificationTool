@@ -14,6 +14,12 @@
         void Show(ScreenKey key);
 
         /// <summary>
+        /// 指定した画面を閉じます。
+        /// </summary>
+        /// <param name="key">閉じる画面識別子</param>
+        void Close(ScreenKey key);
+
+        /// <summary>
         /// 指定した画面識別子の<see cref="Window"/> を取得します。
         /// </summary>
         /// <param name="key">画面識別子</param>

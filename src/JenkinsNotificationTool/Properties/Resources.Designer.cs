@@ -61,6 +61,15 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   キャンセル に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   受信したジョブ実行結果を表示する条件を設定します。
         ///チェックOFFの場合、ジョブ結果が失敗の場合のみ通知されます。
         ///ここで設定した条件は、個別の設定よりも優先されます。 に類似しているローカライズされた文字列を検索します。
@@ -99,6 +108,16 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   設定内容にエラーがあります。
+        ///設定項目を確認して適切な値を設定してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ErrorConfigurationValue {
+            get {
+                return ResourceManager.GetString("ErrorConfigurationValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   アプリケーションを終了します。よろしいですか？ に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string ExitConfirmMessage {
@@ -113,6 +132,16 @@ namespace JenkinsNotificationTool.Properties {
         public static string Fade {
             get {
                 return ResourceManager.GetString("Fade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定ファイルの保存中にエラーが発生しました。
+        ///設定ファイルをエディタなどで開いている場合はエディタを閉じてから、もう一度保存ボタンをクリックしてください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FailedSaveConfiguration {
+            get {
+                return ResourceManager.GetString("FailedSaveConfiguration", resourceCulture);
             }
         }
         
@@ -149,6 +178,15 @@ namespace JenkinsNotificationTool.Properties {
         public static string HowToDisplayBalloonHeader {
             get {
                 return ResourceManager.GetString("HowToDisplayBalloonHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定内容を保存しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InformationSaveConfiguration {
+            get {
+                return ResourceManager.GetString("InformationSaveConfiguration", resourceCulture);
             }
         }
         
@@ -234,6 +272,15 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   現在の設定内容を保存します。よろしいですか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string QuestionSaveConfiguration {
+            get {
+                return ResourceManager.GetString("QuestionSaveConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   受信履歴一覧に表示する履歴データの数を選択します。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string RecievedHistoryCountDescription {
@@ -248,6 +295,15 @@ namespace JenkinsNotificationTool.Properties {
         public static string RecievedHistoryCountHeader {
             get {
                 return ResourceManager.GetString("RecievedHistoryCountHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   保存 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

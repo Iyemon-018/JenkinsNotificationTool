@@ -80,6 +80,7 @@
             PaddingProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(new Thickness(4, 2, 2, 16)));
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(HorizontalAlignment.Stretch));
             VerticalContentAlignmentProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(VerticalAlignment.Stretch));
+            FocusableProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(false));
         }
 
         #endregion

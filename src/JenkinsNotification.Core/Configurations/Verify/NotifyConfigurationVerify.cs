@@ -15,7 +15,7 @@
         /// <summary>
         /// <see cref="NotifyConfiguration.DisplayHistoryCount"/> に設定可能な最大値
         /// </summary>
-        public static readonly int DisplayHistoryMaximum = 100;
+        public static readonly int DisplayHistoryMaximum = 200;
 
         /// <summary>
         /// <see cref="NotifyConfiguration.DisplayHistoryCount"/> に設定可能な最小値

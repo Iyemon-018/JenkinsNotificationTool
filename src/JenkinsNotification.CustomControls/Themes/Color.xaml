@@ -12,6 +12,16 @@
     <!--  #End Region TODO  -->
 
 
+    <!--  #Region 標準コンポーネントの色リソース定義  -->
+    <SolidColorBrush x:Key="TabItem.Main.Background" Color="#01000000" />
+    <SolidColorBrush x:Key="TabItem.MouseOver.Background" Color="#FFBDDEFF" />
+    <SolidColorBrush x:Key="TabItem.Pressed.Background" Color="#FF0677E6" />
+    <SolidColorBrush x:Key="TabItem.Selected.Background" Color="DodgerBlue" />
+    <SolidColorBrush x:Key="TabItem.Main.Foreground" Color="Black" />
+    <SolidColorBrush x:Key="TabItem.Selected.Foreground" Color="GhostWhite" />
+    <!--  #End Region 標準コンポーネントの色リソース定義  -->
+
+
     <!--  #Region 独自コンポーネントの色リソース定義  -->
 
     <!--  #Region MessageDialog関連  -->

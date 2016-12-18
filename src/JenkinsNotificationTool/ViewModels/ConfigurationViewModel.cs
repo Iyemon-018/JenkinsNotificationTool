@@ -2,10 +2,14 @@
 {
     using System;
     using System.ComponentModel;
+    using JenkinsNotification.Core;
     using JenkinsNotification.Core.ComponentModels;
+    using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Extensions;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.ViewModels.Configurations;
+    using JenkinsNotificationTool.Properties;
+    using Microsoft.Practices.Prism.Commands;
 
     /// <summary>
     /// 構成情報変更用のViewModelクラスです。
@@ -48,12 +52,51 @@
         public ConfigurationViewModel(IServicesProvider servicesProvider) : base(servicesProvider)
         {
             NotifyConfiguration = new NotifyConfigurationViewModel();
+            AddChild(NotifyConfiguration);
             
             PropertyChangedEventManager.AddHandler(NotifyConfiguration, NotifyConfiguration_OnPropertyChanged, string.Empty);
 
             ApplicationManager.ApplicationConfiguration
                               .NotifyConfiguration
                               .Map(NotifyConfiguration);
+
+            // コマンドの初期化
+            SaveCommand = new DelegateCommand(() =>
+                                              {
+                                                  // 検証実施
+                                                  Validate();
+                                                  if (HasErrors)
+                                                  {
+                                                      // エラーあり
+                                                      DialogService.ShowError(Resources.ErrorConfigurationValue);
+                                                  }
+                                                  else
+                                                  {
+                                                      // 保存するか確認
+                                                      if (!DialogService.ShowQuestion(Resources.QuestionSaveConfiguration)) return;
+
+                                                      // ファイルへの保存を実行する。
+                                                      NotifyConfiguration.Map(ApplicationManager.ApplicationConfiguration.NotifyConfiguration);
+                                                      var canSaved = ApplicationConfiguration.SaveCurrent();
+                                                      if (canSaved)
+                                                      {
+                                                          // 保存成功
+                                                          DialogService.ShowInformation(Resources.InformationSaveConfiguration);
+                                                          ViewService.Close(ScreenKey.Configuration);
+                                                      }
+                                                      else
+                                                      {
+                                                          // 保存失敗
+                                                          DialogService.ShowError(Resources.FailedSaveConfiguration);
+                                                      }
+                                                  }
+                                              });
+
+            CancelCommand = new DelegateCommand(() =>
+                                                {
+                                                    // TODO 画面入力項目に変化があった場合は、メッセージを表示する。
+                                                    ViewService.Close(ScreenKey.Configuration);
+                                                });
         }
 
         #endregion
@@ -82,6 +125,16 @@
             get { return _notifyHistoryCountKind; }
             set { SetProperty(ref _notifyHistoryCountKind, value); }
         }
+
+        /// <summary>
+        /// 構成情報保存コマンドを設定、取得します。
+        /// </summary>
+        public DelegateCommand SaveCommand { get; private set; }
+
+        /// <summary>
+        /// 構成情報破棄コマンドを設定、取得します。
+        /// </summary>
+        public DelegateCommand CancelCommand { get; private set; }
 
         #endregion
 

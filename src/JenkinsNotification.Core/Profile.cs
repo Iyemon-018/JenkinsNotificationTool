@@ -15,7 +15,8 @@
         public Profile()
         {
             CreateMap<NotifyConfiguration, NotifyConfigurationViewModel>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(d => d.PopupTimeoutValue, o => o.Ignore());
         }
     }
 }

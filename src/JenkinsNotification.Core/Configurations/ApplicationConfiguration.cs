@@ -66,17 +66,35 @@
         /// <summary>
         /// デフォルト パスのファイルを現在の構成情報に読み込みます。
         /// </summary>
-        public static void LoadCurrent()
+        /// <returns>読み込みに成功した場合はtrue, 失敗した場合はfalse を返します。</returns>
+        public static bool LoadCurrent()
         {
-            _current = ConfigurationUtility.Load(DefaultFilePath, new ApplicationConfigurationVerify());
+            try
+            {
+                _current = ConfigurationUtility.Load(DefaultFilePath, new ApplicationConfigurationVerify());
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
         /// 現在の構成情報をデフォルト パスに保存します。
         /// </summary>
-        public static void SaveCurrent()
+        /// <returns>保存に成功した場合はtrue, 失敗した場合はfalse を返します。</returns>
+        public static bool SaveCurrent()
         {
-            ConfigurationUtility.Save(_current, DefaultFilePath, new ApplicationConfigurationVerify());
+            try
+            {
+                ConfigurationUtility.Save(_current, DefaultFilePath, new ApplicationConfigurationVerify());
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion

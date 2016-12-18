@@ -8,8 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:JenkinsNotificationTool.ViewModels"
     Title="ConfigurationView"
-    Width="600"
-    Height="600"
+    Width="480"
+    Height="620"
     d:DataContext="{d:DesignInstance {x:Type viewModels:ConfigurationViewModel},
                                      IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
@@ -23,7 +23,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TabControl>
+        <TabControl Margin="4">
             <TabItem Header="{Binding Notification, Mode=OneWay, Source={StaticResource Resources}}">
                 <Grid>
                     <StackPanel Margin="12" Orientation="Vertical">
@@ -74,6 +74,18 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="通知条件詳細" />
         </TabControl>
+        <StackPanel
+            Grid.Row="1"
+            Margin="24,14"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center">
+            <Button Margin="0,0,28,0"
+                    Content="{Binding Save, Mode=OneWay, Source={StaticResource Resources}}"
+                    Command="{Binding SaveCommand, Mode=OneWay}" />
+            <Button Content="{Binding Cancel, Mode=OneWay, Source={StaticResource Resources}}"
+                    Command="{Binding CancelCommand, Mode=OneWay}" />
+        </StackPanel>
     </Grid>
 </customControls:View>
