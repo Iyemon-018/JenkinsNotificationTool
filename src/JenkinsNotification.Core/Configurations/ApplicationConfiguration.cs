@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Windows.Controls.Primitives;
+    using System.Xml;
     using System.Xml.Serialization;
     using Verify;
     using Utility;
@@ -37,7 +38,7 @@
                                   {
                                       TargetUri           = "ws://mc-tfserver:8081/jenkins",
                                       PopupAnimationType  = PopupAnimation.Slide,
-                                      PopupTimeout        = TimeSpan.FromSeconds(10),
+                                      PopupTimeout        = TimeSpan.FromSeconds(15),
                                       DisplayHistoryCount = 100,
                                       IsNotifySuccess     = false
                                   };

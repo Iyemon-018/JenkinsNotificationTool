@@ -38,6 +38,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Composition, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
       <Private>True</Private>
@@ -101,6 +105,7 @@
     <Compile Include="Configurations\Verify\NotifyConfigurationVerify.cs" />
     <Compile Include="Configurations\Verify\VerifyResult.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Extensions\AutoMapperExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -108,6 +113,7 @@
     <Compile Include="Extensions\XmlSerializer.cs" />
     <Compile Include="Jenkins\Api\JobExecuteResult.cs" />
     <Compile Include="Logs\LogManager.cs" />
+    <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,6 +143,7 @@
     <Compile Include="Utility\ViewUtility.cs" />
     <Compile Include="ViewModels\Api\IJobExecuteResult.cs" />
     <Compile Include="ViewModels\Api\JobExecuteResultViewModel.cs" />
+    <Compile Include="ViewModels\Configurations\NotifyConfigurationViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

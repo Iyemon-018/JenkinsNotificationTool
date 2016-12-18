@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using System.Windows;
+    using AutoMapper;
     using ComponentModels;
     using Configurations;
     using Logs;
@@ -78,7 +79,19 @@
                 // 構成ファイルを読み込む。
                 //
                 ApplicationConfiguration.LoadCurrent();
+
+                // マッピングの初期化を行う。
+                InitializeMapping();
             }
+        }
+
+        /// <summary>
+        /// オブジェクトのマッピング情報を初期化します。
+        /// </summary>
+        private static void InitializeMapping()
+        {
+            Mapper.Initialize(x => x.AddProfile<Profile>());
+            Mapper.AssertConfigurationIsValid();
         }
 
         /// <summary>

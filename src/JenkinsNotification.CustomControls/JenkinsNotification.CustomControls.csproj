@@ -91,7 +91,9 @@
     <Compile Include="BalloonTips\JobExecuteResultBalloonTip.xaml.cs">
       <DependentUpon>JobExecuteResultBalloonTip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToEnumConverter.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
+    <Compile Include="ItemContent.cs" />
     <Compile Include="MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>

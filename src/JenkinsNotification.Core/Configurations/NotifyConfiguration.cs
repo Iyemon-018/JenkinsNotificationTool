@@ -1,7 +1,13 @@
 ﻿namespace JenkinsNotification.Core.Configurations
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Controls.Primitives;
+    using System.Xml;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// 通知に関する設定情報クラスです。
@@ -9,17 +15,39 @@
     [Serializable]
     public class NotifyConfiguration
     {
+        #region Fields
+
+        private int _displayHistoryCount;
+
+        private bool _isNotifySuccess;
+
+        private PopupAnimation _popupAnimationType;
+
+        private TimeSpan? _popupTimeout;
+
+        private string _targetUri;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
         /// WebSocketの接続先URIを設定、または取得します。
         /// </summary>
-        public string TargetUri { get; set; }
+        public string TargetUri
+        {
+            get { return _targetUri; }
+            set { _targetUri = value; }
+        }
 
         /// <summary>
         /// バルーン通知のアニメーション種別を設定、または取得します。
         /// </summary>
-        public PopupAnimation PopupAnimationType { get; set; }
+        public PopupAnimation PopupAnimationType
+        {
+            get { return _popupAnimationType; }
+            set { _popupAnimationType = value; }
+        }
 
         /// <summary>
         /// バルーン通知が消えるまでのタイムアウトを設定、または取得します。
@@ -27,17 +55,46 @@
         /// <remarks>
         /// null の場合、タイムアウトはありません。
         /// </remarks>
-        public TimeSpan? PopupTimeout { get; set; }
+        [XmlIgnore]
+        public TimeSpan? PopupTimeout
+        {
+            get { return _popupTimeout; }
+            set { _popupTimeout = value; }
+        }
+
+        /// <summary>
+        /// <see cref="PopupTimeout"/> のシリアライズ用文字列を設定、または取得します。
+        /// </summary>
+        /// <remarks>
+        /// <see cref="TimeSpan"/> は、XMLシリアライザーに対応していないので、ファイルの読み書きにはこのプロパティを使用します。<para/>
+        /// 値の"PT10M" は"10分"を表す。
+        /// 参考：https://kennethxu.blogspot.jp/2008/09/xmlserializer-doesn-serialize-timespan.html
+        /// </remarks>
+        [XmlAttribute("PopupTimeout", DataType = "duration")]
+        [DefaultValue("PT10M")]
+        public string PopupTimeoutValue
+        {
+            get { return _popupTimeout != null ? XmlConvert.ToString(_popupTimeout.Value) : string.Empty; }
+            set { _popupTimeout = XmlConvert.ToTimeSpan(value); }
+        }
 
         /// <summary>
         /// 通知の受信履歴に表示する最大データ数を設定、または取得します。
         /// </summary>
-        public int DisplayHistoryCount { get; set; }
+        public int DisplayHistoryCount
+        {
+            get { return _displayHistoryCount; }
+            set { _displayHistoryCount = value; }
+        }
 
         /// <summary>
         /// ジョブ結果が成功だった場合でも通知するかどうかを設定、または取得します。
         /// </summary>
-        public bool IsNotifySuccess { get; set; }
+        public bool IsNotifySuccess
+        {
+            get { return _isNotifySuccess; }
+            set { _isNotifySuccess = value; }
+        }
 
         #endregion
     }

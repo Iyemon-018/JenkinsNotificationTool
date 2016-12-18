@@ -57,6 +57,17 @@
                 ? Enum.TryParse(self, out result) ? result : defaultValue
                 : defaultValue;
         }
+
+        /// <summary>
+        /// 値を<see cref="enumType"/> 型の列挙体に変換します。
+        /// </summary>
+        /// <param name="self">自分自身</param>
+        /// <param name="enumType">変換後の列挙体の型</param>
+        /// <returns>変換結果</returns>
+        public static object ToEnum(this string self, Type enumType)
+        {
+            return Enum.Parse(enumType, self);
+        }
         
         /// <summary>
         /// 文字列を整数値に変換します。
