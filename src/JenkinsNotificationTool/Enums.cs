@@ -25,4 +25,25 @@
         /// </summary>
         Seconds30,
     }
+
+    /// <summary>
+    /// 通知履歴の表示数を表す種別です。
+    /// </summary>
+    public enum NotifyHistoryCountKind
+    {
+        /// <summary>
+        /// 50
+        /// </summary>
+        Count50,
+
+        /// <summary>
+        /// 100
+        /// </summary>
+        Count100,
+
+        /// <summary>
+        /// 200
+        /// </summary>
+        Count200,
+    }
 }

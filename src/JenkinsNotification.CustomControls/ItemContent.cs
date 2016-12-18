@@ -77,7 +77,7 @@
         static ItemContent()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(typeof(ItemContent)));
-            PaddingProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(new Thickness(4, 2, 2, 4)));
+            PaddingProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(new Thickness(4, 2, 2, 16)));
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(HorizontalAlignment.Stretch));
             VerticalContentAlignmentProperty.OverrideMetadata(typeof(ItemContent), new FrameworkPropertyMetadata(VerticalAlignment.Stretch));
         }

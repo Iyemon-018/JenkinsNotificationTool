@@ -20,6 +20,11 @@
         /// </summary>
         private BalloonDisplayTimeKind _balloonDisplayTimeKind;
 
+        /// <summary>
+        /// 受信通知履歴一覧の表示数
+        /// </summary>
+        private NotifyHistoryCountKind _notifyHistoryCountKind;
+
         #endregion
 
         #region Ctor
@@ -69,6 +74,15 @@
             set { SetProperty(ref _balloonDisplayTimeKind, value); }
         }
 
+        /// <summary>
+        /// 受信通知履歴一覧の表示数を設定、または取得します。
+        /// </summary>
+        public NotifyHistoryCountKind NotifyHistoryCountKind
+        {
+            get { return _notifyHistoryCountKind; }
+            set { SetProperty(ref _notifyHistoryCountKind, value); }
+        }
+
         #endregion
 
         #region Methods
@@ -86,6 +100,75 @@
             {
                 case nameof(BalloonDisplayTimeKind):
                     OnBalloonDisplayTimeKindChanged(BalloonDisplayTimeKind);
+                    break;
+                case nameof(NotifyHistoryCountKind):
+                    OnNotifyHistoryCountKindChanged(NotifyHistoryCountKind);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="BalloonDisplayTimeKind"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnBalloonDisplayTimeKindChanged(BalloonDisplayTimeKind newValue)
+        {
+            TimeSpan? displayTime;
+            switch (newValue)
+            {
+                case BalloonDisplayTimeKind.Seconds5:
+                    displayTime = TimeSpan.FromSeconds(5);
+                    break;
+                case BalloonDisplayTimeKind.Seconds15:
+                    displayTime = TimeSpan.FromSeconds(15);
+                    break;
+                case BalloonDisplayTimeKind.Seconds30:
+                    displayTime = TimeSpan.FromSeconds(30);
+                    break;
+                default:
+                    displayTime = null;
+                    break;
+            }
+
+            NotifyConfiguration.PopupTimeout = displayTime;
+        }
+
+        /// <summary>
+        /// <see cref="NotifyHistoryCountKind"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnNotifyHistoryCountKindChanged(NotifyHistoryCountKind newValue)
+        {
+            int count;
+            switch (newValue)
+            {
+                case NotifyHistoryCountKind.Count50:
+                    count = 50;
+                    break;
+                case NotifyHistoryCountKind.Count100:
+                    count = 100;
+                    break;
+                case NotifyHistoryCountKind.Count200:
+                    count = 200;
+                    break;
+                default:
+                    count = 100;
+                    break;
+            }
+            NotifyConfiguration.DisplayHistoryCount = count;
+        }
+
+        /// <summary>
+        /// <see cref="NotifyConfiguration"/> のプロパティ変更
+        /// </summary>
+        /// <param name="sender">際に呼ばれるイベントハンドラです。</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void NotifyConfiguration_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "PopupTimeout":
+                    NotifyConfiguration_OnPopupTimeoutChanged(NotifyConfiguration.PopupTimeout);
                     break;
             }
         }
@@ -119,47 +202,6 @@
             {
                     BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
             }
-        }
-
-        /// <summary>
-        /// <see cref="NotifyConfiguration"/> のプロパティ変更
-        /// </summary>
-        /// <param name="sender">際に呼ばれるイベントハンドラです。</param>
-        /// <param name="e">イベント引数オブジェクト</param>
-        private void NotifyConfiguration_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "PopupTimeout":
-                    NotifyConfiguration_OnPopupTimeoutChanged(NotifyConfiguration.PopupTimeout);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// <see cref="BalloonDisplayTimeKind"/> プロパティの値が更新されました。
-        /// </summary>
-        /// <param name="newValue">更新後の値</param>
-        private void OnBalloonDisplayTimeKindChanged(BalloonDisplayTimeKind newValue)
-        {
-            TimeSpan? displayTime;
-            switch (newValue)
-            {
-                case BalloonDisplayTimeKind.Seconds5:
-                    displayTime = TimeSpan.FromSeconds(5);
-                    break;
-                case BalloonDisplayTimeKind.Seconds15:
-                    displayTime = TimeSpan.FromSeconds(15);
-                    break;
-                case BalloonDisplayTimeKind.Seconds30:
-                    displayTime = TimeSpan.FromSeconds(30);
-                    break;
-                default:
-                    displayTime = null;
-                    break;
-            }
-
-            NotifyConfiguration.PopupTimeout = displayTime;
         }
 
         #endregion

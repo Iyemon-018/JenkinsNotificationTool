@@ -1,10 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Configurations
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows.Controls.Primitives;
     using System.Xml;
     using System.Xml.Serialization;
@@ -17,14 +14,29 @@
     {
         #region Fields
 
+        /// <summary>
+        /// 通知の受信履歴に表示する最大データ数
+        /// </summary>
         private int _displayHistoryCount;
 
+        /// <summary>
+        /// ジョブ結果が成功だった場合でも通知するかどうか
+        /// </summary>
         private bool _isNotifySuccess;
 
+        /// <summary>
+        /// バルーン通知のアニメーション種別
+        /// </summary>
         private PopupAnimation _popupAnimationType;
 
+        /// <summary>
+        /// バルーン通知が消えるまでのタイムアウト
+        /// </summary>
         private TimeSpan? _popupTimeout;
 
+        /// <summary>
+        /// WebSocketの接続先URI
+        /// </summary>
         private string _targetUri;
 
         #endregion
