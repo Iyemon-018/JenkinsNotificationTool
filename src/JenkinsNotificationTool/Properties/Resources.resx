@@ -117,6 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConditionalReceiveNotifyDescription" xml:space="preserve">
+    <value>受信したジョブ実行結果を表示する条件を設定します。
+チェックOFFの場合、ジョブ結果が失敗の場合のみ通知されます。
+ここで設定した条件は、個別の設定よりも優先されます。</value>
+    <comment>実行結果通知を受信する条件項目の説明です。</comment>
+  </data>
+  <data name="ConditionalReceiveNotifyHeader" xml:space="preserve">
+    <value>通知受信条件</value>
+    <comment>実行結果通知を受信する条件項目のヘッダー文言です。</comment>
+  </data>
+  <data name="ConditionalReceiveSuccessed" xml:space="preserve">
+    <value>成功した場合でも表示する。</value>
+    <comment>実行結果が正常な場合でも通知を受信する設定項目の文言です。</comment>
+  </data>
   <data name="DispatcherUnhandledExceptionMessage" xml:space="preserve">
     <value>予期せぬエラーをキャッチしました。</value>
     <comment>DispatcherUnhandledException イベントで補足した場合の例外メッセージです。</comment>
@@ -125,9 +139,81 @@
     <value>アプリケーションを終了します。よろしいですか？</value>
     <comment>アプリケーション終了確認メッセージです。</comment>
   </data>
+  <data name="Fade" xml:space="preserve">
+    <value>フェード</value>
+    <comment>フェードの文言です。</comment>
+  </data>
+  <data name="FewRecievedHistoryCount" xml:space="preserve">
+    <value>50</value>
+    <comment>実行結果受信履歴一覧に表示する少量の数です。</comment>
+  </data>
   <data name="FirstChanceExceptionMessage" xml:space="preserve">
     <value>共通の例外補足イベントハンドラで例外を補足しました。</value>
     <comment>FirstChanceException イベントで補足した場合の例外メッセージです。</comment>
+  </data>
+  <data name="HowToDisplayBalloonDescription" xml:space="preserve">
+    <value>バルーンを表示する方法を選択します。</value>
+    <comment>バルーン表示の設定項目の説明です。</comment>
+  </data>
+  <data name="HowToDisplayBalloonHeader" xml:space="preserve">
+    <value>バルーン表示方法</value>
+    <comment>バルーン表示の設定項目のヘッダー文言です。</comment>
+  </data>
+  <data name="LongTimeNotifyBalloonTimeout" xml:space="preserve">
+    <value>30 秒</value>
+    <comment>通知バルーン表示タイムアウトの長い時間設定項目です。</comment>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>手動</value>
+    <comment>手動の文言です。</comment>
+  </data>
+  <data name="ManyRecievedHistoryCount" xml:space="preserve">
+    <value>200</value>
+    <comment>実行結果受信履歴一覧に表示する多量の数です。</comment>
+  </data>
+  <data name="MiddleTimeNotifyBalloonTimeout" xml:space="preserve">
+    <value>15 秒</value>
+    <comment>通知バルーン表示タイムアウトの標準時間設定項目です。</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>なし</value>
+    <comment>なしの文言です。</comment>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>通知</value>
+    <comment>通知の文言です。</comment>
+  </data>
+  <data name="NotifyBalloonTimeoutDescription" xml:space="preserve">
+    <value>ジョブの通知を受け取ったときに表示する通知バルーンが消えるまでの時間を設定します。</value>
+    <comment>通知バルーン表示タイムアウトの設定項目の説明です。</comment>
+  </data>
+  <data name="NotifyBalloonTimeoutHeader" xml:space="preserve">
+    <value>通知バルーン表示タイムアウト</value>
+    <comment>通知バルーン表示タイムアウトの設定項目のヘッダー文言です。</comment>
+  </data>
+  <data name="ProperRecievedHistoryCount" xml:space="preserve">
+    <value>100</value>
+    <comment>実行結果受信履歴一覧に表示する適切な数です。</comment>
+  </data>
+  <data name="RecievedHistoryCountDescription" xml:space="preserve">
+    <value>受信履歴一覧に表示する履歴データの数を選択します。</value>
+    <comment>実行結果受信履歴一覧に表示する設定項目の説明です。</comment>
+  </data>
+  <data name="RecievedHistoryCountHeader" xml:space="preserve">
+    <value>受信履歴表示数</value>
+    <comment>実行結果受信履歴一覧に表示する設定項目のヘッダー文言です。</comment>
+  </data>
+  <data name="Scroll" xml:space="preserve">
+    <value>スクロール</value>
+    <comment>スクロールの文言です。</comment>
+  </data>
+  <data name="ShortTimeNotifyBalloonTimeout" xml:space="preserve">
+    <value>5 秒</value>
+    <comment>通知バルーン表示タイムアウトの短い時間設定項目です。</comment>
+  </data>
+  <data name="Slide" xml:space="preserve">
+    <value>スライド</value>
+    <comment>スライドの文言です。</comment>
   </data>
   <data name="UnhandledExceptionMessage" xml:space="preserve">
     <value>予期せぬエラーをキャッチしました。</value>
@@ -136,5 +222,14 @@
   <data name="UnhandledExceptionShowMessage" xml:space="preserve">
     <value>予期せぬエラーをキャッチしました。システム管理者に問い合わせてください。</value>
     <comment>補足されなかった例外をキャッチした場合にユーザーに表示するメッセージです。</comment>
+  </data>
+  <data name="WebSocketURIDescription" xml:space="preserve">
+    <value>通知元のJenkins URIを設定してください。
+URIは`ws://`から始まるプロトコルです。</value>
+    <comment>WebSocket URIの設定項目の説明です。</comment>
+  </data>
+  <data name="WebSocketURIHeader" xml:space="preserve">
+    <value>Jenkins WebSocket URI</value>
+    <comment>WebSocket URIの設定項目ヘッダーの文言です。</comment>
   </data>
 </root>

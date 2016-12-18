@@ -61,6 +61,35 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   受信したジョブ実行結果を表示する条件を設定します。
+        ///チェックOFFの場合、ジョブ結果が失敗の場合のみ通知されます。
+        ///ここで設定した条件は、個別の設定よりも優先されます。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ConditionalReceiveNotifyDescription {
+            get {
+                return ResourceManager.GetString("ConditionalReceiveNotifyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   通知受信条件 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ConditionalReceiveNotifyHeader {
+            get {
+                return ResourceManager.GetString("ConditionalReceiveNotifyHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   成功した場合でも表示する。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ConditionalReceiveSuccessed {
+            get {
+                return ResourceManager.GetString("ConditionalReceiveSuccessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   予期せぬエラーをキャッチしました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DispatcherUnhandledExceptionMessage {
@@ -79,11 +108,173 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   フェード に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Fade {
+            get {
+                return ResourceManager.GetString("Fade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   50 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FewRecievedHistoryCount {
+            get {
+                return ResourceManager.GetString("FewRecievedHistoryCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   共通の例外補足イベントハンドラで例外を補足しました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string FirstChanceExceptionMessage {
             get {
                 return ResourceManager.GetString("FirstChanceExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   バルーンを表示する方法を選択します。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string HowToDisplayBalloonDescription {
+            get {
+                return ResourceManager.GetString("HowToDisplayBalloonDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   バルーン表示方法 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string HowToDisplayBalloonHeader {
+            get {
+                return ResourceManager.GetString("HowToDisplayBalloonHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   30 秒 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LongTimeNotifyBalloonTimeout {
+            get {
+                return ResourceManager.GetString("LongTimeNotifyBalloonTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   手動 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manual {
+            get {
+                return ResourceManager.GetString("Manual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   200 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ManyRecievedHistoryCount {
+            get {
+                return ResourceManager.GetString("ManyRecievedHistoryCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   15 秒 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MiddleTimeNotifyBalloonTimeout {
+            get {
+                return ResourceManager.GetString("MiddleTimeNotifyBalloonTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   なし に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   通知 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Notification {
+            get {
+                return ResourceManager.GetString("Notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ジョブの通知を受け取ったときに表示する通知バルーンが消えるまでの時間を設定します。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string NotifyBalloonTimeoutDescription {
+            get {
+                return ResourceManager.GetString("NotifyBalloonTimeoutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   通知バルーン表示タイムアウト に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string NotifyBalloonTimeoutHeader {
+            get {
+                return ResourceManager.GetString("NotifyBalloonTimeoutHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   100 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ProperRecievedHistoryCount {
+            get {
+                return ResourceManager.GetString("ProperRecievedHistoryCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   受信履歴一覧に表示する履歴データの数を選択します。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RecievedHistoryCountDescription {
+            get {
+                return ResourceManager.GetString("RecievedHistoryCountDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   受信履歴表示数 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RecievedHistoryCountHeader {
+            get {
+                return ResourceManager.GetString("RecievedHistoryCountHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   スクロール に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Scroll {
+            get {
+                return ResourceManager.GetString("Scroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   5 秒 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ShortTimeNotifyBalloonTimeout {
+            get {
+                return ResourceManager.GetString("ShortTimeNotifyBalloonTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   スライド に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Slide {
+            get {
+                return ResourceManager.GetString("Slide", resourceCulture);
             }
         }
         
@@ -102,6 +293,25 @@ namespace JenkinsNotificationTool.Properties {
         public static string UnhandledExceptionShowMessage {
             get {
                 return ResourceManager.GetString("UnhandledExceptionShowMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   通知元のJenkins URIを設定してください。
+        ///URIは`ws://`から始まるプロトコルです。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WebSocketURIDescription {
+            get {
+                return ResourceManager.GetString("WebSocketURIDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Jenkins WebSocket URI に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WebSocketURIHeader {
+            get {
+                return ResourceManager.GetString("WebSocketURIHeader", resourceCulture);
             }
         }
     }

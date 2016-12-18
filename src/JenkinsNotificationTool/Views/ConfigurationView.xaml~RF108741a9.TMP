@@ -43,32 +43,33 @@
                                 <RadioButton Content="{Binding LongTimeNotifyBalloonTimeout, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding BalloonDisplayTimeKind, Converter={StaticResource BooleanToEnumConverter}, ConverterParameter=Seconds30}" />
                             </StackPanel>
                         </customControls:ItemContent>
-                        <customControls:ItemContent Description="{Binding ConditionalReceiveNotifyDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding ConditionalReceiveNotifyHeader, Mode=OneWay, Source={StaticResource Resources}}">
-                            <CheckBox Content="{Binding ConditionalReceiveSuccessed, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.IsNotifySuccess, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                        <customControls:ItemContent Description="{Binding ConditionalReceiveNotifyDescription, Mode=OneWay, Source={StaticResource Resources}}"
+                                                    Header="{Binding ConditionalReceiveNotifyHeader, Mode=OneWay, Source={StaticResource Resources}}">
+                            <CheckBox Content="成功した場合でも表示する。" IsChecked="{Binding NotifyConfiguration.IsNotifySuccess, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
                         </customControls:ItemContent>
-                        <customControls:ItemContent Description="{Binding HowToDisplayBalloonDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding HowToDisplayBalloonHeader, Mode=OneWay, Source={StaticResource Resources}}">
+                        <customControls:ItemContent Description="バルーンを表示する方法を選択します。" Header="バルーン表示方法">
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Resources>
                                     <Style BasedOn="{StaticResource {x:Type RadioButton}}" TargetType="{x:Type RadioButton}">
                                         <Setter Property="GroupName" Value="BalloonTypeGroup" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <RadioButton Content="{Binding None, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=None, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding Fade, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Fade, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding Slide, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Slide, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding Scroll, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Scroll, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="なし" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=None, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="フェード" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Fade, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="スライド" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Slide, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="スクロール" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Scroll, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </customControls:ItemContent>
-                        <customControls:ItemContent Description="{Binding RecievedHistoryCountDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding RecievedHistoryCountHeader, Mode=OneWay, Source={StaticResource Resources}}">
+                        <customControls:ItemContent Description="受信履歴一覧に表示する履歴データの数を選択します。" Header="受信履歴表示数">
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Resources>
                                     <Style BasedOn="{StaticResource {x:Type RadioButton}}" TargetType="{x:Type RadioButton}">
                                         <Setter Property="GroupName" Value="NotifyHistoryCountGroup" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <RadioButton Content="{Binding FewRecievedHistoryCount, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyHistoryCountKind, ConverterParameter=Count50, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding ProperRecievedHistoryCount, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyHistoryCountKind, ConverterParameter=Count100, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding ManyRecievedHistoryCount, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyHistoryCountKind, ConverterParameter=Count200, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="50" IsChecked="{Binding NotifyHistoryCountKind, ConverterParameter=Count50, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="100" IsChecked="{Binding NotifyHistoryCountKind, ConverterParameter=Count100, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="200" IsChecked="{Binding NotifyHistoryCountKind, ConverterParameter=Count200, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </customControls:ItemContent>
                     </StackPanel>
