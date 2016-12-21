@@ -104,5 +104,14 @@ namespace JenkinsNotification.Core.Properties {
                 return ResourceManager.GetString("FileNotFoundMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   指定したオブジェクトは既に子要素として登録されています。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ViewModelAddChildExistErrorMessage {
+            get {
+                return ResourceManager.GetString("ViewModelAddChildExistErrorMessage", resourceCulture);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@
     using System.Linq.Expressions;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
+    using JenkinsNotification.Core.Properties;
     using JenkinsNotification.Core.Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
@@ -103,9 +104,42 @@
         /// <summary>
         /// エンティティの子要素を追加します。
         /// </summary>
-        /// <param name="child"><see cref="ViewModelBase"/> オブジェクトの子要素</param>
+        /// <param name="child"><see cref="ViewModelBase" /> オブジェクトの子要素</param>
+        /// <exception cref="System.ArgumentException"><paramref name="child"/> が既に登録されている場合にスローされます。</exception>
+        /// <example>
+        /// 現在のインスタンスの持つ<see cref="ViewModelBase" /> プロパティを追加します。
+        /// <code><![CDATA[
+        /// public class ExampleClass : ViewModelBase
+        /// {
+        ///     public PersonViewModel Person { get; private set; }
+        /// 
+        ///     public ExampleClass()
+        ///     {
+        ///         Person = new PersonViewModel();
+        /// 
+        ///         // Call "AddChild" method when constructor.
+        ///         AddChild(Person);
+        ///     }
+        /// }
+        /// 
+        /// public class PersonViewModel : ViewModelBase
+        /// {
+        ///     private int _age;
+        /// 
+        ///     public int Age
+        ///     {
+        ///         get { return _age; }
+        ///         set { SetProperty(ref _age, value); }
+        ///     }
+        /// }
+        /// ]]></code>
+        /// </example>
         protected void AddChild(ViewModelBase child)
         {
+            if (_children.Contains(child))
+            {
+                throw new ArgumentException(Resources.ViewModelAddChildExistErrorMessage, nameof(child));
+            }
             _children.Add(child);
         }
 
@@ -113,8 +147,44 @@
         /// エンティティの子要素コレクションを追加します。
         /// </summary>
         /// <param name="children"><see cref="ViewModelBase"/> オブジェクトの子要素コレクション</param>
+        /// <exception cref="System.ArgumentException"><paramref name="children"/> の要素が既に登録されている場合にスローされます。</exception>
+        /// <example>
+        /// 現在のインスタンスの持つ<see cref="IEnumerable{ViewModelBase}"/> プロパティを追加します。
+        /// <code><![CDATA[
+        /// public class ExampleClass : ViewModelBase
+        /// {
+        ///     public ObservableCollection<PersonViewModel> People { get; private set; }
+        /// 
+        ///     public ExampleClass()
+        ///     {
+        ///         People = new ObservableCollection<PersonViewModel>();
+        /// 
+        ///         // Call "AddChildren" method when constructor.
+        ///         AddChildren(People);
+        ///     }
+        /// }
+        /// 
+        /// public class PersonViewModel : ViewModelBase
+        /// {
+        ///     private int _age;
+        /// 
+        ///     public int Age
+        ///     {
+        ///         get { return _age; }
+        ///         set { SetProperty(ref _age, value); }
+        ///     }
+        /// }
+        /// ]]></code>
+        /// </example>
         protected void AddChildren(IEnumerable<ViewModelBase> children)
         {
+            foreach (var child in children)
+            {
+                if (_children.Contains(child))
+                {
+                    throw new ArgumentException(Resources.ViewModelAddChildExistErrorMessage, nameof(child));
+                }
+            }
             _children.AddRange(children);
         }
 
@@ -124,6 +194,49 @@
         /// <typeparam name="TProperty">プロパティを通知するインスタンスの型</typeparam>
         /// <param name="propertyExpression">プロパティを識別する式木</param>
         /// <param name="message">通知するエラーメッセージ</param>
+        /// <remarks>
+        /// このメソッドを呼び出すことで<see cref="INotifyDataErrorInfo"/> を経由してエラー情報がリスナー(コントロール) に通知されます。<para/>
+        /// コントロールが受信したエラー情報は依存関係プロパティを経由してXaml(View) に伝搬します。
+        /// </remarks>
+        /// <example>
+        /// 通常、このメソッドはオーバーライドしたOnValidate() メソッドで使用します。
+        /// プロパティの属性による検証で判定できないような場合にこのメソッドを使用します。<para/>
+        /// 例えば、以下に示すようにExampleViewModel.Value プロパティは、ExampleViewModel.IsChecked = true の場合のみ、しきい値の検証を行います。<para/>
+        /// 検証結果が異常な場合は、<see cref="NotificationError{TProperty}"/> メソッドを呼び出してエラーメッセージを通知します。
+        /// <code><![CDATA[
+        /// public class ExampleViewModel : ViewModelBase
+        /// {
+        ///     private int _value;
+        /// 
+        ///     private bool _isChecked;
+        /// 
+        ///     public int Value
+        ///     {
+        ///         get { return _value; }
+        ///         set { SetProperty(ref _value, value); }
+        ///     }
+        ///     
+        ///     public bool IsChecked
+        ///     {
+        ///         get { return _isChecked; }
+        ///         set { SetProperty(ref _isChecked, value); }
+        ///     }
+        /// 
+        ///     protected override void OnValidate()
+        ///     {
+        ///         base.OnValidate();
+        /// 
+        ///         if (IsChecked)
+        ///         {
+        ///             if (Value < 0 || 100 < Value)
+        ///             {
+        ///                 NotificationError(() => Value, "Can not input Value. Range 0 To 100.");
+        ///             }
+        ///         }
+        ///     }
+        /// }
+        /// ]]></code>
+        /// </example>
         protected void NotificationError<TProperty>(Expression<Func<TProperty>> propertyExpression, string message)
         {
             _errorsContainer.SetError(propertyExpression, message);
@@ -174,6 +287,43 @@
         /// </summary>
         /// <param name="sender">イベント送信元オブジェクト</param>
         /// <param name="e">イベント引数オブジェクト</param>
+        /// <remarks>
+        /// プロパティが変更された際に必要な処理を呼び出すには、このメソッドをオーバーライドしてください。
+        /// </remarks>
+        /// <example>
+        /// あるプロパティの値が変化した際に特定の処理を実施する例を以下に示します。
+        /// 以下の例では、ExampleViewModel のValue プロパティの値が変更された際に
+        /// OnValueChanged メソッドが呼び出されます。
+        /// <code><![CDATA[
+        /// public class ExampleViewModel : ViewModelBase
+        /// {
+        ///     private int _value;
+        /// 
+        ///     public int Value
+        ///     {
+        ///         get { return _value; }
+        ///         set { SetProperty(ref _value, value); }
+        ///     }
+        /// 
+        ///     protected override void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        ///     {
+        ///         base.Self_OnPropertyChanged(sender, e);
+        /// 
+        ///         switch (e.PropertyName)
+        ///         {
+        ///             case nameof(Value):
+        ///                 OnValueChanged(Value);
+        ///                 break;
+        ///         }
+        ///     }
+        /// 
+        ///     private void OnValueChanged(int newValue)
+        ///     {
+        ///         // Execute "Value" property changed work...
+        ///     }
+        /// }
+        /// ]]></code>
+        /// </example>
         protected virtual void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
         }

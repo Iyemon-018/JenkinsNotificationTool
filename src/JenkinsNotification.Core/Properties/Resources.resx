@@ -137,4 +137,8 @@
     <value>指定したファイルは存在しません。</value>
     <comment>ファイルが存在しない場合のエラーメッセージです。</comment>
   </data>
+  <data name="ViewModelAddChildExistErrorMessage" xml:space="preserve">
+    <value>指定したオブジェクトは既に子要素として登録されています。</value>
+    <comment>ViewModelBase.AddChild で追加した要素が既に存在していた場合の例外メッセージです。</comment>
+  </data>
 </root>

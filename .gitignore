@@ -18,4 +18,6 @@
 *.suo
 /Debug/JenkinsNotification.Debug.LogViewer/obj/Debug
 /Debug/JenkinsNotification.Debug.LogViewer/bin/Debug
-*.user
+/*.user
+/Help
+/*.GhostDoc.xml

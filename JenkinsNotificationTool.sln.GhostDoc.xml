@@ -16,8 +16,9 @@
     <OutputPath>.\Help</OutputPath>
     <CleanupOutputPath>true</CleanupOutputPath>
     <HelpFileName>JenkinsNotificationTool</HelpFileName>
+    <HelpFileNamingMethod>MemberName</HelpFileNamingMethod>
     <ImageFolderPath />
-    <Theme />
+    <Theme>FlatGray</Theme>
     <HtmlFormats>
       <HtmlHelp>true</HtmlHelp>
       <MSHelpViewer>false</MSHelpViewer>
@@ -27,7 +28,7 @@
     <IncludeScopes>
       <Public>true</Public>
       <Internal>false</Internal>
-      <Protected>false</Protected>
+      <Protected>true</Protected>
       <Private>false</Private>
       <Inherited>true</Inherited>
       <InheritedFromReferences>true</InheritedFromReferences>
@@ -39,12 +40,19 @@
     <SyntaxLanguages>
       <CSharp>true</CSharp>
       <VisualBasic>true</VisualBasic>
-      <CPlusPlus>true</CPlusPlus>
+      <CPlusPlus>false</CPlusPlus>
     </SyntaxLanguages>
     <ResolveCrefLinks>true</ResolveCrefLinks>
     <HeaderText />
     <FooterText />
-    <SelectedProjects />
+    <SelectedProjects>
+      <SelectedProject>JenkinsNotification.Core</SelectedProject>
+      <SelectedProject>JenkinsNotification.CustomControls</SelectedProject>
+      <SelectedProject>JenkinsNotificationTool</SelectedProject>
+      <SelectedProject>JenkinsNotification.Core</SelectedProject>
+      <SelectedProject>JenkinsNotification.Core</SelectedProject>
+      <SelectedProject>JenkinsNotification.Core</SelectedProject>
+    </SelectedProjects>
   </HelpConfiguration>
 </HelpConfigurations>
 <GeneralProperties>
