@@ -1,18 +1,18 @@
-﻿<customControls:View
-    x:Class="JenkinsNotificationTool.Views.ConfigurationView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:customControls="clr-namespace:JenkinsNotification.CustomControls;assembly=JenkinsNotification.CustomControls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:JenkinsNotificationTool.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="clr-namespace:JenkinsNotificationTool.ViewModels"
-    Title="ConfigurationView"
-    Width="480"
-    Height="620"
-    d:DataContext="{d:DesignInstance {x:Type viewModels:ConfigurationViewModel},
-                                     IsDesignTimeCreatable=True}"
-    mc:Ignorable="d">
+﻿<customControls:View x:Class="JenkinsNotificationTool.Views.ConfigurationView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:customControls="clr-namespace:JenkinsNotification.CustomControls;assembly=JenkinsNotification.CustomControls"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+                     xmlns:local="clr-namespace:JenkinsNotificationTool.Views"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:viewModels="clr-namespace:JenkinsNotificationTool.ViewModels"
+                     Title="ConfigurationView"
+                     Width="480"
+                     Height="620"
+                     d:DataContext="{d:DesignInstance {x:Type viewModels:ConfigurationViewModel},
+                                                      IsDesignTimeCreatable=True}"
+                     mc:Ignorable="d">
     <customControls:View.Resources>
         <Style BasedOn="{StaticResource {x:Type RadioButton}}" TargetType="{x:Type RadioButton}">
             <Setter Property="Margin" Value="0,0,12,0" />
@@ -23,7 +23,10 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TabControl Margin="4">
+        <dragablz:TabablzControl>
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController />
+            </dragablz:TabablzControl.InterTabController>
             <TabItem Header="{Binding Notification, Mode=OneWay, Source={StaticResource Resources}}">
                 <Grid>
                     <StackPanel Margin="12" Orientation="Vertical">
@@ -75,17 +78,18 @@
                 </Grid>
             </TabItem>
             <TabItem Header="通知条件詳細" />
-        </TabControl>
-        <StackPanel
-            Grid.Row="1"
-            Margin="24,14"
-            Orientation="Horizontal"
-            HorizontalAlignment="Center">
+        </dragablz:TabablzControl>
+        <StackPanel Grid.Row="1"
+                    Margin="24,14"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
             <Button Margin="0,0,28,0"
-                    Content="{Binding Save, Mode=OneWay, Source={StaticResource Resources}}"
-                    Command="{Binding SaveCommand, Mode=OneWay}" />
-            <Button Content="{Binding Cancel, Mode=OneWay, Source={StaticResource Resources}}"
-                    Command="{Binding CancelCommand, Mode=OneWay}" />
+                    Command="{Binding SaveCommand,
+                                      Mode=OneWay}"
+                    Content="{Binding Save,
+                                      Mode=OneWay,
+                                      Source={StaticResource Resources}}" />
+            <Button Command="{Binding CancelCommand, Mode=OneWay}" Content="{Binding Cancel, Mode=OneWay, Source={StaticResource Resources}}" />
         </StackPanel>
     </Grid>
 </customControls:View>

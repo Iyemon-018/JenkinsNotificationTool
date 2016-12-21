@@ -19,6 +19,7 @@
         static View()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
+            SizeToContentProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(SizeToContent.WidthAndHeight));
         }
 
         /// <summary>
