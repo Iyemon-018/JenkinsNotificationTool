@@ -121,6 +121,18 @@
     <value>Cancel</value>
     <comment>メッセージボックスなどに表示するCancelボタンの文言です。</comment>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>閉じる</value>
+    <comment>キャプションエリアの閉じるボタンのツールチップの文言です。</comment>
+  </data>
+  <data name="Maximum" xml:space="preserve">
+    <value>最大化</value>
+    <comment>キャプションエリアの最大化ボタンのツールチップの文言です。</comment>
+  </data>
+  <data name="Minimum" xml:space="preserve">
+    <value>最小化</value>
+    <comment>キャプションエリアの最小化ボタンのツールチップの文言です。</comment>
+  </data>
   <data name="No" xml:space="preserve">
     <value>いいえ</value>
     <comment>メッセージボックスなどに表示するNoボタンの文言です。</comment>
@@ -128,6 +140,10 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
     <comment>メッセージボックスなどに表示するOKボタンの文言です。</comment>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>元に戻す</value>
+    <comment>キャプションエリアの元に戻すボタンのツールチップの文言です。</comment>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>はい</value>

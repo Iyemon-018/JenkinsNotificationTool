@@ -11,7 +11,7 @@
 
         <!--
             MaterialDesignTheme の使い方については、以下を参照してください。
-            URL:https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki
+            URL : https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki
         -->
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
@@ -56,6 +56,20 @@
     <!--  #End Region アプリケーションで使用するフォント定義  -->
 
 
+    <!--  #Region コントロールなどに設定する数値や文字列を定義  -->
+
+    <!--  キャプションエリアの高さ  -->
+    <system:Double x:Key="View.Caption.Height">32</system:Double>
+
+    <!--  キャプションのフォントサイズ  -->
+    <system:Double x:Key="View.Caption.FontSize">16</system:Double>
+
+    <!--  キャプションボタンのフォントサイズ  -->
+    <system:Double x:Key="View.CaptionButton.FontSize">12</system:Double>
+
+    <!--  #End Region コントロールなどに設定する数値や文字列を定義  -->
+
+
     <!--  #Region 標準コンポーネントのStyle定義  -->
 
     <!--  TextBlockのStyle  -->
@@ -95,10 +109,93 @@
     <!--  このプロエジェクトで作成した独自コンポーネントのStyleおよび、Templateを定義します。  -->
 
     <Style BasedOn="{StaticResource {x:Type Window}}" TargetType="{x:Type local:View}">
-        <Setter Property="Background" Value="{StaticResource View.Main.Background}" />
-        <Setter Property="Foreground" Value="{StaticResource View.Main.Foreground}" />
+        <Setter Property="Background" Value="{StaticResource MaterialDesignBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource MessageDialog.Main.Foreground}" />
+        <Setter Property="BorderBrush" Value="{StaticResource MessageDialog.Caption.Background}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{StaticResource View.Main.FontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource View.Main.FontSize}" />
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome CaptionHeight="{DynamicResource {x:Static SystemParameters.WindowCaptionHeightKey}}"
+                              CornerRadius="3"
+                              GlassFrameThickness="0"
+                              ResizeBorderThickness="5"
+                              UseAeroCaptionButtons="False" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+                        <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0"
+                                       Height="{StaticResource View.Caption.Height}"
+                                       Background="{StaticResource MessageDialog.Caption.Background}">
+                                <Image Margin="8,2" Source="{TemplateBinding Icon}" />
+                                <TextBlock VerticalAlignment="Center"
+                                           DockPanel.Dock="Left"
+                                           FontSize="{StaticResource View.Caption.FontSize}"
+                                           Foreground="{StaticResource MessageDialog.Caption.Foreground}"
+                                           Text="{TemplateBinding Title}" />
+                                <StackPanel HorizontalAlignment="Right"
+                                            DockPanel.Dock="Right"
+                                            Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <Style BasedOn="{StaticResource MaterialDesignToolButton}" TargetType="{x:Type Button}">
+                                            <Setter Property="FontFamily" Value="Marlett" />
+                                            <Setter Property="Width" Value="{StaticResource {x:Static SystemParameters.WindowCaptionButtonWidthKey}}" />
+                                            <Setter Property="Height" Value="{StaticResource {x:Static SystemParameters.WindowCaptionButtonHeightKey}}" />
+                                            <Setter Property="Focusable" Value="False" />
+                                            <Setter Property="IsTabStop" Value="False" />
+                                            <Setter Property="Padding" Value="8,3" />
+                                            <Setter Property="FontSize" Value="{StaticResource View.CaptionButton.FontSize}" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+                                            <Setter Property="Foreground" Value="{StaticResource MessageDialog.Caption.Foreground}" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <Button x:Name="Part_MinimumButtonKey"
+                                            Content="0"
+                                            ToolTip="{Binding Minimum,
+                                                              Mode=OneWay,
+                                                              Source={StaticResource CustomControls.Resources}}" />
+                                    <Button x:Name="Part_MaximumButtonKey"
+                                            Content="1"
+                                            ToolTip="{Binding Maximum,
+                                                              Mode=OneWay,
+                                                              Source={StaticResource CustomControls.Resources}}" />
+                                    <Button x:Name="Part_RestoreButtonKey"
+                                            Content="2"
+                                            ToolTip="{Binding Restore,
+                                                              Mode=OneWay,
+                                                              Source={StaticResource CustomControls.Resources}}" />
+                                    <Button x:Name="Part_CloseButtonKey"
+                                            Content="r"
+                                            ToolTip="{Binding Close,
+                                                              Mode=OneWay,
+                                                              Source={StaticResource CustomControls.Resources}}" />
+                                </StackPanel>
+                            </DockPanel>
+                            <ContentPresenter Grid.Row="1"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="True"
+                                              UseLayoutRounding="True" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type local:ItemContent}">

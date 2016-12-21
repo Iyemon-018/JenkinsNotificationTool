@@ -70,6 +70,33 @@ namespace JenkinsNotification.CustomControls.Properties {
         }
         
         /// <summary>
+        ///   閉じる に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   最大化 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Maximum {
+            get {
+                return ResourceManager.GetString("Maximum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   最小化 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Minimum {
+            get {
+                return ResourceManager.GetString("Minimum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   いいえ に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string No {
@@ -84,6 +111,15 @@ namespace JenkinsNotification.CustomControls.Properties {
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   元に戻す に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
             }
         }
         

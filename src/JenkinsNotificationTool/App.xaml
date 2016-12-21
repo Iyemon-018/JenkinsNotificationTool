@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="pack://application:,,,/JenkinsNotification.CustomControls;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <properties:Resources x:Key="Resources" />
+
+            <BitmapImage x:Key="ApplicationIcon" UriSource="pack://application:,,,/JenkinsNotificationTool;component/Resources/TaskbarIcon.ico" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
