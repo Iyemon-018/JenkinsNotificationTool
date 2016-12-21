@@ -18,7 +18,7 @@
         /// <returns>マッピング結果</returns>
         public static TDestination Map<TDestination>(this object self)
         {
-            return Mapper.Map<TDestination>(self);
+            return self == null ? default(TDestination) : Mapper.Map<TDestination>(self);
         }
 
         /// <summary>
@@ -40,6 +40,16 @@
         public static IEnumerable<TDestination> MapCollection<TDestination>(this IEnumerable<object> self)
         {
             return Mapper.Map<IEnumerable<TDestination>>(self);
+        }
+
+        /// <summary>
+        /// このコレクション インスタンスの値を別のコレクション インスタンスにマッピングします。
+        /// </summary>
+        /// <param name="self">自分自身</param>
+        /// <param name="destination">マッピング先のコレクション インスタンス</param>
+        public static void MapCollection(this IEnumerable<object> self, IEnumerable<object> destination)
+        {
+            Mapper.Map(self, destination);
         }
 
         #endregion

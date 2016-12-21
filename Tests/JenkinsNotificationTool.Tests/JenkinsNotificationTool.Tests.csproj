@@ -38,6 +38,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Mvvm.1.0.0\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
       <Private>True</Private>
@@ -89,6 +93,7 @@
     <Compile Include="Core\Extensions\ExceptionExtensionsTest.cs" />
     <Compile Include="Core\Extensions\StringExtensionsTests.cs" />
     <Compile Include="Core\Extensions\XmlDeserializerSerializerTests.cs" />
+    <Compile Include="Core\ProfileTests.cs" />
     <Compile Include="Core\Services\MockDialogService.cs" />
     <Compile Include="Core\Utility\EnumUtilityTests.cs" />
     <Compile Include="Core\Utility\FileUtilityTests.cs" />
