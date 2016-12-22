@@ -1,7 +1,6 @@
 ﻿namespace JenkinsNotificationTool.Tests.Core.Utility
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using JenkinsNotification.Core.Utility;
@@ -253,6 +252,8 @@
 
         #region GetFilesForPreviousSpan method test
 
+        private static readonly string GetFilesDirectory = Path.Combine(Environment.CurrentDirectory, "GetFilesForPreviousSpan");
+
         /// <summary>
         /// <see cref="FileUtility.GetFilesForPreviousSpan"/> のテストメソッドです。（異常系）
         /// </summary>
@@ -264,20 +265,20 @@
         public void Test_GetFilesForPreviousSpan_Failed_NotExistDirectory()
         {
             // arrange
-            var directory = Path.Combine(Environment.CurrentDirectory, "TestDirectory1");
-            var timeSpan = TimeSpan.FromDays(1);
-            var expected = Enumerable.Empty<string>();
-            if (Directory.Exists(directory))
-            {
-                Directory.Delete(directory, true);
-            }
-
+            // 試験対象のフォルダを作成する。
+            // フォルダ内のファイルは全て削除する。
+            FileUtility.DeleteDirectory(GetFilesDirectory, true);
+            var result = Enumerable.Empty<string>();
+            
             // act
-            var result = FileUtility.GetFilesForPreviousSpan(directory, timeSpan);
+            var ex = Record.Exception(() =>
+                                         result =FileUtility.GetFilesForPreviousSpan(GetFilesDirectory,
+                                                                                     TimeSpan.FromDays(1)));
 
             // assert
-            Assert.Equal(expected, result);
-            WriteResult("(異常系) 削除対象のディレクトリが存在しない場合、例外をスローせずに空のコレクションを返すこと。", result.Any(), expected.Any());
+            Assert.Null(ex);
+            Assert.False(result.Any());
+            WriteResult("(異常系)　削除対象のディレクトリが存在しない場合、例外をスローせずに空のコレクションを返すこと。", result.Any(), false);
         }
 
         /// <summary>
@@ -291,31 +292,28 @@
         public void Test_GetFilesForPreviousSpan_Success_TargetFilesNothing()
         {
             // arrange
-            var directory = Path.Combine(Environment.CurrentDirectory, "TestDirectory2");
-            var timeSpan = TimeSpan.FromDays(1);
-            var files = Enumerable.Range(0, 3).Select(x => Path.Combine(directory, $"Test{x}.txt"));
-            var expected = Enumerable.Empty<string>();
+            // 試験対象のフォルダを作成する。
+            // フォルダ内のファイルは全て削除する。
+            FileUtility.DeleteDirectory(GetFilesDirectory, true);
+            FileUtility.CreateDirectory(GetFilesDirectory);
+            var result = Enumerable.Empty<string>();
 
-            // ダミーファイルを作成する。
-            RemoveFiles(files);
-            if (!Directory.Exists(directory))
+            // ダミーのファイルを作成する。
+            // 削除対象外のファイルのみ。
+            foreach (var i in Enumerable.Range(0, 3))
             {
-                Directory.CreateDirectory(directory);
-            }
-            var dt = DateTime.Today.Add(timeSpan);
-            foreach (var filePath in files)
-            {
-                File.WriteAllText(filePath, dt.ToString("G"));
-                File.SetCreationTime(filePath, dt);
+                var dt = DateTime.Now.AddDays(-1 * i);
+                var path = Path.Combine(GetFilesDirectory, $"test_{dt:yyyy-MM-dd_HHmmssfff}.txt");
+                CreateTestFile(path, dt);
             }
 
             // act
-            var result = FileUtility.GetFilesForPreviousSpan(directory, timeSpan);
+            var ex = Record.Exception(() => result = FileUtility.GetFilesForPreviousSpan(GetFilesDirectory, TimeSpan.FromDays(3)));
 
             // assert
-            Assert.Equal(expected, result);
-            WriteResult("(異常系) 削除対象のファイルが０件の場合、空のコレクションを返すこと。", result.Any(), expected.Any());
-            RemoveFiles(files);
+            Assert.Null(ex);
+            Assert.False(result.Any());
+            WriteResult("(異常系)　削除対象のファイルが０件の場合、空のコレクションを返すこと。", result.Any(), false);
         }
 
         /// <summary>
@@ -329,52 +327,173 @@
         public void Test_GetFilesForPreviousSpan_Success()
         {
             // arrange
-            var directory = Path.Combine(Environment.CurrentDirectory, "TestDirectory3");
-            var timeSpan = TimeSpan.FromDays(1);
-            var files = Enumerable.Range(0, 3).Select(x => Path.Combine(directory, $"Test{x}.txt"));
-            var expected = files.Take(1);
+            // 試験対象のフォルダを作成する。
+            // フォルダ内のファイルは全て削除する。
+            FileUtility.DeleteDirectory(GetFilesDirectory, true);
+            FileUtility.CreateDirectory(GetFilesDirectory);
+            const int createFileCount = 5;
+            const int deleteFileCount = 3;
+            const int expected = createFileCount - deleteFileCount;
+            var result = Enumerable.Empty<string>();
 
-            // ダミーファイルを作成する。
-            RemoveFiles(files);
-            if (!Directory.Exists(directory))
+            // ダミーのファイルを作成する。
+            // 削除対象外のファイルのみ。
+            foreach (var i in Enumerable.Range(0, createFileCount))
             {
-                Directory.CreateDirectory(directory);
-            }
-            var dt = DateTime.Today.Add(timeSpan);
-            foreach (var filePath in files.Skip(1))
-            {
-                File.WriteAllText(filePath, dt.ToString("G"));
-                File.SetCreationTime(filePath, dt);
-            }
-
-            foreach (var filePath in expected)
-            {
-                File.WriteAllText(filePath, dt.ToString("G"));
-                File.SetCreationTime(filePath, DateTime.Today);
+                var dt = DateTime.Now.AddDays(-1 * i);
+                var path = Path.Combine(GetFilesDirectory, $"test_{dt:yyyy-MM-dd_HHmmssfff}.txt");
+                CreateTestFile(path, dt);
             }
 
             // act
-            var result = FileUtility.GetFilesForPreviousSpan(directory, timeSpan);
+            var ex = Record.Exception(() => result = FileUtility.GetFilesForPreviousSpan(GetFilesDirectory, TimeSpan.FromDays(deleteFileCount)));
 
             // assert
+            Assert.Null(ex);
+            Assert.Equal(expected, result.Count());
+            WriteResult("(正常系) しきい値よりも後の時間に作成されたファイルは削除されること。", result.Count(), expected);
+        }
+        
+        #endregion
+
+        #region DeleteFilesForPreviousSpan method test
+
+        private static readonly string DeleteFilesTestDirectory = Path.Combine(Environment.CurrentDirectory, "DeleteFilesForPreviousSpanTest");
+
+        private void CreateTestFile(string path, DateTime create)
+        {
+            if (!File.Exists(path))
+            {
+                File.WriteAllText(path, DateTime.Now.ToString("G"));
+                File.SetCreationTime(path, create);
+            }
+        }
+        
+        /// <summary>
+        /// <see cref="FileUtility.DeleteFilesForPreviousSpan"/> のテストメソッドです。(成功パターン)
+        /// </summary>
+        /// <remarks>
+        /// 以下の内容をテストします。
+        /// ・指定したフォルダ内で３時間以上前に作成されたファイルが全て削除されていること。
+        /// </remarks>
+        [Fact]
+        public void Test_DeleteFilesForPreviousSpan_Success()
+        {
+            // arrange
+            const int createFileCount = 5;
+            const int deleteFileCount = 3;
+            const int expected = createFileCount - deleteFileCount;
+            int result = -1;
+            FileUtility.DeleteDirectory(DeleteFilesTestDirectory, true);
+            FileUtility.CreateDirectory(DeleteFilesTestDirectory);
+
+
+            // テスト用のファイルを作成する。
+            foreach (var i in Enumerable.Range(0, createFileCount))
+            {
+                var dt = DateTime.Now.AddHours(-1 * i);
+                var filePath = Path.Combine(DeleteFilesTestDirectory, $"test_{dt:yyyy-MM-dd_HHmmssfff}.txt");
+                CreateTestFile(filePath, dt);
+            }
+
+            // act
+            var ex = Record.Exception(() =>
+                                          result = FileUtility.DeleteFilesForPreviousSpan(DeleteFilesTestDirectory,
+                                                                                         TimeSpan.FromHours(deleteFileCount)));
+
+            // assert
+            Assert.Null(ex);
             Assert.Equal(expected, result);
-            WriteResult("(正常系) しきい値よりも後の時間に作成されたファイルは削除されること。", result.Any(), expected.Any());
-            RemoveFiles(files);
+            WriteResult("(正常系) 指定したフォルダ内で３時間以上前に作成されたファイルが全て削除されていること。", result, expected);
         }
 
         /// <summary>
-        /// 指定したファイルを削除します。
+        /// <see cref="FileUtility.DeleteFilesForPreviousSpan"/> のテストメソッドです。(成功パターン)
         /// </summary>
-        /// <param name="paths">パス</param>
-        private void RemoveFiles(IEnumerable<string> paths)
+        /// <remarks>
+        /// 以下の内容をテストします。
+        /// ・指定したフォルダ内で３時間以上前に作成されたファイルが存在しない場合、戻り値に0 を返すこと。
+        /// ・例外を発生させないこと。
+        /// </remarks>
+        public void Test_DeleteFilesForPreviousSpan_Success_NothingCanDeleteFile()
         {
-            foreach (var path in paths)
+            // arrange
+            const int createFileCount = 3;
+            const int deleteFileCount = 3;
+            const int expected = createFileCount - deleteFileCount;
+            int result = -1;
+            FileUtility.DeleteDirectory(DeleteFilesTestDirectory, true);
+            FileUtility.CreateDirectory(DeleteFilesTestDirectory);
+
+
+            // テスト用のファイルを作成する。
+            foreach (var i in Enumerable.Range(0, createFileCount))
             {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
+                var dt = DateTime.Now.AddHours(-1 * i);
+                var filePath = Path.Combine(DeleteFilesTestDirectory, $"test_{dt:yyyy-MM-dd_HHmmssfff}.txt");
+                CreateTestFile(filePath, dt);
             }
+
+            // act
+            var ex = Record.Exception(() =>
+                                          result = FileUtility.DeleteFilesForPreviousSpan(DeleteFilesTestDirectory,
+                                                                                         TimeSpan.FromHours(deleteFileCount)));
+
+            // assert
+            Assert.Null(ex);
+            Assert.Equal(expected, result);
+            WriteResult("(正常系) 指定したフォルダ内で３時間以上前に作成されたファイルが存在しない場合、戻り値に0 を返すこと。", result, expected);
+        }
+
+        /// <summary>
+        /// <see cref="FileUtility.DeleteFilesForPreviousSpan"/> のテストメソッドです。(失敗パターン)
+        /// </summary>
+        /// <remarks>
+        /// 以下の内容をテストします。
+        /// ・指定したフォルダが存在しない場合、戻り値に0 を返すこと。
+        /// ・例外を発生させないこと。
+        /// </remarks>
+        public void Test_DeleteFilesForPreviousSpan_Failed_NotExistFolder()
+        {
+            // arrange
+            int result = -1;
+            FileUtility.DeleteDirectory(DeleteFilesTestDirectory, true);
+            
+            // act
+            var ex = Record.Exception(() =>
+                                          result = FileUtility.DeleteFilesForPreviousSpan(DeleteFilesTestDirectory,
+                                                                                         TimeSpan.FromHours(1)));
+
+            // assert
+            Assert.Null(ex);
+            WriteResult("(異常系) 指定したフォルダが存在しない場合、戻り値に0 を返すこと。", result, 0);
+        }
+
+        /// <summary>
+        /// <see cref="FileUtility.DeleteFilesForPreviousSpan"/> のテストメソッドです。(失敗パターン)
+        /// </summary>
+        /// <remarks>
+        /// 以下の内容をテストします。
+        /// ・指定したフォルダ内にファイルが存在しない場合、戻り値に0 を返すこと。
+        /// ・例外を発生させないこと。
+        /// </remarks>
+        public void Test_DeleteFilesForPreviousSpan_Failed_NotExistFiles()
+        {
+            // arrange
+            const int expected = 0;
+            int result = -1;
+            FileUtility.DeleteDirectory(DeleteFilesTestDirectory, true);
+            FileUtility.CreateDirectory(DeleteFilesTestDirectory);
+            
+            // act
+            var ex = Record.Exception(() =>
+                                          result = FileUtility.DeleteFilesForPreviousSpan(DeleteFilesTestDirectory,
+                                                                                         TimeSpan.FromHours(12)));
+
+            // assert
+            Assert.Null(ex);
+            Assert.Equal(expected, result);
+            WriteResult("(異常系) 指定したフォルダ内にファイルが存在しない場合、戻り値に0 を返すこと。", result, expected);
         }
 
         #endregion

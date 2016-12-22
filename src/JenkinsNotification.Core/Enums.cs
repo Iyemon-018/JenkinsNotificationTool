@@ -3,6 +3,32 @@
     using JenkinsNotification.Core.Jenkins.Api;
 
     /// <summary>
+    /// 時間単位の種別を定義します。
+    /// </summary>
+    public enum TimeUnitKind
+    {
+        /// <summary>
+        /// ミリ秒
+        /// </summary>
+        Milliseconds,
+
+        /// <summary>
+        /// 秒
+        /// </summary>
+        Seconds,
+
+        /// <summary>
+        /// 分
+        /// </summary>
+        Minutes,
+
+        /// <summary>
+        /// 時間
+        /// </summary>
+        Hours,
+    }
+
+    /// <summary>
     /// ジョブの実行結果種別を定義します。
     /// </summary>
     /// <remarks>

@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using JenkinsNotification.Core.Extensions;
-    using JenkinsNotification.Core.Logs;
+    using Extensions;
+    using Logs;
 
     /// <summary>
     /// ファイル操作関連のユーティリティ機能クラスです。
@@ -51,6 +51,24 @@
         /// 現在日時からこの<see cref="T:TimeSpan"/> 以降の日付に作成されたファイルパスを取得します。
         /// </param>
         /// <returns>削除したファイルの数</returns>
+        /// <example>
+        /// フォルダ"C:\work\test"から３日前までに作成されたファイルを全て削除する例を以下に示します。
+        /// <code><![CDATA[
+        /// public class App : Application
+        /// {
+        ///     protected override void OnStartup(StartupEventArgs e)
+        ///     {
+        ///         base.OnStartup(e);
+        /// 
+        ///         //
+        ///         // Output delete files before three days from target folder.
+        ///         //
+        ///         var deleteFileCount = FileUtility.DeleteFilesForPreviousSpan(@"C:\work\test", TimeSpan.FromDays(3));
+        ///         Console.WriteLine(string.Join(Environment.NewLine, deleteFileCount));
+        ///     }
+        /// }
+        /// ]]></code>
+        /// </example>
         public static int DeleteFilesForPreviousSpan(string directory, TimeSpan previousDate)
         {
             var result = 0;
@@ -80,6 +98,24 @@
         /// 該当ファイルパス コレクション<para/>
         /// <param name="directory"></param> が存在しない場合は、<see cref="Enumerable.Empty{TResult}"/> を返します。
         /// </returns>
+        /// <example>
+        /// フォルダ"C:\work\test"から７日前までに作成されたファイルを全て列挙する例を以下に示します。
+        /// <code><![CDATA[
+        /// public class App : Application
+        /// {
+        ///     protected override void OnStartup(StartupEventArgs e)
+        ///     {
+        ///         base.OnStartup(e);
+        /// 
+        ///         //
+        ///         // Get created file paths before than seven days ago from target directory.
+        ///         //
+        ///         var filePaths = FileUtility.GetFilesForPreviousSpan(@"C:\work\test", TimeSpan.FromDays(7));
+        ///         Console.WriteLine(string.Join(Environment.NewLine, filePaths);
+        ///     }
+        /// }
+        /// ]]></code>
+        /// </example>
         public static IEnumerable<string> GetFilesForPreviousSpan(string directory, TimeSpan previousDate)
         {
             using (TimeTracer.StartNew($"{previousDate:g} よりも後日に作成されたファイル パスを取得する。"))
@@ -96,7 +132,7 @@
                 //
                 return Directory.GetFiles(directory)
                                 .ToDictionary(x => x, File.GetCreationTime)
-                                .Where(x => DateTime.Compare(DateTime.Today.Add(previousDate), x.Value.Date) == 1)
+                                .Where(x => x.Value.CompareTo(DateTime.Now.Subtract(previousDate)) == -1)
                                 .Select(x => x.Key);
             }
         }
