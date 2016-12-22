@@ -91,6 +91,7 @@
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="ComponentModels\ApplicationViewModelBase.cs" />
     <Compile Include="ComponentModels\ErrorsContainerCustom.cs" />
+    <Compile Include="ComponentModels\ShareViewModelBase.cs" />
     <Compile Include="ComponentModels\ViewModelAttribute.cs" />
     <Compile Include="ComponentModels\ViewModelBase.cs" />
     <Compile Include="Configurations\ApplicationConfiguration.Configs.cs">

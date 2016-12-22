@@ -113,5 +113,14 @@ namespace JenkinsNotification.Core.Properties {
                 return ResourceManager.GetString("ViewModelAddChildExistErrorMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   &apos;ViewModelBase&apos; クラスを継承していない型が設定されています。&apos;ViewModelBase&apos; の派生クラスを設定してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ViewModelAttributeUnmatchTypeErrorMessage {
+            get {
+                return ResourceManager.GetString("ViewModelAttributeUnmatchTypeErrorMessage", resourceCulture);
+            }
+        }
     }
 }

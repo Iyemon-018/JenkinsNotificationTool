@@ -141,4 +141,8 @@
     <value>指定したオブジェクトは既に子要素として登録されています。</value>
     <comment>ViewModelBase.AddChild で追加した要素が既に存在していた場合の例外メッセージです。</comment>
   </data>
+  <data name="ViewModelAttributeUnmatchTypeErrorMessage" xml:space="preserve">
+    <value>'ViewModelBase' クラスを継承していない型が設定されています。'ViewModelBase' の派生クラスを設定してください。</value>
+    <comment>ViewModelAttribute クラスでViewModelBase 派生でないクラスが設定されていた場合に出力する例外メッセージです。</comment>
+  </data>
 </root>

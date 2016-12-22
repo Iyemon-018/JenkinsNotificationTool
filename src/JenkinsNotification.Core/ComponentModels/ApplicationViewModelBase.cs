@@ -12,7 +12,7 @@
     /// このViewModelは、以下の機能を備えています。<para/>
     /// ・メッセージ ダイアログを表示する。
     /// </remarks>
-    public abstract class ApplicationViewModelBase : ViewModelBase
+    public abstract class ApplicationViewModelBase : ShareViewModelBase
     {
         #region Fields
 
@@ -30,6 +30,7 @@
         /// </summary>
         /// <param name="servicesProvider">インジェクション サービス</param>
         protected ApplicationViewModelBase(IServicesProvider servicesProvider)
+            : base(servicesProvider?.DialogService)
         {
             //
             // デザイナー上でViewModelをバインドするために
@@ -39,8 +40,11 @@
             if (servicesProvider == null) throw new ArgumentNullException(nameof(servicesProvider));
 
             _servicesProvider = servicesProvider;
-            DialogService     = _servicesProvider.DialogService;
-            ViewService       = _servicesProvider.ViewService;
+            ViewService = _servicesProvider.ViewService;
+        }
+
+        protected ApplicationViewModelBase(IDialogService dialogService) : base(dialogService)
+        {
         }
 
         #endregion
@@ -65,7 +69,7 @@
         /// <summary>
         /// ダイアログ サービスを取得します。
         /// </summary>
-        protected IDialogService DialogService { get; private set; }
+        //protected IDialogService DialogService { get; private set; }
 
         #endregion
     }
