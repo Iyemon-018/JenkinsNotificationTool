@@ -34,7 +34,7 @@
         /// <summary>
         /// アセンブリ情報
         /// </summary>
-        private static readonly Assembly _assembly = Assembly.GetEntryAssembly();
+        private static Assembly _assembly = Assembly.GetEntryAssembly();
 
         /// <summary>
         /// カレント情報
@@ -169,6 +169,17 @@
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// 指定したアセンブリを設定します。
+        /// </summary>
+        /// <param name="assembly">アセンブリ</param>
+        /// <exception cref="ArgumentNullException"><paramref name="assembly"/> がnull の場合にスローされます。</exception>
+        public static void SetAssembly(Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            _assembly = assembly;
+        }
 
         /// <summary>
         /// このオブジェクトを文字列化します。

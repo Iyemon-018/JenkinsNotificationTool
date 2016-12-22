@@ -30,12 +30,7 @@
         /// アプリケーションのログフォルダパス
         /// </summary>
         public static readonly string LogPath = Path.Combine(AppTempPath, "Logs");
-
-        /// <summary>
-        /// XML のファイルパターンを表します。
-        /// </summary>
-        public static readonly string XmlFilePattern = "*.xml";
-
+        
         /// <summary>
         /// アプリケーションのカレント ルート パス
         /// </summary>

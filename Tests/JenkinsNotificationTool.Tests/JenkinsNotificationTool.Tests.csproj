@@ -98,6 +98,7 @@
     <Compile Include="Core\Services\MockDialogService.cs" />
     <Compile Include="Core\Utility\EnumUtilityTests.cs" />
     <Compile Include="Core\Utility\FileUtilityTests.cs" />
+    <Compile Include="Core\Utility\PathUtilityTests.cs" />
     <Compile Include="CustomControls\Converters\BooleanToEnumConverterTests.cs" />
     <Compile Include="CustomControls\Converters\InvertBooleanConverterTests.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
