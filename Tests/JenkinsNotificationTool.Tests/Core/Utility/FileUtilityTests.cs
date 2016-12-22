@@ -3,6 +3,8 @@
     using System;
     using System.IO;
     using System.Linq;
+    using JenkinsNotification.Core;
+    using JenkinsNotification.Core.Extensions;
     using JenkinsNotification.Core.Utility;
     using Xunit;
     using Xunit.Abstractions;
@@ -391,7 +393,7 @@
             // テスト用のファイルを作成する。
             foreach (var i in Enumerable.Range(0, createFileCount))
             {
-                var dt = DateTime.Now.AddHours(-1 * i);
+                var dt = DateTime.Now.AddHours(-1 * i).Truncate(TimeUnitKind.Hours);
                 var filePath = Path.Combine(DeleteFilesTestDirectory, $"test_{dt:yyyy-MM-dd_HHmmssfff}.txt");
                 CreateTestFile(filePath, dt);
             }
