@@ -5,10 +5,13 @@
     xmlns:customControls="clr-namespace:JenkinsNotification.CustomControls;assembly=JenkinsNotification.CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
-    xmlns:local="clr-namespace:Server.Simulator.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Server.Simulator.Models"
     xmlns:viewModels="clr-namespace:Server.Simulator.ViewModels"
+    xmlns:viewModelsData="clr-namespace:Server.Simulator.ViewModels.Data"
     Title="ManageView"
+    MinWidth="400"
+    MinHeight="400"
     HorizontalContentAlignment="Stretch"
     VerticalContentAlignment="Stretch"
     d:DataContext="{d:DesignInstance {x:Type viewModels:ManageViewModel},
@@ -20,20 +23,19 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <dragablz:TabablzControl Grid.Row="0">
-            <TabItem Header="TabItem">
-                <Grid>
+            <TabItem Header="接続設定">
+                <Grid Margin="12" DataContext="{Binding ConnectionSetting, Mode=OneWay}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <customControls:ItemContent Header="URI Prefix">
+                    <customControls:ItemContent Description="サーバーサイドの接続URIを以下に示します。&#xa;Connectボタンをクリックすると接続を開始します。&#xa;接続中にDisconnectボタンをクリックすると切断します。" Header="URI Prefix">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding ConnectionUri, Mode=OneWay}" />
+                            <TextBlock Text="{x:Static models:Constants.UriPrefix}" />
                             <StackPanel
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
@@ -48,11 +50,38 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button
-                            Grid.Column="1"
-                            Command="{Binding SendCommand, Mode=OneWay}"
-                            Content="Send Message" />
+                        <customControls:ItemContent Description="クライアントとの接続情報の一覧です。接続、切断、送受信を行うと以下に一覧として情報が追加されます。" Header="接続情報">
+                            <Grid>
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    CanUserReorderColumns="False"
+                                    ItemsSource="{Binding Requests, Mode=OneWay}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Binding="{Binding DateTime, Mode=OneWay, StringFormat={}{0:yyyy/MM/dd HH:mm:ss}}"
+                                            ClipboardContentBinding="{x:Null}"
+                                            Header="日時"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            Binding="{Binding State, Mode=OneWay}"
+                                            ClipboardContentBinding="{x:Null}"
+                                            Header="状態"
+                                            IsReadOnly="True" />
+                                        <DataGridTemplateColumn Header="クライアント">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate DataType="{x:Type viewModelsData:ClientRequestViewModel}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding ClientEndPoint.Address, Mode=OneWay}" />
+                                                        <TextBlock Margin="3,0" Text=":" />
+                                                        <TextBlock Text="{Binding ClientEndPoint.Port, Mode=OneWay}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </customControls:ItemContent>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -62,7 +91,7 @@
         </dragablz:TabablzControl>
         <StatusBar Grid.Row="1">
             <StatusBarItem>
-                <TextBlock Text="{Binding StateMessage, Mode=OneWay}" />
+                <TextBlock Text="{Binding NotifyData.StateMessage, Mode=OneWay}" />
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock FontFamily="Marlett" Text="p" />

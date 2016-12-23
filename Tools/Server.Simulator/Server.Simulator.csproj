@@ -90,7 +90,13 @@
     <Compile Include="Communicators\WebSocketClientEventArgs.cs" />
     <Compile Include="Communicators\WebSocketReceivedRequestEventArgs.cs" />
     <Compile Include="Communicators\WebSocketServer.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Models\Constants.cs" />
+    <Compile Include="ViewModels\ConnectionSettingViewModel.cs" />
+    <Compile Include="ViewModels\Data\ClientRequestViewModel.cs" />
+    <Compile Include="ViewModels\Data\NotifyDataViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModel.cs" />
+    <Compile Include="ViewModels\SimulatorViewModelBase.cs" />
     <Compile Include="Views\ManageView.xaml.cs">
       <DependentUpon>ManageView.xaml</DependentUpon>
     </Compile>

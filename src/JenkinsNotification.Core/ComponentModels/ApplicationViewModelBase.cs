@@ -43,6 +43,10 @@
             ViewService = _servicesProvider.ViewService;
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="dialogService">ダイアログサービス</param>
         protected ApplicationViewModelBase(IDialogService dialogService) : base(dialogService)
         {
         }
@@ -65,12 +69,7 @@
         /// View表示サービスを設定、取得します。
         /// </summary>
         protected IViewService ViewService { get; private set; }
-
-        /// <summary>
-        /// ダイアログ サービスを取得します。
-        /// </summary>
-        //protected IDialogService DialogService { get; private set; }
-
+        
         #endregion
     }
 }
