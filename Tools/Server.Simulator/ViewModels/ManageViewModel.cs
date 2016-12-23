@@ -43,6 +43,7 @@
             _server = new WebSocketServer();
             NotifyData = new NotifyDataViewModel();
             ConnectionSetting = new ConnectionSettingViewModel(dialogService, _server, NotifyData);
+            ProjectResultSender = new ProjectResultSenderViewModel(dialogService, _server, NotifyData);
         }
 
         #endregion
@@ -53,6 +54,11 @@
         /// 接続設定情報をまたは取得します。
         /// </summary>
         public ConnectionSettingViewModel ConnectionSetting { get; private set; }
+
+        /// <summary>
+        /// プロジェクト結果送信情報を取得します。
+        /// </summary>
+        public ProjectResultSenderViewModel ProjectResultSender { get; private set; }
 
         /// <summary>
         /// 通知情報をまたは取得します。

@@ -10,8 +10,6 @@
     xmlns:viewModels="clr-namespace:Server.Simulator.ViewModels"
     xmlns:viewModelsData="clr-namespace:Server.Simulator.ViewModels.Data"
     Title="ManageView"
-    MinWidth="400"
-    MinHeight="400"
     HorizontalContentAlignment="Stretch"
     VerticalContentAlignment="Stretch"
     d:DataContext="{d:DesignInstance {x:Type viewModels:ManageViewModel},
@@ -85,8 +83,102 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid />
+            <TabItem Header="実行結果送信">
+                <Grid Margin="12" DataContext="{Binding ProjectResultSender, Mode=OneWay}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="ジョブ実行結果情報">
+                        <Grid>
+                            <Grid.Resources>
+                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Margin" Value="0,3" />
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Text="ジョブ名" />
+                            <Border Grid.Row="0" Grid.Column="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" MinWidth="24" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding JobName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding JobName.Length, Mode=OneWay}" />
+                                </Grid>
+                            </Border>
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Text="ビルド番号" />
+                            <Border Grid.Row="1" Grid.Column="2">
+                                <TextBox
+                                    Width="40"
+                                    HorizontalAlignment="Left"
+                                    HorizontalContentAlignment="Right"
+                                    Text="{Binding BuildNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                            </Border>
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Text="状態" />
+                            <Border Grid.Row="2" Grid.Column="2">
+                                <ComboBox
+                                    Width="120"
+                                    HorizontalAlignment="Left"
+                                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource JobStatusProvider}}"
+                                    SelectedValue="{Binding JobStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Border>
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Text="結果" />
+                            <Border Grid.Row="3" Grid.Column="2">
+                                <ComboBox
+                                    Width="120"
+                                    HorizontalAlignment="Left"
+                                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource JobResultTypeProvider}}"
+                                    SelectedValue="{Binding JobResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="2">
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <Button Command="{Binding SendCommand, Mode=OneWay}" Content="Send" />
+                                    <Button Command="{Binding ClearCommand, Mode=OneWay}" Content="Clear" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </GroupBox>
+                    <customControls:ItemContent
+                        Grid.Row="1"
+                        Margin="0,12,0,0"
+                        Description=""
+                        Header="送信結果一覧">
+                        <Grid>
+                            <DataGrid ItemsSource="{Binding SendJobs, Mode=OneWay}" />
+                        </Grid>
+                    </customControls:ItemContent>
+                </Grid>
             </TabItem>
         </dragablz:TabablzControl>
         <StatusBar Grid.Row="1">

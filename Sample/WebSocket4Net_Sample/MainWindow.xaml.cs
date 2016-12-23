@@ -54,15 +54,15 @@ namespace WebSocket4Net_Sample
 
                                            //File.WriteAllText($"Jenkins_{DateTime.Now:yyyy-MM-dd_HHmmss}.json", e.Message);
 
-                                           //var serializer = new DataContractJsonSerializer(typeof(JenkinsNotifierJson));
-                                           //using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(e.Message)))
-                                           //{
-                                           //    var data = serializer.ReadObject(ms) as JenkinsNotifierJson;
-                                           //    if (data != null)
-                                           //    {
-                                           //        _notiferResults.Add(data);
-                                           //    }
-                                           //}
+                                           var serializer = new DataContractJsonSerializer(typeof(JenkinsNotifierJson));
+                                           using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(e.Message)))
+                                           {
+                                               var data = serializer.ReadObject(ms) as JenkinsNotifierJson;
+                                               if (data != null)
+                                               {
+                                                   _notiferResults.Add(data);
+                                               }
+                                           }
                                        };
 
             // データ受信

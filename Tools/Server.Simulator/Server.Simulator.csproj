@@ -61,6 +61,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -96,6 +97,7 @@
     <Compile Include="ViewModels\Data\ClientRequestViewModel.cs" />
     <Compile Include="ViewModels\Data\NotifyDataViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModel.cs" />
+    <Compile Include="ViewModels\ProjectResultSenderViewModel.cs" />
     <Compile Include="ViewModels\SimulatorViewModelBase.cs" />
     <Compile Include="Views\ManageView.xaml.cs">
       <DependentUpon>ManageView.xaml</DependentUpon>

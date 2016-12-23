@@ -1,0 +1,29 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:JenkinsNotification.Core;assembly=JenkinsNotification.Core"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--
+        ここには列挙体をコレクション コントロールにバインドするためのデータ プロバイダーを定義します。
+    -->
+
+    <ObjectDataProvider
+        x:Key="JobStatusProvider"
+        MethodName="GetValues"
+        ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="core:JobStatus" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider
+        x:Key="JobResultTypeProvider"
+        MethodName="GetValues"
+        ObjectType="{x:Type system:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="core:JobResultType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+</ResourceDictionary>

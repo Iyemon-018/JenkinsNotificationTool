@@ -143,6 +143,8 @@
     <Compile Include="Utility\TimeTracer.cs" />
     <Compile Include="Utility\ViewModelUtility.cs" />
     <Compile Include="Utility\ViewUtility.cs" />
+    <Compile Include="ViewModels\Api\ApiBuilder.cs" />
+    <Compile Include="ViewModels\Api\Converter\ApiConverter.cs" />
     <Compile Include="ViewModels\Api\IJobExecuteResult.cs" />
     <Compile Include="ViewModels\Api\JobExecuteResultViewModel.cs" />
     <Compile Include="ViewModels\Configurations\NotifyConfigurationViewModel.cs" />
