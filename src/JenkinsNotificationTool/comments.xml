@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Server.Simulator</name>
+  </assembly>
+  <members>
+    <member name="" />
+    <member name="N:Server.Simulator.ViewModels" />
+    <member name="M:Server.Simulator.ViewModels.ManageViewModel.Server_OnConnectionClient(System.Object,WebSocketClientEventArgs)" />
+  </members>
+</doc>

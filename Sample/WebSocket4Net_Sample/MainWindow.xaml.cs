@@ -52,17 +52,17 @@ namespace WebSocket4Net_Sample
                                            AddText("[MessageReceived]");
                                            AddText(e.Message);
 
-                                           File.WriteAllText($"Jenkins_{DateTime.Now:yyyy-MM-dd_HHmmss}.json", e.Message);
+                                           //File.WriteAllText($"Jenkins_{DateTime.Now:yyyy-MM-dd_HHmmss}.json", e.Message);
 
-                                           var serializer = new DataContractJsonSerializer(typeof(JenkinsNotifierJson));
-                                           using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(e.Message)))
-                                           {
-                                               var data = serializer.ReadObject(ms) as JenkinsNotifierJson;
-                                               if (data != null)
-                                               {
-                                                   _notiferResults.Add(data);
-                                               }
-                                           }
+                                           //var serializer = new DataContractJsonSerializer(typeof(JenkinsNotifierJson));
+                                           //using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(e.Message)))
+                                           //{
+                                           //    var data = serializer.ReadObject(ms) as JenkinsNotifierJson;
+                                           //    if (data != null)
+                                           //    {
+                                           //        _notiferResults.Add(data);
+                                           //    }
+                                           //}
                                        };
 
             // データ受信
@@ -113,7 +113,7 @@ namespace WebSocket4Net_Sample
 
         private void DisconnectButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _socket?.Close();
+            _socket.Close();
         }
     }
 

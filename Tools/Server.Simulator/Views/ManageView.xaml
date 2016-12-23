@@ -7,17 +7,66 @@
     xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
     xmlns:local="clr-namespace:Server.Simulator.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Server.Simulator.ViewModels"
     Title="ManageView"
+    HorizontalContentAlignment="Stretch"
+    VerticalContentAlignment="Stretch"
+    d:DataContext="{d:DesignInstance {x:Type viewModels:ManageViewModel},
+                                     IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
     <Grid x:Name="LayoutRoot">
-        <TextBlock />
-        <dragablz:TabablzControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <dragablz:TabablzControl Grid.Row="0">
             <TabItem Header="TabItem">
-                <Grid />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <customControls:ItemContent Header="URI Prefix">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding ConnectionUri, Mode=OneWay}" />
+                            <StackPanel
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <Button Command="{Binding ConnectionCommand, Mode=OneWay}" Content="Connect" />
+                                <Button Command="{Binding DisconnectionCommand, Mode=OneWay}" Content="Disconnect" />
+                            </StackPanel>
+                        </Grid>
+                    </customControls:ItemContent>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding SendCommand, Mode=OneWay}"
+                            Content="Send Message" />
+                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="TabItem">
                 <Grid />
             </TabItem>
         </dragablz:TabablzControl>
+        <StatusBar Grid.Row="1">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StateMessage, Mode=OneWay}" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock FontFamily="Marlett" Text="p" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </customControls:View>
