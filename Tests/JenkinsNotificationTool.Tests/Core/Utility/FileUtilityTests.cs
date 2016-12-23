@@ -342,7 +342,7 @@
             // 削除対象外のファイルのみ。
             foreach (var i in Enumerable.Range(0, createFileCount))
             {
-                var dt = DateTime.Now.AddDays(-1 * i);
+                var dt = DateTime.Now.AddDays(-1 * i).Truncate(TimeUnitKind.Minutes);
                 var path = Path.Combine(GetFilesDirectory, $"test_{dt:yyyy-MM-dd_HHmmssfff}.txt");
                 CreateTestFile(path, dt);
             }
