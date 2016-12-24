@@ -5,6 +5,7 @@
     using System.Windows;
     using System.Windows.Threading;
     using JenkinsNotification.Core;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
@@ -64,6 +65,9 @@
             //
             ApplicationManager.Initialize();
             ApplicationManager.InitializeBalloonTipService(new BalloonTipService(view.TaskbarIcon));
+            
+            var webSocket = new WebSocketCommunicator();
+            ApplicationManager.SetWebSocketCommunicator(webSocket);
         }
 
         /// <summary>

@@ -83,12 +83,19 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
+    <Compile Include="Communicators\ReceivedErrorEventArgs.cs" />
+    <Compile Include="Communicators\ReceivedEventArgs.cs" />
+    <Compile Include="Communicators\WebSocketCommunicator.cs" />
     <Compile Include="ComponentModels\ApplicationViewModelBase.cs" />
     <Compile Include="ComponentModels\ErrorsContainerCustom.cs" />
     <Compile Include="ComponentModels\ShareViewModelBase.cs" />
@@ -111,6 +118,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\XmlDeserializer.cs" />
     <Compile Include="Extensions\XmlSerializer.cs" />
     <Compile Include="Jenkins\Api\JobExecuteResult.cs" />
@@ -132,6 +140,7 @@
     <Compile Include="Services\IBalloonTipService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IServicesProvider.cs" />
+    <Compile Include="Communicators\IWebSocketCommunicator.cs" />
     <Compile Include="Services\ServicesProvider.cs" />
     <Compile Include="Services\IViewService.cs" />
     <Compile Include="Services\ViewService.cs" />
@@ -140,6 +149,7 @@
     <Compile Include="Utility\FileUtility.cs" />
     <Compile Include="Utility\PathUtility.cs" />
     <Compile Include="Utility\Products.cs" />
+    <Compile Include="Utility\ThreadUtility.cs" />
     <Compile Include="Utility\TimeTracer.cs" />
     <Compile Include="Utility\ViewModelUtility.cs" />
     <Compile Include="Utility\ViewUtility.cs" />
@@ -160,9 +170,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Connections\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,6 +6,7 @@
     using AutoMapper;
     using ComponentModels;
     using Configurations;
+    using JenkinsNotification.Core.Communicators;
     using Logs;
     using Services;
     using Utility;
@@ -63,6 +64,11 @@
         /// バルーン表示サービスを取得します。
         /// </summary>
         public IBalloonTipService BalloonTipService { get; private set; }
+
+        /// <summary>
+        /// WebSocket 通信を取得します。
+        /// </summary>
+        public IWebSocketCommunicator WebSocketCommunicator { get; private set; }
 
         #endregion
 
@@ -128,11 +134,27 @@
         }
 
         /// <summary>
+        /// WebSocket 通信を設定します。
+        /// </summary>
+        /// <param name="communicator">WebSocket 通信機能</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="communicator"/> がnull の場合にスローされます。</exception>
+        public static void SetWebSocketCommunicator(IWebSocketCommunicator communicator)
+        {
+            if (communicator == null) throw new ArgumentNullException(nameof(communicator));
+            Instance.WebSocketCommunicator = communicator;
+        }
+        
+        /// <summary>
         /// このアプリケーションを終了します。
         /// </summary>
         public void Shutdown()
         {
             LogManager.Info("☆☆ アプリケーションをシャットダウンする。");
+
+            LogManager.Info("☆☆ WebSocket通信を切断する。");
+            WebSocketCommunicator?.Disconnect();
+            WebSocketCommunicator?.Dispose();
+
             Application.Current.Shutdown();
         }
 

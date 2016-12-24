@@ -335,6 +335,15 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   テスト接続 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TestConnection {
+            get {
+                return ResourceManager.GetString("TestConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   予期せぬエラーをキャッチしました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string UnhandledExceptionMessage {

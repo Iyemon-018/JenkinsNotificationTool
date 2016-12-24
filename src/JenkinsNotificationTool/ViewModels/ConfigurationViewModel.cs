@@ -3,10 +3,13 @@
     using System;
     using System.ComponentModel;
     using JenkinsNotification.Core;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Extensions;
+    using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
+    using JenkinsNotification.Core.Utility;
     using JenkinsNotification.Core.ViewModels.Configurations;
     using JenkinsNotificationTool.Properties;
     using Microsoft.Practices.Prism.Commands;
@@ -60,6 +63,17 @@
                               .NotifyConfiguration
                               .Map(NotifyConfiguration);
 
+            var webSocket = ApplicationManager.WebSocketCommunicator;
+            if (webSocket != null)
+            {
+                LogManager.Info("WebSocket のイベント購読を開始する。");
+                webSocket.Connected += WebSocket_OnConnected;
+                webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
+                webSocket.Disconnected += WebSocket_OnDisconnected;
+                webSocket.Received += WebSocket_OnReceived;
+                webSocket.ReceivedError += WebSocket_OnReceivedError;
+            }
+
             // コマンドの初期化
             SaveCommand = new DelegateCommand(() =>
                                               {
@@ -97,6 +111,56 @@
                                                     // TODO 画面入力項目に変化があった場合は、メッセージを表示する。
                                                     ViewService.Close(ScreenKey.Configuration);
                                                 });
+
+            TestConnection = new DelegateCommand(() =>
+                                                 {
+                                                     ApplicationManager.WebSocketCommunicator
+                                                                       .Connection(NotifyConfiguration.TargetUri, 3);
+                                                 });
+        }
+
+        private void WebSocket_OnReceivedError(object sender, ReceivedErrorEventArgs e)
+        {
+            //ThreadUtility.ExecuteUiThread(
+            //    () => DialogService.ShowError("サーバーからエラーを受信しました。" +
+            //                                 $"{Environment.NewLine}" +
+            //                                 $"{e.Exception.Message}"));
+        }
+
+        private void WebSocket_OnConnected(object sender, EventArgs e)
+        {
+            DialogService.ShowInformation("接続しました。");
+        }
+
+        private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
+        {
+            DialogService.ShowError("接続に失敗しました。");
+        }
+
+        private void WebSocket_OnDisconnected(object sender, EventArgs e)
+        {
+            //ThreadUtility.ExecuteUiThread(() => DialogService.ShowInformation("切断しました。"));
+        }
+
+        private void WebSocket_OnReceived(object sender, ReceivedEventArgs e)
+        {
+            DialogService.ShowInformation($"受信しました。{e.ReceivedType}");
+        }
+
+        protected override void OnUnloaded()
+        {
+            base.OnUnloaded();
+
+            var webSocket = ApplicationManager.WebSocketCommunicator;
+            if (webSocket != null)
+            {
+                LogManager.Info("WebSocket のイベント購読を解除する。");
+                webSocket.Connected -= WebSocket_OnConnected;
+                webSocket.ConnectionFailed -= WebSocket_OnConnectionFailed;
+                webSocket.Disconnected -= WebSocket_OnDisconnected;
+                webSocket.Received -= WebSocket_OnReceived;
+                webSocket.ReceivedError -= WebSocket_OnReceivedError;
+            }
         }
 
         #endregion
@@ -135,6 +199,11 @@
         /// 構成情報破棄コマンドを設定、取得します。
         /// </summary>
         public DelegateCommand CancelCommand { get; private set; }
+
+        /// <summary>
+        /// テスト接続コマンドを設定、取得します。
+        /// </summary>
+        public DelegateCommand TestConnection { get; private set; }
 
         #endregion
 

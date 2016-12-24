@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
+    using JenkinsNotification.Core.ComponentModels;
     using Logs;
 
     /// <summary>
@@ -112,6 +113,10 @@
             if (view != null)
             {
                 view.Closed -= View_OnClosed;
+
+                var vm = view.DataContext as ApplicationViewModelBase;
+                vm?.Unloaded();
+
                 var pair = _viewCash.FirstOrDefault(x => Equals(x.Value, view));
                 _viewCash.Remove(pair.Key);
             }

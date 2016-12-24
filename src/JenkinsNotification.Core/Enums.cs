@@ -140,4 +140,20 @@
         /// </summary>
         Details,
     }
+
+    /// <summary>
+    /// WebSocket 通信で受信したデータの種別を定義します。
+    /// </summary>
+    public enum ReceivedType
+    {
+        /// <summary>
+        /// メッセージ
+        /// </summary>
+        Message,
+
+        /// <summary>
+        /// バイナリ
+        /// </summary>
+        Binary,
+    }
 }

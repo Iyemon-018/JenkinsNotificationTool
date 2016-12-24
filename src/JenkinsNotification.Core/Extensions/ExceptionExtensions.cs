@@ -22,7 +22,13 @@
             if (self == null) return Enumerable.Empty<string>();
 
             var result = new List<string> {self.Message};
-            result.AddRange(self.StackTrace.Split('\n'));
+            var stackTrace = self.StackTrace;
+            if (stackTrace.IsEmpty())
+            {
+                return result;
+            }
+
+            result.AddRange(stackTrace.Split('\n'));
             if (self.InnerException != null)
             {
                 var innerStackTraceMessages = self.InnerException.ToStackTraceMessages();

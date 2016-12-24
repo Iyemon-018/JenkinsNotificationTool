@@ -241,6 +241,10 @@
     <value>スライド</value>
     <comment>スライドの文言です。</comment>
   </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>テスト接続</value>
+    <comment>テスト接続ボタンの文言です。</comment>
+  </data>
   <data name="UnhandledExceptionMessage" xml:space="preserve">
     <value>予期せぬエラーをキャッチしました。</value>
     <comment>UnhandledException イベントで補足した場合の例外メッセージです。</comment>

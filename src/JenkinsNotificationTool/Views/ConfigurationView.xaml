@@ -32,7 +32,18 @@
                 <Grid>
                     <StackPanel Margin="12" Orientation="Vertical">
                         <customControls:ItemContent Description="{Binding WebSocketURIDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding WebSocketURIHeader, Mode=OneWay, Source={StaticResource Resources}}">
-                            <TextBox Text="{Binding NotifyConfiguration.TargetUri, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0">
+                                    <TextBox Text="{Binding NotifyConfiguration.TargetUri, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus}" />
+                                </Border>
+                                <Border Grid.Column="1">
+                                    <Button Command="{Binding TestConnection, Mode=OneWay}" Content="{Binding TestConnection, Mode=OneWay, Source={StaticResource Resources}}" />
+                                </Border>
+                            </Grid>
                         </customControls:ItemContent>
                         <customControls:ItemContent Description="{Binding NotifyBalloonTimeoutDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding NotifyBalloonTimeoutHeader, Mode=OneWay, Source={StaticResource Resources}}">
                             <StackPanel Orientation="Horizontal">

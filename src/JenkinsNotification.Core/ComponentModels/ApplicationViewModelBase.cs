@@ -71,5 +71,15 @@
         protected IViewService ViewService { get; private set; }
         
         #endregion
+
+        public void Unloaded()
+        {
+            
+        }
+
+        protected virtual void OnUnloaded()
+        {
+            
+        }
     }
 }
