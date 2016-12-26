@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Services\BalloonTipService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Utility\StoryboardUtility.cs" />
     <Compile Include="View.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

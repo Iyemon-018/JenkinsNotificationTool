@@ -1,20 +1,21 @@
 ﻿namespace JenkinsNotification.CustomControls
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
-    using System.Windows.Shell;
-    using JenkinsNotification.Core.Utility;
+    using System.Windows.Media.Animation;
+    using Core.Utility;
+    using Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
     /// <summary>
     /// このアプリケーション専用のView コンポーネントクラスです。
     /// </summary>
-    /// <seealso cref="System.Windows.Window" />
-    /// <seealso cref="Microsoft.Practices.Prism.Mvvm.IView" />
-    /// <seealso cref="IView" />
     /// <seealso cref="Window" />
+    /// <seealso cref="IView" />
+    [TemplatePart(Name = LayoutRootKey, Type = typeof(Border))]
     [TemplatePart(Name = MinimumWindowButtonKey, Type = typeof(Button))]
     [TemplatePart(Name = MaximumWindowButtonKey, Type = typeof(Button))]
     [TemplatePart(Name = RestoreWindowButtonKey, Type = typeof(Button))]
@@ -22,6 +23,11 @@
     public class View : Window, IView
     {
         #region Const
+
+        /// <summary>
+        /// ルート要素の部品名
+        /// </summary>
+        public const string LayoutRootKey = "Part_LayoutRoot";
 
         /// <summary>
         /// 最小化ボタンの部品名
@@ -51,6 +57,26 @@
         /// 閉じるボタン
         /// </summary>
         private Button _closeButton;
+
+        /// <summary>
+        /// <see cref="Window.Closing"/> イベント時に実行するアニメーション
+        /// </summary>
+        private Storyboard _closingAnimation;
+
+        /// <summary>
+        /// 終了アニメーションの完了フラグ
+        /// </summary>
+        private bool _isCompletedClosingAnimation;
+
+        /// <summary>
+        /// この<see cref="View"/> のルート レイアウト要素
+        /// </summary>
+        private Border _layoutRoot;
+
+        /// <summary>
+        /// <see cref="FrameworkElement.Loaded"/> イベント時に実行するアニメーション
+        /// </summary>
+        private Storyboard _loadedAnimation;
 
         /// <summary>
         /// 最大化ボタン
@@ -143,8 +169,42 @@
                 _closeButton.Click += CloseWindowButton_OnClick;
             }
 
+            _layoutRoot = GetTemplateChild(LayoutRootKey) as Border;
+            if (_layoutRoot != null)
+            {
+                //
+                // 開始、終了のアニメーションを設定する。
+                //
+                _loadedAnimation = StoryboardUtility.CreateFadeInStoryboard(_layoutRoot, TimeSpan.Zero, TimeSpan.FromMilliseconds(150));
+                _loadedAnimation.Freeze();
+                var eventTrigger = new EventTrigger(LoadedEvent);
+                eventTrigger.Actions.Add(new BeginStoryboard { Storyboard = _loadedAnimation });
+                Triggers.Add(eventTrigger);
+
+                _closingAnimation = StoryboardUtility.CreateFadeOutStoryboard(_closingAnimation, TimeSpan.Zero, TimeSpan.FromMilliseconds(150));
+                _closingAnimation.Completed += _closingAnimation_Completed;
+                _closingAnimation.Freeze();
+            }
+
             // 初期状態だとWindowState の変更イベントが走らないのでここで一回実行しておく。
             SetCaptionButtonsState();
+        }
+
+        /// <summary>
+        /// <see cref="E:System.Windows.Window.Closing" /> イベントを発生させます。
+        /// </summary>
+        /// <param name="e">イベント データを格納している <see cref="T:System.ComponentModel.CancelEventArgs" />。</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (!_isCompletedClosingAnimation)
+            {
+                // 先に終了アニメーションを実行する。
+                // 終わったらViewをクローズする。
+                e.Cancel = true;
+                BeginStoryboard(_closingAnimation);
+            }
+
+            base.OnClosing(e);
         }
 
         /// <summary>
@@ -156,6 +216,18 @@
             base.OnStateChanged(e);
 
             SetCaptionButtonsState();
+        }
+
+        /// <summary>
+        /// 終了アニメーションが完了したときに呼ばれるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void _closingAnimation_Completed(object sender, EventArgs e)
+        {
+            // 閉じる。
+            _isCompletedClosingAnimation = true;
+            SystemCommands.CloseWindow(this);
         }
 
         /// <summary>
