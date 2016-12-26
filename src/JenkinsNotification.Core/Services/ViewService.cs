@@ -90,6 +90,13 @@
                 throw new ArgumentException($"指定したScreenKeyは画面に登録されていません。({key})", nameof(key));
             }
 
+            if (_viewCash.ContainsKey(key))
+            {
+                LogManager.Info($"{key} 画面を再表示する。");
+                _viewCash[key].Activate();
+                return;
+            }
+
             var value = _viewMapping[key];
             var view = Activator.CreateInstance(value.Item1, value.Item2).Unwrap() as Window;
             if (view == null)
@@ -99,6 +106,8 @@
 
             view.Closed += View_OnClosed;
             _viewCash.Add(key, view);
+
+            LogManager.Info($"{key} 画面を表示する。");
             view.Show();
         }
 

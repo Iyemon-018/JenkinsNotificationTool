@@ -105,6 +105,7 @@
       <DependentUpon>ApplicationConfiguration.cs</DependentUpon>
     </Compile>
     <Compile Include="Configurations\ApplicationConfiguration.cs" />
+    <Compile Include="Configurations\ConfigurationLoadException.cs" />
     <Compile Include="Configurations\DisplayConfiguration.cs" />
     <Compile Include="Configurations\NotifyConfiguration.cs" />
     <Compile Include="Configurations\Verify\ApplicationConfigurationVerify.cs" />

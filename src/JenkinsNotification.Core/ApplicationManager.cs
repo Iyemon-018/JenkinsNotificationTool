@@ -81,13 +81,9 @@
         {
             using (TimeTracer.StartNew("アプリケーション初期化シークエンスを実行する。"))
             {
-                //
-                // 構成ファイルを読み込む。
-                //
-                ApplicationConfiguration.LoadCurrent();
-
                 // マッピングの初期化を行う。
                 InitializeMapping();
+
             }
         }
 

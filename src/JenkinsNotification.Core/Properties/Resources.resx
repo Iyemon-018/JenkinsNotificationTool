@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfigurationLoadFailedMessage" xml:space="preserve">
+    <value>アプリケーション設定ファイルの読み込みに失敗しました。</value>
+    <comment>アプリケーション構成ファイルの読み込み中にエラーが発生した場合のエラーメッセージです。</comment>
+  </data>
   <data name="ConfigurationVerifyLoadedErrorMessage" xml:space="preserve">
     <value>構成ファイルの検証結果がエラーです。</value>
     <comment>構成ファイルの読み込み後の検証結果がエラーだった場合のメッセージです。</comment>

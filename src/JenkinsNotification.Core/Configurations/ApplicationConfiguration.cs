@@ -1,10 +1,12 @@
 ﻿namespace JenkinsNotification.Core.Configurations
 {
     using System;
+    using System.Configuration;
     using System.IO;
     using System.Windows.Controls.Primitives;
     using System.Xml;
     using System.Xml.Serialization;
+    using JenkinsNotification.Core.Properties;
     using Verify;
     using Utility;
 
@@ -67,17 +69,17 @@
         /// デフォルト パスのファイルを現在の構成情報に読み込みます。
         /// </summary>
         /// <returns>読み込みに成功した場合はtrue, 失敗した場合はfalse を返します。</returns>
-        public static bool LoadCurrent()
+        public static void LoadCurrent()
         {
             try
             {
                 _current = ConfigurationUtility.Load(DefaultFilePath, new ApplicationConfigurationVerify());
             }
-            catch
+            catch(Exception exception)
             {
-                return false;
+                _current = new ApplicationConfiguration();
+                throw new ConfigurationLoadException(Resources.ConfigurationLoadFailedMessage, DefaultFilePath, exception);
             }
-            return true;
         }
 
         /// <summary>

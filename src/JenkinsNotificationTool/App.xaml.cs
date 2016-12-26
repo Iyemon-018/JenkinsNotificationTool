@@ -6,6 +6,7 @@
     using System.Windows.Threading;
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.Communicators;
+    using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
@@ -63,11 +64,29 @@
             //
             // アプリケーション機能の初期化を実施する。
             //
+            var isInitializeConfig = false;
+            try
+            {
+                //
+                // 構成ファイルを読み込む。
+                //
+                ApplicationConfiguration.LoadCurrent();
+            }
+            catch (ConfigurationLoadException)
+            {
+                isInitializeConfig = true;
+            }
+
             ApplicationManager.Initialize();
             ApplicationManager.InitializeBalloonTipService(new BalloonTipService(view.TaskbarIcon));
-            
+
             var webSocket = new WebSocketCommunicator();
             ApplicationManager.SetWebSocketCommunicator(webSocket);
+
+            if (isInitializeConfig)
+            {
+                servicesProvider.ViewService.Show(ScreenKey.Configuration);
+            }
         }
 
         /// <summary>

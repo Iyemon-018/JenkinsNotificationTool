@@ -61,6 +61,15 @@ namespace JenkinsNotification.Core.Properties {
         }
         
         /// <summary>
+        ///   アプリケーション設定ファイルの読み込みに失敗しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ConfigurationLoadFailedMessage {
+            get {
+                return ResourceManager.GetString("ConfigurationLoadFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   構成ファイルの検証結果がエラーです。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string ConfigurationVerifyLoadedErrorMessage {
