@@ -19,6 +19,15 @@
     <SolidColorBrush x:Key="TabItem.Selected.Background" Color="DodgerBlue" />
     <SolidColorBrush x:Key="TabItem.Main.Foreground" Color="Black" />
     <SolidColorBrush x:Key="TabItem.Selected.Foreground" Color="GhostWhite" />
+
+    <!--  情報メッセージのアイコン背景色  -->
+    <SolidColorBrush x:Key="Icon.Information.Background" Color="#FF2962FF" />
+    <!--  質問メッセージのアイコン背景色  -->
+    <SolidColorBrush x:Key="Icon.Question.Background" Color="#FF304FFE" />
+    <!--  エラーメッセージのアイコン背景色  -->
+    <SolidColorBrush x:Key="Icon.Error.Background" Color="#FFB71C1C" />
+    <!--  警告メッセージのアイコン背景色  -->
+    <SolidColorBrush x:Key="Icon.Warning.Background" Color="#FFF9A825" />
     <!--  #End Region 標準コンポーネントの色リソース定義  -->
 
 

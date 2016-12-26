@@ -262,7 +262,7 @@
         {
             LogManager.Info($"{Uri} との接続を確立した。");
             _isConnected = true;
-            OnConnected();
+            ThreadUtility.ExecuteUiThread(OnConnected);
         }
 
         #endregion
@@ -287,13 +287,16 @@
                     // マネージ状態を破棄します (マネージ オブジェクト)。
                 }
 
-                _webSocket.Opened -= WebSocket_OnOpened;
-                _webSocket.Closed -= WebSocket_OnClosed;
-                _webSocket.MessageReceived -= WebSocket_OnMessageReceived;
-                _webSocket.DataReceived -= WebSocket_OnDataReceived;
-                _webSocket.Error -= WebSocket_OnDetectedError;
-
-                _webSocket?.Dispose();
+                if (_webSocket != null)
+                {
+                    _webSocket.Opened          -= WebSocket_OnOpened;
+                    _webSocket.Closed          -= WebSocket_OnClosed;
+                    _webSocket.MessageReceived -= WebSocket_OnMessageReceived;
+                    _webSocket.DataReceived    -= WebSocket_OnDataReceived;
+                    _webSocket.Error           -= WebSocket_OnDetectedError;
+                    _webSocket.Close();
+                    _webSocket.Dispose();
+                }
                 LogManager.Info($"{Uri} との接続を解放した。");
 
                 _disposed = true;
