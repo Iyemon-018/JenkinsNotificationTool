@@ -69,17 +69,27 @@
         /// View表示サービスを設定、取得します。
         /// </summary>
         protected IViewService ViewService { get; private set; }
-        
+
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// View が閉じられた場合に呼び出されるViewModel のアンロード機能です。
+        /// </summary>
         public void Unloaded()
         {
             
         }
 
+        /// <summary>
+        /// View が閉じられました。
+        /// </summary>
         protected virtual void OnUnloaded()
         {
             
         }
+
+        #endregion
     }
 }

@@ -31,6 +31,7 @@
         static MessageIcon()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MessageIcon), new FrameworkPropertyMetadata(typeof(MessageIcon)));
+            UseLayoutRoundingProperty.OverrideMetadata(typeof(MessageIcon), new FrameworkPropertyMetadata(true));
         }
 
         #endregion

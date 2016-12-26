@@ -3,13 +3,11 @@
     using System;
     using System.ComponentModel;
     using JenkinsNotification.Core;
-    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Extensions;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
-    using JenkinsNotification.Core.Utility;
     using JenkinsNotification.Core.ViewModels.Configurations;
     using JenkinsNotificationTool.Properties;
     using Microsoft.Practices.Prism.Commands;
@@ -69,98 +67,12 @@
                 LogManager.Info("WebSocket のイベント購読を開始する。");
                 webSocket.Connected += WebSocket_OnConnected;
                 webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
-                webSocket.Disconnected += WebSocket_OnDisconnected;
-                webSocket.Received += WebSocket_OnReceived;
-                webSocket.ReceivedError += WebSocket_OnReceivedError;
             }
 
             // コマンドの初期化
-            SaveCommand = new DelegateCommand(() =>
-                                              {
-                                                  // 検証実施
-                                                  Validate();
-                                                  if (HasErrors)
-                                                  {
-                                                      // エラーあり
-                                                      DialogService.ShowError(Resources.ErrorConfigurationValue);
-                                                  }
-                                                  else
-                                                  {
-                                                      // 保存するか確認
-                                                      if (!DialogService.ShowQuestion(Resources.QuestionSaveConfiguration)) return;
-
-                                                      // ファイルへの保存を実行する。
-                                                      NotifyConfiguration.Map(ApplicationManager.ApplicationConfiguration.NotifyConfiguration);
-                                                      var canSaved = ApplicationConfiguration.SaveCurrent();
-                                                      if (canSaved)
-                                                      {
-                                                          // 保存成功
-                                                          DialogService.ShowInformation(Resources.InformationSaveConfiguration);
-                                                          ViewService.Close(ScreenKey.Configuration);
-                                                      }
-                                                      else
-                                                      {
-                                                          // 保存失敗
-                                                          DialogService.ShowError(Resources.FailedSaveConfiguration);
-                                                      }
-                                                  }
-                                              });
-
-            CancelCommand = new DelegateCommand(() =>
-                                                {
-                                                    // TODO 画面入力項目に変化があった場合は、メッセージを表示する。
-                                                    ViewService.Close(ScreenKey.Configuration);
-                                                });
-
-            TestConnection = new DelegateCommand(() =>
-                                                 {
-                                                     ApplicationManager.WebSocketCommunicator
-                                                                       .Connection(NotifyConfiguration.TargetUri, 3);
-                                                 });
-        }
-
-        private void WebSocket_OnReceivedError(object sender, ReceivedErrorEventArgs e)
-        {
-            //ThreadUtility.ExecuteUiThread(
-            //    () => DialogService.ShowError("サーバーからエラーを受信しました。" +
-            //                                 $"{Environment.NewLine}" +
-            //                                 $"{e.Exception.Message}"));
-        }
-
-        private void WebSocket_OnConnected(object sender, EventArgs e)
-        {
-            DialogService.ShowInformation("接続しました。");
-        }
-
-        private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
-        {
-            DialogService.ShowError("接続に失敗しました。");
-        }
-
-        private void WebSocket_OnDisconnected(object sender, EventArgs e)
-        {
-            //ThreadUtility.ExecuteUiThread(() => DialogService.ShowInformation("切断しました。"));
-        }
-
-        private void WebSocket_OnReceived(object sender, ReceivedEventArgs e)
-        {
-            DialogService.ShowInformation($"受信しました。{e.ReceivedType}");
-        }
-
-        protected override void OnUnloaded()
-        {
-            base.OnUnloaded();
-
-            var webSocket = ApplicationManager.WebSocketCommunicator;
-            if (webSocket != null)
-            {
-                LogManager.Info("WebSocket のイベント購読を解除する。");
-                webSocket.Connected -= WebSocket_OnConnected;
-                webSocket.ConnectionFailed -= WebSocket_OnConnectionFailed;
-                webSocket.Disconnected -= WebSocket_OnDisconnected;
-                webSocket.Received -= WebSocket_OnReceived;
-                webSocket.ReceivedError -= WebSocket_OnReceivedError;
-            }
+            SaveCommand           = new DelegateCommand(ExecuteSaveCommand);
+            CancelCommand         = new DelegateCommand(ExecuteCancelCommand);
+            TestConnectionCommand = new DelegateCommand(ExecuteTestConnectionCommand);
         }
 
         #endregion
@@ -171,6 +83,21 @@
         /// 通知関連の構成情報を取得します。
         /// </summary>
         public NotifyConfigurationViewModel NotifyConfiguration { get; private set; }
+
+        /// <summary>
+        /// 構成情報保存コマンドを設定、取得します。
+        /// </summary>
+        public DelegateCommand SaveCommand { get; private set; }
+
+        /// <summary>
+        /// 構成情報破棄コマンドを設定、取得します。
+        /// </summary>
+        public DelegateCommand CancelCommand { get; private set; }
+
+        /// <summary>
+        /// テスト接続コマンドを設定、取得します。
+        /// </summary>
+        public DelegateCommand TestConnectionCommand { get; private set; }
 
         /// <summary>
         /// バルーンの表示時間瀬底種別を設定、または取得します。
@@ -190,24 +117,25 @@
             set { SetProperty(ref _notifyHistoryCountKind, value); }
         }
 
-        /// <summary>
-        /// 構成情報保存コマンドを設定、取得します。
-        /// </summary>
-        public DelegateCommand SaveCommand { get; private set; }
-
-        /// <summary>
-        /// 構成情報破棄コマンドを設定、取得します。
-        /// </summary>
-        public DelegateCommand CancelCommand { get; private set; }
-
-        /// <summary>
-        /// テスト接続コマンドを設定、取得します。
-        /// </summary>
-        public DelegateCommand TestConnection { get; private set; }
-
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// View が閉じられました。
+        /// </summary>
+        protected override void OnUnloaded()
+        {
+            base.OnUnloaded();
+
+            var webSocket = ApplicationManager.WebSocketCommunicator;
+            if (webSocket != null)
+            {
+                LogManager.Info("WebSocket のイベント購読を解除する。");
+                webSocket.Connected        -= WebSocket_OnConnected;
+                webSocket.ConnectionFailed -= WebSocket_OnConnectionFailed;
+            }
+        }
 
         /// <summary>
         /// このオブジェクトのプロパティの値が変更された際に呼ばれるイベントハンドラです。
@@ -225,6 +153,104 @@
                     break;
                 case nameof(NotifyHistoryCountKind):
                     OnNotifyHistoryCountKindChanged(NotifyHistoryCountKind);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// キャンセルコマンドを実行します。
+        /// </summary>
+        private void ExecuteCancelCommand()
+        {
+            // TODO 画面入力項目に変化があった場合は、メッセージを表示する。
+            ViewService.Close(ScreenKey.Configuration);
+        }
+
+        /// <summary>
+        /// 保存コマンドを実行します。
+        /// </summary>
+        private void ExecuteSaveCommand()
+        {
+            // 検証実施
+            Validate();
+            if (HasErrors)
+            {
+                // エラーあり
+                DialogService.ShowError(Resources.ErrorConfigurationValue);
+            }
+            else
+            {
+                // 保存するか確認
+                if (!DialogService.ShowQuestion(Resources.QuestionSaveConfiguration)) return;
+
+                // ファイルへの保存を実行する。
+                NotifyConfiguration.Map(ApplicationManager.ApplicationConfiguration.NotifyConfiguration);
+                var canSaved = ApplicationConfiguration.SaveCurrent();
+                if (canSaved)
+                {
+                    // 保存成功
+                    DialogService.ShowInformation(Resources.InformationSaveConfiguration);
+                    ViewService.Close(ScreenKey.Configuration);
+                }
+                else
+                {
+                    // 保存失敗
+                    DialogService.ShowError(Resources.FailedSaveConfiguration);
+                }
+            }
+        }
+
+        /// <summary>
+        /// テスト接続コマンドを実行します。
+        /// </summary>
+        private void ExecuteTestConnectionCommand()
+        {
+            ApplicationManager.WebSocketCommunicator
+                              .Connection(NotifyConfiguration.TargetUri, 3);
+        }
+
+        /// <summary>
+        /// <see cref="NotifyConfiguration"/> の<see cref="NotifyConfigurationViewModel.PopupTimeout"/> が変更されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void NotifyConfiguration_OnPopupTimeoutChanged(TimeSpan? newValue)
+        {
+            if (newValue.HasValue)
+            {
+                if (newValue.Value.TotalSeconds == 5.0d)
+                {
+                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds5;
+                }
+                else if (newValue.Value.TotalSeconds == 15.0d)
+                {
+                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds15;
+                }
+                else if (newValue.Value.TotalSeconds == 30.0d)
+                {
+                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds30;
+                }
+                else
+                {
+                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
+                }
+            }
+            else
+            {
+                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="NotifyConfiguration"/> のプロパティ変更
+        /// </summary>
+        /// <param name="sender">際に呼ばれるイベントハンドラです。</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void NotifyConfiguration_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "PopupTimeout":
+                    NotifyConfiguration_OnPopupTimeoutChanged(NotifyConfiguration.PopupTimeout);
                     break;
             }
         }
@@ -281,49 +307,23 @@
         }
 
         /// <summary>
-        /// <see cref="NotifyConfiguration"/> のプロパティ変更
+        /// WebSocket 通信で接続が確立できた場合に呼ばれるイベントハンドラです。
         /// </summary>
-        /// <param name="sender">際に呼ばれるイベントハンドラです。</param>
+        /// <param name="sender">イベント送信元オブジェクト</param>
         /// <param name="e">イベント引数オブジェクト</param>
-        private void NotifyConfiguration_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void WebSocket_OnConnected(object sender, EventArgs e)
         {
-            switch (e.PropertyName)
-            {
-                case "PopupTimeout":
-                    NotifyConfiguration_OnPopupTimeoutChanged(NotifyConfiguration.PopupTimeout);
-                    break;
-            }
+            DialogService.ShowInformation("接続しました。");
         }
 
         /// <summary>
-        /// <see cref="NotifyConfiguration"/> の<see cref="NotifyConfigurationViewModel.PopupTimeout"/> が変更されました。
+        /// WebSocket 通信で接続に失敗した場合に呼ばれるイベントハンドラです。
         /// </summary>
-        /// <param name="newValue">更新後の値</param>
-        private void NotifyConfiguration_OnPopupTimeoutChanged(TimeSpan? newValue)
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
         {
-            if (newValue.HasValue)
-            {
-                if (newValue.Value.TotalSeconds == 5.0d)
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds5;
-                }
-                else if (newValue.Value.TotalSeconds == 15.0d)
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds15;
-                }
-                else if (newValue.Value.TotalSeconds == 30.0d)
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds30;
-                }
-                else
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
-                }
-            }
-            else
-            {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
-            }
+            DialogService.ShowError("接続に失敗しました。");
         }
 
         #endregion

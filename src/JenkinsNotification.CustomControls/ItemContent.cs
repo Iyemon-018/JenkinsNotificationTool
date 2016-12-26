@@ -56,7 +56,7 @@
             DependencyProperty.Register("HeaderForeground"
                                       , typeof(Brush)
                                       , typeof(ItemContent)
-                                      , new FrameworkPropertyMetadata(Brushes.BlueViolet, FrameworkPropertyMetadataOptions.AffectsRender));
+                                      , new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromArgb(255, 0x7A, 0x1E, 0xA1)), FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         /// 依存関係プロパティ <see cref="Header"/> を識別します。

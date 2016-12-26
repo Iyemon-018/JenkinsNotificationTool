@@ -8,9 +8,12 @@
     xmlns:local="clr-namespace:JenkinsNotificationTool.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:JenkinsNotificationTool.ViewModels"
+    x:Name="View"
     Title="ConfigurationView"
     Width="480"
-    Height="620"
+    Height="660"
+    MinWidth="{Binding Width, ElementName=View, Mode=OneTime}"
+    MinHeight="{Binding Height, ElementName=View, Mode=OneTime}"
     d:DataContext="{d:DesignInstance {x:Type viewModels:ConfigurationViewModel},
                                      IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
@@ -24,11 +27,11 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <dragablz:TabablzControl>
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController />
-            </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="{Binding Notification, Mode=OneWay, Source={StaticResource Resources}}">
+        <dragablz:TabablzControl
+            BorderThickness="0,1"
+            SnapsToDevicePixels="True"
+            UseLayoutRounding="True">
+            <TabItem Background="Green" Header="{Binding Notification, Mode=OneWay, Source={StaticResource Resources}}">
                 <Grid>
                     <StackPanel Margin="12" Orientation="Vertical">
                         <customControls:ItemContent Description="{Binding WebSocketURIDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding WebSocketURIHeader, Mode=OneWay, Source={StaticResource Resources}}">
@@ -41,7 +44,7 @@
                                     <TextBox Text="{Binding NotifyConfiguration.TargetUri, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus}" />
                                 </Border>
                                 <Border Grid.Column="1">
-                                    <Button Command="{Binding TestConnection, Mode=OneWay}" Content="{Binding TestConnection, Mode=OneWay, Source={StaticResource Resources}}" />
+                                    <Button Command="{Binding TestConnectionCommand, Mode=OneWay}" Content="{Binding TestConnection, Mode=OneWay, Source={StaticResource Resources}}" />
                                 </Border>
                             </Grid>
                         </customControls:ItemContent>

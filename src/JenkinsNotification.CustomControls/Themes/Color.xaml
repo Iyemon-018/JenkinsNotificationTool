@@ -13,12 +13,6 @@
 
 
     <!--  #Region 標準コンポーネントの色リソース定義  -->
-    <SolidColorBrush x:Key="TabItem.Main.Background" Color="#01000000" />
-    <SolidColorBrush x:Key="TabItem.MouseOver.Background" Color="#FFBDDEFF" />
-    <SolidColorBrush x:Key="TabItem.Pressed.Background" Color="#FF0677E6" />
-    <SolidColorBrush x:Key="TabItem.Selected.Background" Color="DodgerBlue" />
-    <SolidColorBrush x:Key="TabItem.Main.Foreground" Color="Black" />
-    <SolidColorBrush x:Key="TabItem.Selected.Foreground" Color="GhostWhite" />
 
     <!--  情報メッセージのアイコン背景色  -->
     <SolidColorBrush x:Key="Icon.Information.Background" Color="#FF2962FF" />
@@ -28,6 +22,7 @@
     <SolidColorBrush x:Key="Icon.Error.Background" Color="#FFB71C1C" />
     <!--  警告メッセージのアイコン背景色  -->
     <SolidColorBrush x:Key="Icon.Warning.Background" Color="#FFF9A825" />
+
     <!--  #End Region 標準コンポーネントの色リソース定義  -->
 
 
@@ -36,13 +31,13 @@
     <!--  #Region MessageDialog関連  -->
 
     <!--  MessageDialog の背景色に使用します。  -->
-    <SolidColorBrush x:Key="MessageDialog.Main.Background" Color="#FFE8E8E8" />
+    <SolidColorBrush x:Key="MessageDialog.Main.Background" Color="#FFFAFAFA" />
     <!--  MessageDialog の前景色に使用します。  -->
     <SolidColorBrush x:Key="MessageDialog.Main.Foreground" Color="Black" />
     <!--  MessageDialog の枠線色に使用します。  -->
-    <SolidColorBrush x:Key="MessageDialog.Main.BorderBrush" Color="DodgerBlue" />
+    <SolidColorBrush x:Key="MessageDialog.Main.BorderBrush" Color="#FF691A99" />
     <!--  MessageDialog のキャプションエリアの背景色に使用します。  -->
-    <SolidColorBrush x:Key="MessageDialog.Caption.Background" Color="DodgerBlue" />
+    <SolidColorBrush x:Key="MessageDialog.Caption.Background" Color="#FF691A99" />
     <!--  MessageDialog のキャプションエリアの前景色に使用します。  -->
     <SolidColorBrush x:Key="MessageDialog.Caption.Foreground" Color="GhostWhite" />
     <!--  MessageDialog のセパレータの背景色に使用します。  -->
@@ -53,7 +48,7 @@
     <!--  #Region View関連  -->
 
     <!--  View の背景色に使用します。  -->
-    <SolidColorBrush x:Key="View.Main.Background" Color="#FFE8E8E8" />
+    <SolidColorBrush x:Key="View.Main.Background" Color="#FFFAFAFA" />
 
     <!--  View の前景色に使用します。  -->
     <SolidColorBrush x:Key="View.Main.Foreground" Color="Black" />

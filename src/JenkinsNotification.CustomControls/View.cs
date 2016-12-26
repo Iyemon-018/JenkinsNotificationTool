@@ -79,6 +79,9 @@
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
             SizeToContentProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(SizeToContent.WidthAndHeight));
 
+            HorizontalContentAlignmentProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(HorizontalAlignment.Stretch));
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(VerticalAlignment.Stretch));
+
             // AllowsTransparent がtrue の場合は、WindowStyle = WindowStyle.None に設定する必要がある。
             WindowStyleProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(WindowStyle.None));
             AllowsTransparencyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(true));
@@ -91,7 +94,7 @@
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        protected View()
+        public View()
         {
             // 以下の設定は依存関係プロパティではないので、この時点で設定する。
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -203,6 +206,8 @@
             _restoreButton.Visibility = WindowState == WindowState.Normal ? Visibility.Collapsed : Visibility.Visible;
             _maximumButton.Visibility = WindowState == WindowState.Maximized ? Visibility.Collapsed : Visibility.Visible;
             _minimumButton.Visibility = WindowState == WindowState.Minimized ? Visibility.Collapsed : Visibility.Visible;
+
+            Margin = WindowState == WindowState.Maximized ? new Thickness(9) : new Thickness(0);
         }
 
         #endregion
