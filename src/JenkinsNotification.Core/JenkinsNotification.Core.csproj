@@ -118,6 +118,8 @@
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\JsonDeserializer.cs" />
+    <Compile Include="Extensions\JsonSerializer.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\XmlDeserializer.cs" />

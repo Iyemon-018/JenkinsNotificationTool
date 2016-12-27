@@ -57,6 +57,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -92,6 +93,9 @@
     <Compile Include="Core\Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Core\Extensions\DateTimeExtensionsTests.cs" />
     <Compile Include="Core\Extensions\ExceptionExtensionsTest.cs" />
+    <Compile Include="Core\Extensions\JsonDeserializerTests.cs" />
+    <Compile Include="Core\Extensions\JsonSerializerTests.cs" />
+    <Compile Include="Core\Extensions\MockJson.cs" />
     <Compile Include="Core\Extensions\StringExtensionsTests.cs" />
     <Compile Include="Core\Extensions\TaskExtensionsTests.cs" />
     <Compile Include="Core\Extensions\XmlDeserializerSerializerTests.cs" />
