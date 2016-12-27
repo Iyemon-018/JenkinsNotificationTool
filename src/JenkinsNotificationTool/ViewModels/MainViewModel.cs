@@ -3,7 +3,7 @@
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Services;
-    using JenkinsNotificationTool.Properties;
+    using Properties;
     using Microsoft.Practices.Prism.Commands;
 
     /// <summary>
@@ -60,8 +60,21 @@
 
             ShowBalloonCommand = new DelegateCommand(() =>
                                                      {
+                                                         //DialogService.ShowProgress("進捗表示中です。", async (x) =>
+                                                         //                                       {
+                                                         //                                           foreach (var i in Enumerable.Range(0, 3))
+                                                         //                                           {
+                                                         //                                               await Task.Delay(TimeSpan.FromSeconds(1));
+                                                         //                                               x.SetMessage($"{i}/3 実行しました。");
+                                                         //                                           }
+
+                                                         //                                           await Task.Delay(TimeSpan.FromSeconds(1));
+                                                         //                                           x.SetMessage("完了しました。しばらくお待ちください。");
+                                                         //                                           await Task.Delay(TimeSpan.FromSeconds(3));
+                                                         //                                       });
                                                          BalloonTipService.NotifyInformation("Test", "テスト的にバルーン出した。");
                                                      });
+
         }
 
         #endregion

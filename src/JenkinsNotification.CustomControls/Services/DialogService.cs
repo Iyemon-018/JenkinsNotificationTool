@@ -1,5 +1,7 @@
 ﻿namespace JenkinsNotification.CustomControls.Services
 {
+    using System;
+    using System.Threading.Tasks;
     using System.Windows;
     using Core.Services;
     using Core.Utility;
@@ -71,6 +73,23 @@
                 ? MessageDialog.Show(message, title, button, icon)
                 : MessageDialog.Show(owner, message, title, button, icon);
         }
+
+        //public void ShowProgress(string message, Action<IProgress> work)
+        //{
+        //    var title = Products.Current.Title;
+        //    var progress = new ProgressDialog(work)
+        //                   {
+        //                       Caption = title,
+        //                       Message = message
+        //                   };
+        //    var owner = ViewUtility.GetActiveWindow();
+        //    if (owner != null)
+        //    {
+        //        progress.Owner = owner;
+        //    }
+
+        //    progress.ShowDialog();
+        //}
 
         #endregion
     }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using JenkinsNotification.Core.Services;
     using Xunit.Abstractions;
 
@@ -46,6 +47,12 @@
         public void ShowError(string message)
         {
             _outputHelper.WriteLine("[Show Error]" + Environment.NewLine + message);
+        }
+
+        
+        public void ShowProgress(string message, Action<IProgress> work)
+        {
+            throw new NotImplementedException();
         }
     }
 }

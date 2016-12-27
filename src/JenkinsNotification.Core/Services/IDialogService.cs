@@ -1,5 +1,8 @@
 ﻿namespace JenkinsNotification.Core.Services
 {
+    using System;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// ダイアログを表示するためのサービス インターフェースです。
     /// </summary>

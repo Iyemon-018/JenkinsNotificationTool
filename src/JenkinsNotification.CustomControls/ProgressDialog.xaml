@@ -1,0 +1,37 @@
+﻿<local:View
+    x:Class="JenkinsNotification.CustomControls.ProgressDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:JenkinsNotification.CustomControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="self"
+    Title="{Binding Caption, ElementName=self, Mode=OneWay}"
+    MinWidth="300"
+    MinHeight="140"
+    d:DesignHeight="240"
+    d:DesignWidth="380"
+    IsVisibleCaptionButton="False"
+    Loaded="ProgressDialog_OnLoaded"
+    ResizeMode="NoResize"
+    Style="{StaticResource {x:Type local:View}}"
+    mc:Ignorable="d">
+    <Grid x:Name="LayoutRoot">
+        <Grid Grid.Row="0" Margin="24,36">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ProgressBar Grid.Column="0" VerticalAlignment="Top" />
+
+            <TextBlock
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="{Binding Message, ElementName=self, Mode=OneWay}"
+                TextWrapping="WrapWithOverflow" />
+        </Grid>
+    </Grid>
+</local:View>
+

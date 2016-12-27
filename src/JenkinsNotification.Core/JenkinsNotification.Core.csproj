@@ -140,6 +140,7 @@
     </Compile>
     <Compile Include="Services\IBalloonTipService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IProgress.cs" />
     <Compile Include="Services\IServicesProvider.cs" />
     <Compile Include="Communicators\IWebSocketCommunicator.cs" />
     <Compile Include="Services\ServicesProvider.cs" />

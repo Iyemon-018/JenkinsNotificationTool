@@ -1,13 +1,17 @@
 ﻿namespace JenkinsNotification.CustomControls
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Media.Animation;
-    using Core.Utility;
-    using Utility;
+    using System.Windows.Media.Effects;
+    using JenkinsNotification.Core.Utility;
+    using JenkinsNotification.CustomControls.Utility;
     using Microsoft.Practices.Prism.Mvvm;
 
     /// <summary>
@@ -48,6 +52,24 @@
         /// 閉じるボタンの部品名
         /// </summary>
         public const string CloseWindowButtonKey = "Part_CloseButtonKey";
+
+        /// <summary>
+        /// 依存関係プロパティ <see cref="IsVisibleCaptionButton"/> を識別します。
+        /// </summary>
+        public static readonly DependencyProperty IsVisibleCaptionButtonProperty =
+            DependencyProperty.Register("IsVisibleCaptionButton"
+                                      , typeof(bool)
+                                      , typeof(View)
+                                      , new FrameworkPropertyMetadata(true, IsVisibleCaptionButtonPropertyChanged));
+
+        /// <summary>
+        /// 非アクティブ時に設定する画面全体のエフェクト
+        /// </summary>
+        private static readonly Effect DeactivatedEffect = new BlurEffect
+                                                           {
+                                                               RenderingBias = RenderingBias.Performance,
+                                                               Radius = 3.0d
+                                                           };
 
         #endregion
 
@@ -133,6 +155,21 @@
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// キャプションエリアのボタンを表示するかどうかを設定、または取得します。
+        /// </summary>
+        [Category("Custom"),
+         Description("キャプションエリアのボタンを表示するかどうかを設定、または取得します。")]
+        public bool IsVisibleCaptionButton
+        {
+            get { return (bool) GetValue(IsVisibleCaptionButtonProperty); }
+            set { SetValue(IsVisibleCaptionButtonProperty, value); }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -191,6 +228,17 @@
         }
 
         /// <summary>
+        /// <see cref="E:System.Windows.Window.Activated" /> イベントを発生させます。
+        /// </summary>
+        /// <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        protected override void OnActivated(EventArgs e)
+        {
+            Effect = null;
+
+            base.OnActivated(e);
+        }
+
+        /// <summary>
         /// <see cref="E:System.Windows.Window.Closing" /> イベントを発生させます。
         /// </summary>
         /// <param name="e">イベント データを格納している <see cref="T:System.ComponentModel.CancelEventArgs" />。</param>
@@ -208,14 +256,28 @@
         }
 
         /// <summary>
+        /// <see cref="E:System.Windows.Window.Deactivated" /> イベントを発生させます。
+        /// </summary>
+        /// <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        protected override void OnDeactivated(EventArgs e)
+        {
+            Effect = DeactivatedEffect;
+
+            base.OnDeactivated(e);
+        }
+
+        /// <summary>
         /// <see cref="E:System.Windows.Window.StateChanged" /> イベントを発生させます。
         /// </summary>
         /// <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
         protected override void OnStateChanged(EventArgs e)
         {
-            base.OnStateChanged(e);
+            if (ResizeMode != ResizeMode.NoResize)
+            {
+                base.OnStateChanged(e);
 
-            SetCaptionButtonsState();
+                SetCaptionButtonsState();
+            }
         }
 
         /// <summary>
@@ -241,6 +303,16 @@
         }
 
         /// <summary>
+        /// <see cref="IsVisibleCaptionButton"/> 依存関係プロパティの値が変更された際に呼ばれるイベントハンドラです。
+        /// </summary>
+        /// <param name="d">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private static void IsVisibleCaptionButtonPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as View)?.OnIsVisibleCaptionButtonChanged((bool)e.NewValue);
+        }
+
+        /// <summary>
         /// 最大化ボタンがクリックされたときに呼ばれるイベントハンドラです。
         /// </summary>
         /// <param name="sender">イベント送信元オブジェクト</param>
@@ -258,6 +330,37 @@
         private void MinimumWindowButton_OnClick(object sender, RoutedEventArgs e)
         {
             SystemCommands.MinimizeWindow(this);
+        }
+
+        /// <summary>
+        /// <see cref="IsVisibleCaptionButton"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnIsVisibleCaptionButtonChanged(bool newValue)
+        {
+            //
+            // すべてのキャプションボタンの表示を切り替える。
+            //
+            var visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
+            if (_minimumButton != null)
+            {
+                _minimumButton.Visibility = visibility;
+            }
+
+            if (_maximumButton != null)
+            {
+                _maximumButton.Visibility = visibility;
+            }
+
+            if (_restoreButton != null)
+            {
+                _restoreButton.Visibility = visibility;
+            }
+
+            if (_closeButton != null)
+            {
+                _closeButton.Visibility = visibility;
+            }
         }
 
         /// <summary>

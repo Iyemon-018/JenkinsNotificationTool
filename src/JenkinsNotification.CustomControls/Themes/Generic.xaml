@@ -103,6 +103,11 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style BasedOn="{StaticResource MaterialDesignCircularProgressBar}" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Width" Value="48" />
+        <Setter Property="Height" Value="48" />
+        <Setter Property="IsIndeterminate" Value="True" />
+    </Style>
     <!--  #End Region 標準コンポーネントのStyle定義  -->
 
 
