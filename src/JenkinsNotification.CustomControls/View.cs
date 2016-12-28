@@ -244,7 +244,7 @@
         /// <param name="e">イベント データを格納している <see cref="T:System.ComponentModel.CancelEventArgs" />。</param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (!_isCompletedClosingAnimation)
+            if (!_isCompletedClosingAnimation && _closingAnimation != null)
             {
                 // 先に終了アニメーションを実行する。
                 // 終わったらViewをクローズする。

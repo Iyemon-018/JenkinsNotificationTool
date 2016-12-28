@@ -34,6 +34,8 @@
         /// </summary>
         private static readonly ApplicationManager _instance = new ApplicationManager();
 
+        private IWebSocketCommunicator _webSocketCommunicator;
+
         #endregion
 
         #region Ctor
@@ -65,10 +67,45 @@
         /// </summary>
         public IBalloonTipService BalloonTipService { get; private set; }
 
+        public IDataManager DataManager { get; private set; }
+
         /// <summary>
         /// WebSocket 通信を取得します。
         /// </summary>
-        public IWebSocketCommunicator WebSocketCommunicator { get; private set; }
+        public IWebSocketCommunicator WebSocketCommunicator
+        {
+            get { return _webSocketCommunicator; }
+            private set
+            {
+                _webSocketCommunicator = value;
+                OnWebSocketCommunicatorChanged(value);
+            }
+        }
+
+        private void OnWebSocketCommunicatorChanged(IWebSocketCommunicator newValue)
+        {
+            if (WebSocketCommunicator != null)
+            {
+                LogManager.Info("☆☆ 新しいWebSocketが設定されたので通信を切断する。");
+                CleanupWebSocket();
+            }
+
+            if (WebSocketCommunicator != null)
+            {
+                WebSocketCommunicator.Connected += WebSocketCommunicator_OnConnected;
+                WebSocketCommunicator.Received += WebSocketCommunicator_OnReceived;
+            }
+        }
+
+        private void WebSocketCommunicator_OnReceived(object sender, ReceivedEventArgs e)
+        {
+            DataManager.ReceivedData(e.ReceivedType, e.Message, e.GetData());
+        }
+
+        private void WebSocketCommunicator_OnConnected(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 
@@ -148,10 +185,23 @@
             LogManager.Info("☆☆ アプリケーションをシャットダウンする。");
 
             LogManager.Info("☆☆ WebSocket通信を切断する。");
-            WebSocketCommunicator?.Disconnect();
-            WebSocketCommunicator?.Dispose();
+            CleanupWebSocket();
 
             Application.Current.Shutdown();
+        }
+
+        private void CleanupWebSocket()
+        {
+            if (WebSocketCommunicator != null)
+            {
+                // TODO イベント購読の解除
+                WebSocketCommunicator.Connected -= WebSocketCommunicator_OnConnected;
+                WebSocketCommunicator.Received -= WebSocketCommunicator_OnReceived;
+
+                // 切断
+                WebSocketCommunicator.Disconnect();
+                WebSocketCommunicator.Dispose();
+            }
         }
 
         #endregion

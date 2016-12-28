@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
+    <Compile Include="Communicators\JenkinsData.cs" />
     <Compile Include="Communicators\ReceivedErrorEventArgs.cs" />
     <Compile Include="Communicators\ReceivedEventArgs.cs" />
     <Compile Include="Communicators\WebSocketCommunicator.cs" />
@@ -113,7 +114,9 @@
     <Compile Include="Configurations\Verify\IConfigurationVerify.cs" />
     <Compile Include="Configurations\Verify\NotifyConfigurationVerify.cs" />
     <Compile Include="Configurations\Verify\VerifyResult.cs" />
+    <Compile Include="DataManager.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Executers\IExecuter.cs" />
     <Compile Include="Extensions\AutoMapperExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
@@ -124,6 +127,7 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\XmlDeserializer.cs" />
     <Compile Include="Extensions\XmlSerializer.cs" />
+    <Compile Include="IDataManager.cs" />
     <Compile Include="Jenkins\Api\JobExecuteResult.cs" />
     <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Profile.cs" />
