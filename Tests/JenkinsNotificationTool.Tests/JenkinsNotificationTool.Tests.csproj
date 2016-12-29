@@ -90,6 +90,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Core\DataManagerTests.cs" />
     <Compile Include="Core\Extensions\CollectionExtensionsTests.cs" />
     <Compile Include="Core\Extensions\DateTimeExtensionsTests.cs" />
     <Compile Include="Core\Extensions\ExceptionExtensionsTest.cs" />

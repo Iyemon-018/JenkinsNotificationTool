@@ -1,5 +1,6 @@
 ﻿namespace JenkinsNotification.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Executers;
@@ -40,6 +41,7 @@
         /// <param name="task">タスク</param>
         public void AddTask(IExecuter task)
         {
+            if (task == null) throw new ArgumentNullException(nameof(task));
             Tasks.Add(task);
         }
 
@@ -49,6 +51,8 @@
         /// <param name="tasks">タスク</param>
         public void AddTasks(IEnumerable<IExecuter> tasks)
         {
+            if (tasks == null) throw new ArgumentNullException(nameof(tasks));
+            if (!tasks.Any()) throw new ArgumentNullException(nameof(tasks));
             Tasks.AddRange(tasks);
         }
 
@@ -87,6 +91,11 @@
                 task.Execute();
             }
         }
+
+        /// <summary>
+        /// 実行可能なタスクが存在するかどうかを取得します。
+        /// </summary>
+        public bool HasTask => Tasks != null && Tasks.Any();
 
         #endregion
     }

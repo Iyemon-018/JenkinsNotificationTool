@@ -8,6 +8,11 @@
     /// </summary>
     public interface IDataManager
     {
+        /// <summary>
+        /// 実行可能なタスクが存在するかどうかを取得します。
+        /// </summary>
+        bool HasTask { get; }
+
         #region Methods
 
         /// <summary>
