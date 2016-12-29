@@ -7,6 +7,7 @@
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.Configurations;
+    using JenkinsNotification.Core.Executers;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
@@ -77,7 +78,12 @@
                 isInitializeConfig = true;
             }
 
-            ApplicationManager.Initialize();
+            //
+            // アプリケーション管理機能の初期化を行う。
+            //
+            var dataManager = new DataManager();
+            dataManager.AddTask(new JobResultExecuter());
+            ApplicationManager.Initialize(dataManager);
             ApplicationManager.InitializeBalloonTipService(new BalloonTipService(view.TaskbarIcon));
 
             var webSocket = new WebSocketCommunicator();

@@ -4,9 +4,9 @@
     using System.Reflection;
     using System.Windows;
     using AutoMapper;
+    using Communicators;
     using ComponentModels;
     using Configurations;
-    using JenkinsNotification.Core.Communicators;
     using Logs;
     using Services;
     using Utility;
@@ -34,6 +34,13 @@
         /// </summary>
         private static readonly ApplicationManager _instance = new ApplicationManager();
 
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// WebSocket 通信機能
+        /// </summary>
         private IWebSocketCommunicator _webSocketCommunicator;
 
         #endregion
@@ -67,6 +74,9 @@
         /// </summary>
         public IBalloonTipService BalloonTipService { get; private set; }
 
+        /// <summary>
+        /// データ管理機能を取得します。
+        /// </summary>
         public IDataManager DataManager { get; private set; }
 
         /// <summary>
@@ -82,31 +92,6 @@
             }
         }
 
-        private void OnWebSocketCommunicatorChanged(IWebSocketCommunicator newValue)
-        {
-            if (WebSocketCommunicator != null)
-            {
-                LogManager.Info("☆☆ 新しいWebSocketが設定されたので通信を切断する。");
-                CleanupWebSocket();
-            }
-
-            if (WebSocketCommunicator != null)
-            {
-                WebSocketCommunicator.Connected += WebSocketCommunicator_OnConnected;
-                WebSocketCommunicator.Received += WebSocketCommunicator_OnReceived;
-            }
-        }
-
-        private void WebSocketCommunicator_OnReceived(object sender, ReceivedEventArgs e)
-        {
-            DataManager.ReceivedData(e.ReceivedType, e.Message, e.GetData());
-        }
-
-        private void WebSocketCommunicator_OnConnected(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region Methods
@@ -114,23 +99,15 @@
         /// <summary>
         /// アプリケーション機能の初期化処理を実行します。
         /// </summary>
-        public static void Initialize()
+        public static void Initialize(IDataManager dataManager)
         {
             using (TimeTracer.StartNew("アプリケーション初期化シークエンスを実行する。"))
             {
                 // マッピングの初期化を行う。
                 InitializeMapping();
 
+                Instance.DataManager = dataManager;
             }
-        }
-
-        /// <summary>
-        /// オブジェクトのマッピング情報を初期化します。
-        /// </summary>
-        private static void InitializeMapping()
-        {
-            Mapper.Initialize(x => x.AddProfile<Profile>());
-            Mapper.AssertConfigurationIsValid();
         }
 
         /// <summary>
@@ -176,7 +153,7 @@
             if (communicator == null) throw new ArgumentNullException(nameof(communicator));
             Instance.WebSocketCommunicator = communicator;
         }
-        
+
         /// <summary>
         /// このアプリケーションを終了します。
         /// </summary>
@@ -190,17 +167,92 @@
             Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// WebSocket 通信機能を解放する。
+        /// </summary>
         private void CleanupWebSocket()
         {
             if (WebSocketCommunicator != null)
             {
-                // TODO イベント購読の解除
-                WebSocketCommunicator.Connected -= WebSocketCommunicator_OnConnected;
-                WebSocketCommunicator.Received -= WebSocketCommunicator_OnReceived;
+                LogManager.Info("WebSocket 機能のクリーンアップを実行して、イベント購読の解除と切断を行う。");
+
+                // イベント購読の解除
+                WebSocketCommunicator.Connected        -= WebSocketCommunicator_OnConnected;
+                WebSocketCommunicator.ConnectionFailed -= WebSocketCommunicator_OnConnectionFailed;
+                WebSocketCommunicator.Received         -= WebSocketCommunicator_OnReceived;
 
                 // 切断
                 WebSocketCommunicator.Disconnect();
                 WebSocketCommunicator.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// オブジェクトのマッピング情報を初期化します。
+        /// </summary>
+        private static void InitializeMapping()
+        {
+            Mapper.Initialize(x => x.AddProfile<Profile>());
+            Mapper.AssertConfigurationIsValid();
+        }
+
+        /// <summary>
+        /// <see cref="WebSocketCommunicator"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnWebSocketCommunicatorChanged(IWebSocketCommunicator newValue)
+        {
+            if (WebSocketCommunicator != null)
+            {
+                LogManager.Info("☆☆ 新しいWebSocketが設定されたので通信を切断する。");
+                CleanupWebSocket();
+            }
+
+            if (WebSocketCommunicator != null)
+            {
+                LogManager.Info("☆☆ WebSocket 機能のイベント購読を開始する。");
+                WebSocketCommunicator.Connected        += WebSocketCommunicator_OnConnected;
+                WebSocketCommunicator.ConnectionFailed += WebSocketCommunicator_OnConnectionFailed;
+                WebSocketCommunicator.Received         += WebSocketCommunicator_OnReceived;
+            }
+        }
+
+        /// <summary>
+        /// WebSocket 通信で接続が確立された際に呼び出されるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void WebSocketCommunicator_OnConnected(object sender, EventArgs e)
+        {
+            LogManager.Info($"{WebSocketCommunicator.Uri} との接続を確立した。");
+        }
+
+        /// <summary>
+        /// WebSocket 通信で接続が失敗した際に呼び出されるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="eventArgs">イベント引数オブジェクト</param>
+        private void WebSocketCommunicator_OnConnectionFailed(object sender, EventArgs eventArgs)
+        {
+            LogManager.Info($"{WebSocketCommunicator.Uri} との接続確立に失敗した。");
+        }
+
+        /// <summary>
+        /// WebSocket 通信でデータを受信した際に呼び出されるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void WebSocketCommunicator_OnReceived(object sender, ReceivedEventArgs e)
+        {
+            if (e.ReceivedType == ReceivedType.Message)
+            {
+                LogManager.Info("WebSocket 通信でメッセージデータを受信した。");
+                DataManager.ReceivedMessage(e.Message);
+            }
+            else if (e.ReceivedType == ReceivedType.Binary)
+            {
+                LogManager.Info("WebSocket 通信でバイナリデータを受信した。");
+                DataManager.ReceivedData(e.GetData());
             }
         }
 

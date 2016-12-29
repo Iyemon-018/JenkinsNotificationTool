@@ -1,14 +1,39 @@
 ﻿namespace JenkinsNotification.Core
 {
     using System.Collections.Generic;
-    using JenkinsNotification.Core.Executers;
+    using Executers;
 
+    /// <summary>
+    /// データ管理機能インターフェースです。
+    /// </summary>
     public interface IDataManager
     {
+        #region Methods
+
+        /// <summary>
+        /// タスクを追加します。
+        /// </summary>
+        /// <param name="task">タスク</param>
         void AddTask(IExecuter task);
 
+        /// <summary>
+        /// タスクを追加します。
+        /// </summary>
+        /// <param name="tasks">タスク</param>
         void AddTasks(IEnumerable<IExecuter> tasks);
 
-        void ReceivedData(ReceivedType receivedType, string eMessage, byte[] getData);
+        /// <summary>
+        /// データを受信したことを通知します。
+        /// </summary>
+        /// <param name="data">受信データ</param>
+        void ReceivedData(byte[] data);
+
+        /// <summary>
+        /// メッセージを受信したことを通知します。
+        /// </summary>
+        /// <param name="message">受信メッセージ</param>
+        void ReceivedMessage(string message);
+
+        #endregion
     }
 }

@@ -35,7 +35,7 @@ namespace JenkinsNotification.Debug.LogViewer
             //
             // アプリケーション機能の初期化を実施する。
             //
-            ApplicationManager.Initialize();
+            ApplicationManager.Initialize(null);
         }
     }
 }
