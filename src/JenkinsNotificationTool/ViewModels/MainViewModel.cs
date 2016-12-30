@@ -56,6 +56,7 @@
             ReceivedNotificationListCommand = new DelegateCommand(() =>
                                                                   {
                                                                       // TODO 通知受信履歴一覧を表示する。
+                                                                      ViewService.Show(ScreenKey.NotificationHistory);
                                                                   });
 
             ShowBalloonCommand = new DelegateCommand(() =>

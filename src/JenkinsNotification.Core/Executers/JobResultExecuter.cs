@@ -60,7 +60,9 @@
         public void Execute()
         {
             LogManager.Info("Jenkins ジョブ結果データを蓄積する。");
-            DataStore.Instance.AddJobResult(_result.Map<IJobExecuteResult>());
+            var data = _result.Map<JobExecuteResultViewModel>();
+            data.Received = DateTime.Now;
+            DataStore.Instance.AddJobResult(data);
         }
 
         #endregion

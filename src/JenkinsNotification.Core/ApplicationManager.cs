@@ -155,6 +155,28 @@
         }
 
         /// <summary>
+        /// WebSocket通信を試みます。
+        /// </summary>
+        /// <exception cref="System.InvalidOperationException"><see cref="WebSocketCommunicator"/> が初期化されていない場合にスローされます。</exception>
+        public static void TryConnectionWebSocket()
+        {
+            if (Instance.WebSocketCommunicator == null)
+            {
+                // TODO リソースに追加する。
+                throw new InvalidOperationException($"{nameof(WebSocketCommunicator)} が初期化されていません。{nameof(SetWebSocketCommunicator)} メソッドを呼び出してから実行してください。");
+            }
+
+            //
+            // 接続を試みる。
+            //
+            Instance.WebSocketCommunicator
+                    .Connection(Instance.ApplicationConfiguration
+                                        .NotifyConfiguration
+                                        .TargetUri
+                              , Constants.WebSocketRetryMaximum);
+        }
+
+        /// <summary>
         /// このアプリケーションを終了します。
         /// </summary>
         public void Shutdown()

@@ -239,6 +239,7 @@
         {
             LogManager.Error($"{Uri} からエラーを検出しました。", e.Exception);
             OnReceivedError(e.Exception);
+            Task.Delay(TimeSpan.FromSeconds(3));
             Connection();
         }
 

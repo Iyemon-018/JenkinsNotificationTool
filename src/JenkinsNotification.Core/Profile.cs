@@ -1,10 +1,11 @@
 ﻿namespace JenkinsNotification.Core
 {
-    using JenkinsNotification.Core.Configurations;
-    using JenkinsNotification.Core.Extensions;
-    using JenkinsNotification.Core.Jenkins.Api;
-    using JenkinsNotification.Core.ViewModels.Api;
-    using JenkinsNotification.Core.ViewModels.Configurations;
+    using System;
+    using Configurations;
+    using Extensions;
+    using Jenkins.Api;
+    using ViewModels.Api;
+    using ViewModels.Configurations;
 
     /// <summary>
     /// このアセンブリのマッピング構成クラスです。
@@ -29,7 +30,8 @@
                 .ReverseMap()
                 .ForMember(d => d.PopupTimeoutValue, o => o.Ignore());
 
-            CreateMap<JobExecuteResult, IJobExecuteResult>()
+            CreateMap<JobExecuteResult, JobExecuteResultViewModel>()
+                .ForMember(d => d.Received, o => o.Ignore())
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.project))
                 .ForMember(d => d.BuildNumber, o=>o.MapFrom(s => s.number))
                 .ForMember(d => d.Status, o=> o.MapFrom(s => s.status))

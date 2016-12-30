@@ -205,8 +205,7 @@
         /// </summary>
         private void ExecuteTestConnectionCommand()
         {
-            ApplicationManager.WebSocketCommunicator
-                              .Connection(NotifyConfiguration.TargetUri, 3);
+            ApplicationManager.TryConnectionWebSocket();
         }
 
         /// <summary>

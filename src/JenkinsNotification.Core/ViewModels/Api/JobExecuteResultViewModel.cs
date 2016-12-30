@@ -1,13 +1,14 @@
 ﻿namespace JenkinsNotification.Core.ViewModels.Api
 {
-    using JenkinsNotification.Core.ComponentModels;
+    using System;
+    using ComponentModels;
 
     /// <summary>
     /// ジョブ実行結果クラスです。
     /// </summary>
-    /// <seealso cref="JenkinsNotification.Core.ViewModels.Api.IJobExecuteResult" />
-    /// <seealso cref="JenkinsNotification.Core.ComponentModels.ViewModelBase" />
-    /// <remarks><see cref="JenkinsNotification.Core.Jenkins.Api.JobExecuteResult" /> クラスの情報を保持します。</remarks>
+    /// <seealso cref="IJobExecuteResult" />
+    /// <seealso cref="ViewModelBase" />
+    /// <remarks><see cref="Jenkins.Api.JobExecuteResult" /> クラスの情報を保持します。</remarks>
     internal class JobExecuteResultViewModel : ViewModelBase, IJobExecuteResult
     {
         #region Fields
@@ -31,6 +32,11 @@
         /// 状態
         /// </summary>
         private JobStatus _status;
+
+        /// <summary>
+        /// 受信日時
+        /// </summary>
+        private DateTime _received;
 
         #endregion
 
@@ -70,6 +76,15 @@
         {
             get { return _result; }
             internal set { SetProperty(ref _result, value); }
+        }
+
+        /// <summary>
+        /// 受信日時を取得します。
+        /// </summary>
+        public DateTime Received
+        {
+            get { return _received; }
+            internal set { SetProperty(ref _received, value); }
         }
 
         #endregion

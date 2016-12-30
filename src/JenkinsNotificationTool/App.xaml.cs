@@ -20,6 +20,10 @@
     /// </summary>
     public partial class App : Application
     {
+        private bool _isConnectedWebSocket = true;
+
+        private readonly IServicesProvider _servicesProvider;
+
         #region Ctor
 
         /// <summary>
@@ -33,6 +37,8 @@
             DispatcherUnhandledException                 += App_OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException   += App_OnUnhandledException;
             AppDomain.CurrentDomain.FirstChanceException += App_OnFirstChanceException;
+
+            _servicesProvider = new ServicesProvider(new DialogService(), new ViewService());
         }
 
         #endregion
@@ -49,8 +55,8 @@
             // アプリケーションで使いまわすインジェクション サービスを設定する。
             //
             ViewService.RegisterView(ScreenKey.Configuration, typeof(ConfigurationView));
-            var servicesProvider = new ServicesProvider(new DialogService(), new ViewService());
-            ApplicationManager.SetDefaultViewModelLocater(servicesProvider);
+            ViewService.RegisterView(ScreenKey.NotificationHistory, typeof(NotifyHistoryView));
+            ApplicationManager.SetDefaultViewModelLocater(_servicesProvider);
 
             base.OnStartup(e);
 
@@ -65,7 +71,6 @@
             //
             // アプリケーション機能の初期化を実施する。
             //
-            var isInitializeConfig = false;
             try
             {
                 //
@@ -75,7 +80,7 @@
             }
             catch (ConfigurationLoadException)
             {
-                isInitializeConfig = true;
+                _isConnectedWebSocket = false;
             }
 
             //
@@ -87,12 +92,21 @@
             ApplicationManager.InitializeBalloonTipService(new BalloonTipService(view.TaskbarIcon));
 
             var webSocket = new WebSocketCommunicator();
+            webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
             ApplicationManager.SetWebSocketCommunicator(webSocket);
+            ApplicationManager.TryConnectionWebSocket();
 
-            if (isInitializeConfig)
+            if (!_isConnectedWebSocket)
             {
-                servicesProvider.ViewService.Show(ScreenKey.Configuration);
+                _servicesProvider.ViewService.Show(ScreenKey.Configuration);
             }
+        }
+
+        private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
+        {
+            _servicesProvider.DialogService.ShowError($"{ApplicationManager.Instance.ApplicationConfiguration.NotifyConfiguration.TargetUri} との接続に失敗しました。{Environment.NewLine}"
+                                                      + "接続設定を確認してください。");
+            _servicesProvider.ViewService.Show(ScreenKey.Configuration);
         }
 
         /// <summary>
