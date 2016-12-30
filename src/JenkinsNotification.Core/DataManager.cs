@@ -31,6 +31,11 @@
         /// </summary>
         private List<IExecuter> Tasks { get; }
 
+        /// <summary>
+        /// 実行可能なタスクが存在するかどうかを取得します。
+        /// </summary>
+        public bool HasTask => Tasks != null && Tasks.Any();
+
         #endregion
 
         #region Methods
@@ -91,11 +96,6 @@
                 task.Execute();
             }
         }
-
-        /// <summary>
-        /// 実行可能なタスクが存在するかどうかを取得します。
-        /// </summary>
-        public bool HasTask => Tasks != null && Tasks.Any();
 
         #endregion
     }
