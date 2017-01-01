@@ -92,7 +92,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Core\Communicators\WebSocketCommunicatorTests.cs" />
     <Compile Include="Core\DataManagerTests.cs" />
     <Compile Include="Core\Executers\MockExecuter.cs" />
     <Compile Include="Core\Extensions\CollectionExtensionsTests.cs" />
