@@ -68,7 +68,7 @@
         /// </summary>
         void Disconnect();
 
-        Task SendAsync(byte[] sendData, TimeSpan timeout);
+        Task Send(byte[] sendData, TimeSpan timeout);
 
         #endregion
     }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using JenkinsNotification.Core.Extensions;
     using Logs;
     using Utility;
     using SuperSocket.ClientEngine;
@@ -94,9 +95,11 @@
         /// </summary>
         /// <param name="uri">URI</param>
         /// <param name="retryMaximum">リトライ最大回数</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="uri"/> がnull の場合にスローされます。</exception>
         /// <exception cref="System.ArgumentOutOfRangeException"><see cref="retryMaximum"/> が0 以下の場合にスローされます。</exception>
         public void Connection(string uri, int retryMaximum)
         {
+            if (uri.IsEmpty()) throw new ArgumentNullException(nameof(uri));
             if (retryMaximum <= 0) throw new ArgumentOutOfRangeException(nameof(retryMaximum));
 
             Uri                 = uri;
@@ -127,7 +130,7 @@
             }
         }
 
-        public Task SendAsync(byte[] sendData, TimeSpan timeout)
+        public Task Send(byte[] sendData, TimeSpan timeout)
         {
             throw new NotImplementedException();
         }
