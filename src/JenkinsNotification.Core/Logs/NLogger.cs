@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Logs
 {
     using System;
+    using JenkinsNotification.Core.Utility;
     using NLog;
     using LogLevel = JenkinsNotification.Core.LogLevel;
 
@@ -26,6 +27,7 @@
         /// </summary>
         public NLogger()
         {
+            FileUtility.CreateDirectory(PathUtility.AppTempPath);
             _logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
