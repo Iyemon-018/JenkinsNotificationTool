@@ -26,12 +26,7 @@
         /// 各種サービス提供機能
         /// </summary>
         private readonly IServicesProvider _servicesProvider;
-
-        /// <summary>
-        /// WebSocket 通信機能
-        /// </summary>
-        private readonly IWebSocketCommunicator _webSocket;
-
+        
         /// <summary>
         /// WebSocket 通信が確立できたかどうか
         /// </summary>
@@ -52,28 +47,19 @@
             DispatcherUnhandledException                 += App_OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException   += App_OnUnhandledException;
             AppDomain.CurrentDomain.FirstChanceException += App_OnFirstChanceException;
+            
+            //
+            // ログ機能の初期化を行う。
+            //
+            LogManager.AddLogger(new NLogger());
 
-            _webSocket = new WebSocketCommunicator();
-            _webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
             _servicesProvider = new ServicesProvider(new DialogService(), new ViewService());
         }
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// <see cref="E:System.Windows.Application.Exit" /> イベントを発生させます。
-        /// </summary>
-        /// <param name="e">イベント データを格納している <see cref="T:System.Windows.ExitEventArgs" />。</param>
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
-
-            _webSocket.ConnectionFailed -= WebSocket_OnConnectionFailed;
-            _webSocket.Dispose();
-        }
-
+        
         /// <summary>
         /// <see cref="E:System.Windows.Application.Startup" /> イベントを発生させます。
         /// </summary>
@@ -123,7 +109,9 @@
             //
             // WebSocket 通信を開始する。
             //
-            ApplicationManager.SetWebSocketCommunicator(_webSocket);
+            var webSocket = new WebSocketCommunicator();
+            webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
+            ApplicationManager.SetWebSocketCommunicator(webSocket);
             ApplicationManager.TryConnectionWebSocket();
 
             if (!_isConnectedWebSocket)

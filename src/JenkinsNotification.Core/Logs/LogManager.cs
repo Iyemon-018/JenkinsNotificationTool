@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Logs
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Runtime.CompilerServices;
     using Extensions;
@@ -16,6 +17,15 @@
         /// 唯一のインスタンス
         /// </summary>
         private static readonly LogManager _instance = new LogManager();
+
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// ログ出力機能コレクション
+        /// </summary>
+        private readonly List<ILogger> _loggers = new List<ILogger>();
 
         #endregion
 
@@ -41,6 +51,17 @@
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// ログ出力機能を追加します。
+        /// </summary>
+        /// <param name="logger">ログ出力機能</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="logger"/> がnull の場合にスローされます。</exception>
+        public static void AddLogger(ILogger logger)
+        {
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
+            Instance._loggers.Add(logger);
+        }
 
         /// <summary>
         /// デバッグメッセージを出力します。
@@ -185,7 +206,11 @@
         private void Output(LogLevel level, string message, string filePath, string memberName, int lineNumber)
         {
             var fileName = Path.GetFileName(filePath);
-            Console.WriteLine($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}|[{level}]|{fileName}/{memberName}/Line:{lineNumber}|{message}");
+            var outputMessage = $"{fileName}/{memberName}/Line:{lineNumber}|{message}";
+            foreach (var logger in _loggers)
+            {
+                logger.Write(level, outputMessage);
+            }
         }
 
         #endregion
