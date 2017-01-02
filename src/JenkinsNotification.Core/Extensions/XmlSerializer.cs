@@ -84,15 +84,15 @@
             // とする。
             //
             var xmlSettings = new XmlWriterSettings
-            {
-                Encoding = new UnicodeEncoding(false, false),
-                Indent = true,
-                OmitXmlDeclaration = false
-            };
+                              {
+                                  Encoding = new UnicodeEncoding(false, false),
+                                  Indent = true,
+                                  OmitXmlDeclaration = false
+                              };
 
             string result;
 
-            using (var textWriter = new Utf8StringWriter())
+            var textWriter = new Utf8StringWriter();
             using (var xmlWriter = XmlWriter.Create(textWriter, xmlSettings))
             {
                 // シリアライズ実施
@@ -116,8 +116,9 @@
         {
             #region Properties
 
-            /// <summary>Gets the <see cref="T:System.Text.Encoding" /> in which the output is written.</summary>
-            /// <returns>The Encoding in which the output is written.</returns>
+            /// <summary>
+            /// 出力の書き込みに使用する <see cref="T:System.Text.Encoding" /> を取得します。
+            /// </summary>
             public override Encoding Encoding => Encoding.UTF8;
 
             #endregion

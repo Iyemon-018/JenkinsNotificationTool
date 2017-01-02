@@ -162,11 +162,11 @@
                            .Timeout(TimeSpan.FromSeconds(1));
 
             // act
-            var ex = Assert.ThrowsAsync<AggregateException>(async () => result = task.Result);
+            var ex = Assert.Throws<AggregateException>(() => result = task.Result);
 
             // assert
             Assert.NotNull(ex);
-            var exceptions = ex.Result.Flatten().InnerExceptions;
+            var exceptions = ex.Flatten().InnerExceptions;
             Assert.NotNull(exceptions);
             Assert.True(exceptions.Count == 1);
             Assert.IsType<TimeoutException>(exceptions.First());
