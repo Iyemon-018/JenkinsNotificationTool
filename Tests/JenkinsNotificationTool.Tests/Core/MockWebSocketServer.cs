@@ -173,7 +173,11 @@
             }
             catch (Exception e)
             {
+                //
                 // 通信切断に失敗した場合、それ以降は通信しないものとして扱う。
+                // CIサービスでテストを実行するとこのルートで例外が起きる。
+                // おそらく、Dispose するよりも前のタイミングで_client.ReceiveAsync() が実行されてしまうため。
+                //
                 Console.WriteLine($@"<WebSocket Server> force disconnected. {e.Message}");
                 OnClosedClient(context.Request.RemoteEndPoint);
             }
