@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using System.Windows.Threading;
     using JenkinsNotification.Core.Extensions;
     using Logs;
     using Utility;
@@ -266,6 +267,7 @@
         {
             LogManager.Info($"{Uri} との接続を確立した。");
             _isConnected = true;
+            //Dispatcher.CurrentDispatcher.Invoke(OnConnected);
             ThreadUtility.ExecuteUiThread(OnConnected);
         }
 

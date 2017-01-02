@@ -14,11 +14,8 @@
         /// <param name="execute">UIスレッドで実行するハンドラ</param>
         public static void ExecuteUiThread(Action execute)
         {
-            if (Application.Current != null)
-            {
-                var dispatcher = Application.Current.Dispatcher;
-                dispatcher.BeginInvoke(new Action(execute));
-            }
+            var dispatcher = Constants.RootDispatcher;
+            dispatcher.Invoke(execute);
         }
     }
 }

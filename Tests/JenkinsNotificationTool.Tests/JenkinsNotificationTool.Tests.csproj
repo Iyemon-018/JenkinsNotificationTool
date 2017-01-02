@@ -103,11 +103,15 @@
     <Compile Include="Core\Extensions\StringExtensionsTests.cs" />
     <Compile Include="Core\Extensions\TaskExtensionsTests.cs" />
     <Compile Include="Core\Extensions\XmlDeserializerSerializerTests.cs" />
+    <Compile Include="Core\MockWebSocketServer.cs" />
     <Compile Include="Core\ProfileTests.cs" />
     <Compile Include="Core\Services\MockDialogService.cs" />
     <Compile Include="Core\Utility\EnumUtilityTests.cs" />
     <Compile Include="Core\Utility\FileUtilityTests.cs" />
     <Compile Include="Core\Utility\PathUtilityTests.cs" />
+    <Compile Include="Core\WebSocketClientEventArgs.cs" />
+    <Compile Include="Core\Communicators\WebSocketCommunicatorTests.cs" />
+    <Compile Include="Core\WebSocketReceivedRequestEventArgs.cs" />
     <Compile Include="CustomControls\Converters\BooleanToEnumConverterTests.cs" />
     <Compile Include="CustomControls\Converters\InvertBooleanConverterTests.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
