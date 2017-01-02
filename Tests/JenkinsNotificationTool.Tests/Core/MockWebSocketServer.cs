@@ -61,7 +61,7 @@
         {
             var httpListener = new HttpListener();
             httpListener.Prefixes.Add(uriPrefix);
-            httpListener.Start();                       // 通信開始
+            httpListener.Start(); // 通信開始
 
             //
             // クライアントからの接続を待つ。
@@ -148,25 +148,34 @@
             // 接続イベントを着火する。
             OnConnectionClient(context.Request.RemoteEndPoint);
 
-            //
-            // クライアントからの切断を受信するまで永久に受信を待機する。
-            //
-            while (_client.State == WebSocketState.Open)
+            try
             {
-                // 受信待ち
-                var buff = new ArraySegment<byte>(new byte[1024]);
-                var received = await _client.ReceiveAsync(buff, CancellationToken.None);
+                //
+                // クライアントからの切断を受信するまで永久に受信を待機する。
+                //
+                while (_client.State == WebSocketState.Open)
+                {
+                    // 受信待ち
+                    var buff = new ArraySegment<byte>(new byte[1024]);
+                    var received = await _client.ReceiveAsync(buff, CancellationToken.None);
 
-                if (received.MessageType == WebSocketMessageType.Close)
-                {
-                    // クライアントが切断してきた。
-                    OnClosedClient(context.Request.RemoteEndPoint);
+                    if (received.MessageType == WebSocketMessageType.Close)
+                    {
+                        // クライアントが切断してきた。
+                        OnClosedClient(context.Request.RemoteEndPoint);
+                    }
+                    else if (received.MessageType == WebSocketMessageType.Text)
+                    {
+                        // クライアントからテキストを受信した。
+                        OnReceivedRequest(context.Request.RemoteEndPoint, buff.Array);
+                    }
                 }
-                else if (received.MessageType == WebSocketMessageType.Text)
-                {
-                    // クライアントからテキストを受信した。
-                    OnReceivedRequest(context.Request.RemoteEndPoint, buff.Array);
-                }
+            }
+            catch (Exception e)
+            {
+                // 通信切断に失敗した場合、それ以降は通信しないものとして扱う。
+                Console.WriteLine($@"<WebSocket Server> force disconnected. {e.Message}");
+                OnClosedClient(context.Request.RemoteEndPoint);
             }
 
             // 接続終了
