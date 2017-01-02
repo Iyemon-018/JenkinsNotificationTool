@@ -20,9 +20,24 @@
     /// </summary>
     public partial class App : Application
     {
+        #region Fields
+
+        /// <summary>
+        /// 各種サービス提供機能
+        /// </summary>
+        private readonly IServicesProvider _servicesProvider;
+
+        /// <summary>
+        /// WebSocket 通信機能
+        /// </summary>
+        private readonly IWebSocketCommunicator _webSocket;
+
+        /// <summary>
+        /// WebSocket 通信が確立できたかどうか
+        /// </summary>
         private bool _isConnectedWebSocket = true;
 
-        private readonly IServicesProvider _servicesProvider;
+        #endregion
 
         #region Ctor
 
@@ -38,12 +53,26 @@
             AppDomain.CurrentDomain.UnhandledException   += App_OnUnhandledException;
             AppDomain.CurrentDomain.FirstChanceException += App_OnFirstChanceException;
 
+            _webSocket = new WebSocketCommunicator();
+            _webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
             _servicesProvider = new ServicesProvider(new DialogService(), new ViewService());
         }
 
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// <see cref="E:System.Windows.Application.Exit" /> イベントを発生させます。
+        /// </summary>
+        /// <param name="e">イベント データを格納している <see cref="T:System.Windows.ExitEventArgs" />。</param>
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            _webSocket.ConnectionFailed -= WebSocket_OnConnectionFailed;
+            _webSocket.Dispose();
+        }
 
         /// <summary>
         /// <see cref="E:System.Windows.Application.Startup" /> イベントを発生させます。
@@ -87,26 +116,20 @@
             // アプリケーション管理機能の初期化を行う。
             //
             var dataManager = new DataManager();
+            var balloonTipService = new BalloonTipService(view.TaskbarIcon);
             dataManager.AddTask(new JobResultExecuter());
-            ApplicationManager.Initialize(dataManager);
-            ApplicationManager.InitializeBalloonTipService(new BalloonTipService(view.TaskbarIcon));
+            ApplicationManager.Initialize(balloonTipService, dataManager);
 
-            var webSocket = new WebSocketCommunicator();
-            webSocket.ConnectionFailed += WebSocket_OnConnectionFailed;
-            ApplicationManager.SetWebSocketCommunicator(webSocket);
+            //
+            // WebSocket 通信を開始する。
+            //
+            ApplicationManager.SetWebSocketCommunicator(_webSocket);
             ApplicationManager.TryConnectionWebSocket();
 
             if (!_isConnectedWebSocket)
             {
                 _servicesProvider.ViewService.Show(ScreenKey.Configuration);
             }
-        }
-
-        private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
-        {
-            _servicesProvider.DialogService.ShowError($"{ApplicationManager.Instance.ApplicationConfiguration.NotifyConfiguration.TargetUri} との接続に失敗しました。{Environment.NewLine}"
-                                                      + "接続設定を確認してください。");
-            _servicesProvider.ViewService.Show(ScreenKey.Configuration);
         }
 
         /// <summary>
@@ -159,6 +182,20 @@
                 , Products.Current.Title
                 , MessageBoxButton.OK
                 , MessageBoxImage.Error);
+        }
+
+        /// <summary>
+        /// WebSocket 通信接続の確率に失敗した際に呼び出されるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
+        {
+            _servicesProvider.DialogService
+                             .ShowError(
+                                 $"{ApplicationManager.Instance.ApplicationConfiguration.NotifyConfiguration.TargetUri} との接続に失敗しました。{Environment.NewLine}"
+                                 + "接続設定を確認してください。");
+            _servicesProvider.ViewService.Show(ScreenKey.Configuration);
         }
 
         #endregion

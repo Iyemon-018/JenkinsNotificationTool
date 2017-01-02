@@ -99,26 +99,21 @@
         /// <summary>
         /// アプリケーション機能の初期化処理を実行します。
         /// </summary>
-        public static void Initialize(IDataManager dataManager)
+        /// <param name="balloonTipService">バルーン表示サービス</param>
+        /// <param name="dataManager">データ管理機能</param>
+        public static void Initialize(IBalloonTipService balloonTipService, IDataManager dataManager)
         {
             using (TimeTracer.StartNew("アプリケーション初期化シークエンスを実行する。"))
             {
                 // マッピングの初期化を行う。
                 InitializeMapping();
 
+                Instance.BalloonTipService = balloonTipService;
+
                 Instance.DataManager = dataManager;
             }
         }
-
-        /// <summary>
-        /// バルーン表示サービスを初期化します。
-        /// </summary>
-        /// <param name="balloonTipService">バルーン表示サービス</param>
-        public static void InitializeBalloonTipService(IBalloonTipService balloonTipService)
-        {
-            Instance.BalloonTipService = balloonTipService;
-        }
-
+        
         /// <summary>
         /// ViewModel の生成ルールを設定します。<para/>
         /// このメソッドは最初のView を生成する前に実行してください。
