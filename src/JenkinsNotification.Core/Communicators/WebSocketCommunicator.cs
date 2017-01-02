@@ -267,7 +267,6 @@
         {
             LogManager.Info($"{Uri} との接続を確立した。");
             _isConnected = true;
-            //Dispatcher.CurrentDispatcher.Invoke(OnConnected);
             ThreadUtility.ExecuteUiThread(OnConnected);
         }
 

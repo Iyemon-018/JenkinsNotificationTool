@@ -72,6 +72,7 @@
                 // クライアントがWebSocket でのリクエストを求めているならリクエストを受信開始する。
                 await ProcessRequest(context);
             }
+            httpListener.Stop();
         }
 
         /// <summary>
@@ -81,6 +82,7 @@
         {
             if (_client != null && _client.State != WebSocketState.Closed)
             {
+                _client.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
                 _client.Dispose();
                 _client = null;
             }
