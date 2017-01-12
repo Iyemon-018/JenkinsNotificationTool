@@ -104,11 +104,24 @@
                 throw new InvalidOperationException($"指定したViewは存在しません。({value.Item1} / {value.Item2})");
             }
 
+            view.Loaded += View_Loaded;
             view.Closed += View_OnClosed;
             _viewCash.Add(key, view);
 
             LogManager.Info($"{key} 画面を表示する。");
             view.Show();
+        }
+
+        /// <summary>
+        /// 画面がロードされた際に呼び出されるイベントハンドラです。
+        /// </summary>
+        /// <param name="sender">イベント送信元オブジェクト</param>
+        /// <param name="e">イベント引数オブジェクト</param>
+        private void View_Loaded(object sender, RoutedEventArgs e)
+        {
+            var view = sender as Window;
+            var viewModel = view?.DataContext as ApplicationViewModelBase;
+            viewModel?.Loaded();
         }
 
         /// <summary>
@@ -121,6 +134,7 @@
             var view = sender as Window;
             if (view != null)
             {
+                view.Loaded -= View_Loaded;
                 view.Closed -= View_OnClosed;
 
                 var vm = view.DataContext as ApplicationViewModelBase;

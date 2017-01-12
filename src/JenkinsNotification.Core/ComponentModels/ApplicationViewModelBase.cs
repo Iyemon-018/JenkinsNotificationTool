@@ -90,6 +90,22 @@
             
         }
 
+        /// <summary>
+        /// View がロードされた際に呼び出されるViewModel のロード機能です。
+        /// </summary>
+        public void Loaded()
+        {
+            OnLoaded();
+        }
+
+        /// <summary>
+        /// View がロードされました。
+        /// </summary>
+        protected virtual void OnLoaded()
+        {
+
+        }
+
         #endregion
     }
 }

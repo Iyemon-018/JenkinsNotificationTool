@@ -41,7 +41,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0">
-                                    <TextBox Text="{Binding NotifyConfiguration.TargetUri, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBox Text="{Binding TargetUri, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </Border>
                                 <Border Grid.Column="1">
                                     <Button Command="{Binding TestConnectionCommand, Mode=OneWay}" Content="{Binding TestConnection, Mode=OneWay, Source={StaticResource Resources}}" />
@@ -62,7 +62,7 @@
                             </StackPanel>
                         </customControls:ItemContent>
                         <customControls:ItemContent Description="{Binding ConditionalReceiveNotifyDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding ConditionalReceiveNotifyHeader, Mode=OneWay, Source={StaticResource Resources}}">
-                            <CheckBox Content="{Binding ConditionalReceiveSuccessed, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.IsNotifySuccess, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Content="{Binding ConditionalReceiveSuccessed, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding IsNotifySuccess, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
                         </customControls:ItemContent>
                         <customControls:ItemContent Description="{Binding HowToDisplayBalloonDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding HowToDisplayBalloonHeader, Mode=OneWay, Source={StaticResource Resources}}">
                             <StackPanel Orientation="Horizontal">
@@ -71,10 +71,10 @@
                                         <Setter Property="GroupName" Value="BalloonTypeGroup" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <RadioButton Content="{Binding None, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=None, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding Fade, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Fade, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding Slide, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Slide, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <RadioButton Content="{Binding Scroll, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding NotifyConfiguration.PopupAnimationType, ConverterParameter=Scroll, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="{Binding None, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding PopupAnimationType, ConverterParameter=None, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="{Binding Fade, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding PopupAnimationType, ConverterParameter=Fade, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="{Binding Slide, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding PopupAnimationType, ConverterParameter=Slide, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <RadioButton Content="{Binding Scroll, Mode=OneWay, Source={StaticResource Resources}}" IsChecked="{Binding PopupAnimationType, ConverterParameter=Scroll, Converter={StaticResource BooleanToEnumConverter}, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </customControls:ItemContent>
                         <customControls:ItemContent Description="{Binding RecievedHistoryCountDescription, Mode=OneWay, Source={StaticResource Resources}}" Header="{Binding RecievedHistoryCountHeader, Mode=OneWay, Source={StaticResource Resources}}">

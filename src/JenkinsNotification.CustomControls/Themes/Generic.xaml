@@ -7,7 +7,8 @@
     xmlns:local.Converters="clr-namespace:JenkinsNotification.CustomControls.Converters"
     xmlns:local.Properties="clr-namespace:JenkinsNotification.CustomControls.Properties"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/JenkinsNotification.CustomControls;component/Themes/Color.xaml" />
         <ResourceDictionary Source="pack://application:,,,/JenkinsNotification.CustomControls;component/Themes/EnumDataProvider.xaml" />
@@ -108,6 +109,11 @@
         <Setter Property="Height" Value="48" />
         <Setter Property="IsIndeterminate" Value="True" />
     </Style>
+
+    <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
+        <Setter Property="wpf:ValidationAssist.UsePopup" Value="True" />
+        <Setter Property="wpf:ValidationAssist.OnlyShowOnFocus" Value="True" />
+    </Style>
     <!--  #End Region 標準コンポーネントのStyle定義  -->
 
 
@@ -205,13 +211,14 @@
                                         ToolTip="{Binding Close, Mode=OneWay, Source={StaticResource CustomControls.Resources}}" />
                                 </StackPanel>
                             </DockPanel>
-                            <ContentPresenter
-                                Grid.Row="1"
-                                Margin="{TemplateBinding Padding}"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                SnapsToDevicePixels="True"
-                                UseLayoutRounding="True" />
+                            <AdornerDecorator Grid.Row="1">
+                                <ContentPresenter
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True" />
+                            </AdornerDecorator>
                         </Grid>
                     </Border>
                 </ControlTemplate>

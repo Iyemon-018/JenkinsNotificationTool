@@ -122,12 +122,6 @@
         public static void SetDefaultViewModelLocater(IServicesProvider servicesProvider)
         {
             //
-            // ViewModel を生成する場合、コンストラクタの引数にインジェクション サービスを設定する。
-            //
-            ViewModelLocationProvider.SetDefaultViewModelFactory(
-                viewModelType => Activator.CreateInstance(viewModelType, servicesProvider));
-
-            //
             // View に設定したViewModel 属性の型によってView とViewModel を紐付けます。
             //
             ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(
@@ -136,6 +130,12 @@
                     var vmType = viewType.GetTypeInfo().GetCustomAttribute<ViewModelAttribute>();
                     return vmType?.ViewModelType;
                 });
+            //
+            // ViewModel を生成する場合、コンストラクタの引数にインジェクション サービスを設定する。
+            //
+            ViewModelLocationProvider.SetDefaultViewModelFactory(
+                viewModelType => Activator.CreateInstance(viewModelType, servicesProvider));
+
         }
 
         /// <summary>

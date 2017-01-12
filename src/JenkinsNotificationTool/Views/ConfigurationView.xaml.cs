@@ -1,5 +1,6 @@
 ﻿namespace JenkinsNotificationTool.Views
 {
+    using System.Windows.Controls;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.CustomControls;
     using ViewModels;

@@ -9,9 +9,11 @@
     using System.Linq.Expressions;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
+    using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Properties;
     using JenkinsNotification.Core.Utility;
     using Microsoft.Practices.Prism.Mvvm;
+    using Microsoft.Practices.Prism.ViewModel;
 
     /// <summary>
     /// 全てのViewModel 基底オブジェクト クラスです。
@@ -349,7 +351,7 @@
                 // 変更されたのでプロパティの検証も行う。
                 //
                 ValidateProperty(value, propertyName);
-            }
+        }
             return changed;
         }
 
@@ -362,7 +364,7 @@
         /// リスナーへ通知するプロパティの名称<para/>
         /// この値はオプションで、<see cref="CallerMemberNameAttribute"/> をサポートするコンパイラから呼び出されたときに自動的に提供されます。
         /// </param>
-        internal void ValidateProperty<T>(T value, [CallerMemberName] string propertyName = null)
+        internal void ValidateProperty(object value, [CallerMemberName] string propertyName = null)
         {
             lock (_validationLock)
             {
@@ -386,6 +388,11 @@
                         // この内容はリスナーに通知される。
                         var errors = validationErrors.Select(x => x.ErrorMessage);
                         _errorsContainer.SetErrors(propertyName, errors);
+
+                        foreach (var error in errors)
+                        {
+                            LogManager.Debug($"{GetType().Name}.{propertyName} をエラーにする。({error})");
+                        }
                     }
                 }
             }

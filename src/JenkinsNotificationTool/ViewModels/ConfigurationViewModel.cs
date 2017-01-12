@@ -2,6 +2,8 @@
 {
     using System;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Windows.Controls.Primitives;
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
@@ -9,7 +11,8 @@
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.ViewModels.Configurations;
-    using JenkinsNotificationTool.Properties;
+    using Properties;
+    using Utility;
     using Microsoft.Practices.Prism.Commands;
 
     /// <summary>
@@ -26,9 +29,24 @@
         private BalloonDisplayTimeKind _balloonDisplayTimeKind;
 
         /// <summary>
+        /// 成功時にも通知するかどうか
+        /// </summary>
+        private bool _isNotifySuccess;
+
+        /// <summary>
         /// 受信通知履歴一覧の表示数
         /// </summary>
         private NotifyHistoryCountKind _notifyHistoryCountKind;
+
+        /// <summary>
+        /// ポップアップ アニメーション種別
+        /// </summary>
+        private PopupAnimation _popupAnimationType;
+
+        /// <summary>
+        /// 接続対象のURI
+        /// </summary>
+        private string _targetUri;
 
         #endregion
 
@@ -53,10 +71,6 @@
         public ConfigurationViewModel(IServicesProvider servicesProvider) : base(servicesProvider)
         {
             NotifyConfiguration = new NotifyConfigurationViewModel();
-            AddChild(NotifyConfiguration);
-            
-            PropertyChangedEventManager.AddHandler(NotifyConfiguration, NotifyConfiguration_OnPropertyChanged, string.Empty);
-
             ApplicationManager.ApplicationConfiguration
                               .NotifyConfiguration
                               .Map(NotifyConfiguration);
@@ -82,7 +96,7 @@
         /// <summary>
         /// 通知関連の構成情報を取得します。
         /// </summary>
-        public NotifyConfigurationViewModel NotifyConfiguration { get; private set; }
+        private NotifyConfigurationViewModel NotifyConfiguration { get; set; }
 
         /// <summary>
         /// 構成情報保存コマンドを設定、取得します。
@@ -98,6 +112,34 @@
         /// テスト接続コマンドを設定、取得します。
         /// </summary>
         public DelegateCommand TestConnectionCommand { get; private set; }
+
+        /// <summary>
+        /// 接続対象のURIを設定、または取得します。
+        /// </summary>
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredErrorMessage")]
+        public string TargetUri
+        {
+            get { return _targetUri; }
+            set { SetProperty(ref _targetUri, value); }
+        }
+
+        /// <summary>
+        /// 成功時にも通知するかどうかを設定、または取得します。
+        /// </summary>
+        public bool IsNotifySuccess
+        {
+            get { return _isNotifySuccess; }
+            set { SetProperty(ref _isNotifySuccess, value); }
+        }
+
+        /// <summary>
+        /// ポップアップ アニメーション種別を設定、または取得します。
+        /// </summary>
+        public PopupAnimation PopupAnimationType
+        {
+            get { return _popupAnimationType; }
+            set { SetProperty(ref _popupAnimationType, value); }
+        }
 
         /// <summary>
         /// バルーンの表示時間瀬底種別を設定、または取得します。
@@ -120,6 +162,23 @@
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// View がロードされました。
+        /// </summary>
+        protected override void OnLoaded()
+        {
+            base.OnLoaded();
+
+            //
+            // 設定ファイルから取得したデータをバインドする。
+            //
+            TargetUri              = NotifyConfiguration.TargetUri;
+            PopupAnimationType     = NotifyConfiguration.PopupAnimationType;
+            BalloonDisplayTimeKind = BalloonDisplayTimeKindConverter.Convert(NotifyConfiguration.PopupTimeout);
+            NotifyHistoryCountKind = NotifyHistoryCountKindConverter.Convert(NotifyConfiguration.DisplayHistoryCount);
+            IsNotifySuccess        = NotifyConfiguration.IsNotifySuccess;
+        }
 
         /// <summary>
         /// View が閉じられました。
@@ -153,6 +212,15 @@
                     break;
                 case nameof(NotifyHistoryCountKind):
                     OnNotifyHistoryCountKindChanged(NotifyHistoryCountKind);
+                    break;
+                case nameof(TargetUri):
+                    OnTargetUriChanged(TargetUri);
+                    break;
+                case nameof(PopupAnimationType):
+                    OnPopupAnimationTypeChanged(PopupAnimationType);
+                    break;
+                case nameof(IsNotifySuccess):
+                    OnIsNotifySuccessChanged(IsNotifySuccess);
                     break;
             }
         }
@@ -207,77 +275,23 @@
         {
             ApplicationManager.TryConnectionWebSocket();
         }
-
-        /// <summary>
-        /// <see cref="NotifyConfiguration"/> の<see cref="NotifyConfigurationViewModel.PopupTimeout"/> が変更されました。
-        /// </summary>
-        /// <param name="newValue">更新後の値</param>
-        private void NotifyConfiguration_OnPopupTimeoutChanged(TimeSpan? newValue)
-        {
-            if (newValue.HasValue)
-            {
-                if (newValue.Value.TotalSeconds == 5.0d)
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds5;
-                }
-                else if (newValue.Value.TotalSeconds == 15.0d)
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds15;
-                }
-                else if (newValue.Value.TotalSeconds == 30.0d)
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Seconds30;
-                }
-                else
-                {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
-                }
-            }
-            else
-            {
-                    BalloonDisplayTimeKind = BalloonDisplayTimeKind.Manual;
-            }
-        }
-
-        /// <summary>
-        /// <see cref="NotifyConfiguration"/> のプロパティ変更
-        /// </summary>
-        /// <param name="sender">際に呼ばれるイベントハンドラです。</param>
-        /// <param name="e">イベント引数オブジェクト</param>
-        private void NotifyConfiguration_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "PopupTimeout":
-                    NotifyConfiguration_OnPopupTimeoutChanged(NotifyConfiguration.PopupTimeout);
-                    break;
-            }
-        }
-
+        
         /// <summary>
         /// <see cref="BalloonDisplayTimeKind"/> プロパティの値が更新されました。
         /// </summary>
         /// <param name="newValue">更新後の値</param>
         private void OnBalloonDisplayTimeKindChanged(BalloonDisplayTimeKind newValue)
         {
-            TimeSpan? displayTime;
-            switch (newValue)
-            {
-                case BalloonDisplayTimeKind.Seconds5:
-                    displayTime = TimeSpan.FromSeconds(5);
-                    break;
-                case BalloonDisplayTimeKind.Seconds15:
-                    displayTime = TimeSpan.FromSeconds(15);
-                    break;
-                case BalloonDisplayTimeKind.Seconds30:
-                    displayTime = TimeSpan.FromSeconds(30);
-                    break;
-                default:
-                    displayTime = null;
-                    break;
-            }
+            NotifyConfiguration.PopupTimeout = BalloonDisplayTimeKindConverter.ConvertBack(newValue);
+        }
 
-            NotifyConfiguration.PopupTimeout = displayTime;
+        /// <summary>
+        /// <see cref="IsNotifySuccess"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnIsNotifySuccessChanged(bool newValue)
+        {
+            NotifyConfiguration.IsNotifySuccess = newValue;
         }
 
         /// <summary>
@@ -286,23 +300,25 @@
         /// <param name="newValue">更新後の値</param>
         private void OnNotifyHistoryCountKindChanged(NotifyHistoryCountKind newValue)
         {
-            int count;
-            switch (newValue)
-            {
-                case NotifyHistoryCountKind.Count50:
-                    count = 50;
-                    break;
-                case NotifyHistoryCountKind.Count100:
-                    count = 100;
-                    break;
-                case NotifyHistoryCountKind.Count200:
-                    count = 200;
-                    break;
-                default:
-                    count = 100;
-                    break;
-            }
-            NotifyConfiguration.DisplayHistoryCount = count;
+            NotifyConfiguration.DisplayHistoryCount = NotifyHistoryCountKindConverter.ConvertBack(newValue);
+        }
+
+        /// <summary>
+        /// <see cref="PopupAnimationType"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnPopupAnimationTypeChanged(PopupAnimation newValue)
+        {
+            NotifyConfiguration.PopupAnimationType = newValue;
+        }
+
+        /// <summary>
+        /// <see cref="TargetUri"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnTargetUriChanged(string newValue)
+        {
+            NotifyConfiguration.TargetUri = newValue;
         }
 
         /// <summary>
@@ -323,6 +339,7 @@
         private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
         {
             DialogService.ShowError("接続に失敗しました。");
+            NotificationError(nameof(TargetUri), Resources.FailedConnectionWebSocketMessage);
         }
 
         #endregion

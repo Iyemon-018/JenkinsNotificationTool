@@ -136,6 +136,16 @@ namespace JenkinsNotificationTool.Properties {
         }
         
         /// <summary>
+        ///   Jenkins とのWebSocket 通信接続に失敗しました。
+        ///URI が正しいかどうか、Jenkins が起動しているかどうかを確認してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FailedConnectionWebSocketMessage {
+            get {
+                return ResourceManager.GetString("FailedConnectionWebSocketMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   設定ファイルの保存中にエラーが発生しました。
         ///設定ファイルをエディタなどで開いている場合はエディタを閉じてから、もう一度保存ボタンをクリックしてください。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -295,6 +305,15 @@ namespace JenkinsNotificationTool.Properties {
         public static string RecievedHistoryCountHeader {
             get {
                 return ResourceManager.GetString("RecievedHistoryCountHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   何か入力してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("RequiredErrorMessage", resourceCulture);
             }
         }
         

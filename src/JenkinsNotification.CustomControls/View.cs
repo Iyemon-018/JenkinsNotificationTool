@@ -146,7 +146,7 @@
         {
             // 以下の設定は依存関係プロパティではないので、この時点で設定する。
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
+            
             //
             // ViewModel インジェクション機能を有効化する。
             //
@@ -378,9 +378,20 @@
         /// </summary>
         private void SetCaptionButtonsState()
         {
-            _restoreButton.Visibility = WindowState == WindowState.Normal ? Visibility.Collapsed : Visibility.Visible;
-            _maximumButton.Visibility = WindowState == WindowState.Maximized ? Visibility.Collapsed : Visibility.Visible;
-            _minimumButton.Visibility = WindowState == WindowState.Minimized ? Visibility.Collapsed : Visibility.Visible;
+            if (_restoreButton != null)
+            {
+                _restoreButton.Visibility = WindowState == WindowState.Normal ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            if (_maximumButton != null)
+            {
+                _maximumButton.Visibility = WindowState == WindowState.Maximized ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            if (_minimumButton != null)
+            {
+                _minimumButton.Visibility = WindowState == WindowState.Minimized ? Visibility.Collapsed : Visibility.Visible;
+            }
 
             Margin = WindowState == WindowState.Maximized ? new Thickness(9) : new Thickness(0);
         }
