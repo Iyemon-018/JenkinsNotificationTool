@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Services
 {
     using System;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.Logs;
 
     /// <summary>
@@ -20,6 +21,9 @@
         /// 画面表示サービス
         /// </summary>
         private readonly IViewService _viewService;
+
+        // TODO これをコンストラクタで設定できるようにする。
+        private readonly IWebSocketCommunicator _webSocketCommunicator;
 
         #endregion
 
@@ -55,6 +59,8 @@
         /// 画面表示サービスを取得します。
         /// </summary>
         public IViewService ViewService => _viewService;
+
+        public IWebSocketCommunicator _WebSocketCommunicator => _webSocketCommunicator;
 
         #endregion
     }

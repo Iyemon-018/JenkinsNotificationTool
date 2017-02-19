@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>JenkinsNotificationTool.Tests</name>
+  </assembly>
+  <members>
+    <member name="" />
+    <member name="N:JenkinsNotificationTool.Tests.Core.Communicators" />
+    <member name="F:JenkinsNotificationTool.Tests.Core.Communicators.WebSocketCommunicatorTests._serverConnected"> <summary>
+ WebSocket サーバーがクライアントとの接続を確立したかどうか。
+ </summary></member>
+  </members>
+</doc>
