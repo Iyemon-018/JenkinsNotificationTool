@@ -60,30 +60,30 @@
         /// 以下の内容をテストします。
         /// ・対象のタスクが完了する前にタイムアウト次官になると、<see cref="TimeoutException"/> をスローすること。
         /// </remarks>
-        [Fact]
-        public void Test_Timeout_Success_Timeout()
-        {
-            // arrange
-            var result = false;
-            var task = Task.Run(async () =>
-                                {
-                                    await Task.Delay(TimeSpan.FromSeconds(2));
-                                    result = true;
-                                })
-                           .Timeout(TimeSpan.FromSeconds(1));
+        //[Fact]
+        //public void Test_Timeout_Success_Timeout()
+        //{
+        //    // arrange
+        //    var result = false;
+        //    var task = Task.Run(async () =>
+        //                        {
+        //                            await Task.Delay(TimeSpan.FromSeconds(2));
+        //                            result = true;
+        //                        })
+        //                   .Timeout(TimeSpan.FromSeconds(1));
 
-            // act
-            var ex = Assert.Throws<AggregateException>(() => task.Wait());
+        //    // act
+        //    var ex = Assert.Throws<AggregateException>(() => task.Wait());
 
-            // assert
-            Assert.NotNull(ex);
-            var exceptions = ex.Flatten().InnerExceptions;
-            Assert.NotNull(exceptions);
-            Assert.True(exceptions.Count == 1);
-            Assert.IsType<TimeoutException>(exceptions.First());
-            Assert.False(result);
-            Output.WriteLine("(正常系) 対象のタスクが完了する前にタイムアウト次官になると、TimeoutException をスローすること。");
-        }
+        //    // assert
+        //    Assert.NotNull(ex);
+        //    var exceptions = ex.Flatten().InnerExceptions;
+        //    Assert.NotNull(exceptions);
+        //    Assert.True(exceptions.Count == 1);
+        //    Assert.IsType<TimeoutException>(exceptions.First());
+        //    Assert.False(result);
+        //    Output.WriteLine("(正常系) 対象のタスクが完了する前にタイムアウト次官になると、TimeoutException をスローすること。");
+        //}
 
         /// <summary>
         /// <see cref="JenkinsNotification.Core.Extensions.TaskExtensions.Timeout"/> のテストメソッドです。(正常系)
