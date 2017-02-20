@@ -4,6 +4,7 @@
     using System.Reflection;
     using System.Windows;
     using JenkinsNotification.Core;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Logs;
@@ -23,14 +24,24 @@
         #region Fields
 
         /// <summary>
-        /// 各種サービス提供機能
+        /// 通信インターフェース
         /// </summary>
-        private readonly IServicesProvider _servicesProvider;
+        private ICommunicatorProvider _communicatorProvider;
+
+        /// <summary>
+        /// データストア
+        /// </summary>
+        private IDataStore _dataStore;
 
         /// <summary>
         /// WebSocket通信が確立できたかどうか
         /// </summary>
         private bool _isConnectedWebSocket = true;
+
+        /// <summary>
+        /// 各種サービス提供機能
+        /// </summary>
+        private IServicesProvider _servicesProvider;
 
         #endregion
 
@@ -46,25 +57,14 @@
             //
             LogManager.AddLogger(new NLogger());
 
-            var dialogService     = new DialogService();
-            var viewService       = new ViewService();
-            var balloonTipService = new BalloonTipService();
-            _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService);
+            // サービスを初期化する。
+            ConfigureServices();
 
-            //
-            // アプリケーション機能の初期化を実施する。
-            //
-            try
-            {
-                //
-                // 構成ファイルを読み込む。
-                //
-                ApplicationConfiguration.LoadCurrent();
-            }
-            catch (ConfigurationLoadException)
-            {
-                _isConnectedWebSocket = false;
-            }
+            // データストアを初期化する。
+            ConfigureDataStore();
+
+            // 通信インターフェースを初期化します。
+            ConfigureCommunicator();
 
             // アプリケーションで使用するViewを登録する。
             RegisterViews();
@@ -136,6 +136,50 @@
             {
                 _servicesProvider.ViewService.Show(ScreenKey.Configuration);
             }
+        }
+
+        /// <summary>
+        /// 通信インターフェースを初期化します。
+        /// </summary>
+        private void ConfigureCommunicator()
+        {
+            // TODO WebAPIインターフェースを実装する。
+            var webSocketCommunicator = new WebSocketCommunicator();
+            _communicatorProvider = new CommunicatorProvider(webSocketCommunicator, null);
+        }
+
+        /// <summary>
+        /// データストアを初期化します。
+        /// </summary>
+        private void ConfigureDataStore()
+        {
+            //
+            // アプリケーション機能の初期化を実施する。
+            //
+            try
+            {
+                //
+                // 構成ファイルを読み込む。
+                //
+                ApplicationConfiguration.LoadCurrent();
+            }
+            catch (ConfigurationLoadException)
+            {
+                _isConnectedWebSocket = false;
+            }
+
+            _dataStore = new DataStore(ApplicationConfiguration.Current);
+        }
+
+        /// <summary>
+        /// サービス提供インターフェースを構成します。
+        /// </summary>
+        private void ConfigureServices()
+        {
+            var dialogService     = new DialogService();
+            var viewService       = new ViewService();
+            var balloonTipService = new BalloonTipService();
+            _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService);
         }
 
         /// <summary>

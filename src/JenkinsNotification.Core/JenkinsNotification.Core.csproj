@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
+    <Compile Include="Communicators\CommunicatorProvider.cs" />
     <Compile Include="Communicators\ICommunicatorProvider.cs" />
     <Compile Include="Communicators\IWebApiCommunicator.cs" />
     <Compile Include="Communicators\JenkinsData.cs" />
