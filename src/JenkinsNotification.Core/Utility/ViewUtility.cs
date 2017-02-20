@@ -4,7 +4,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
-    using Microsoft.Practices.Prism.Mvvm;
+    using Prism.Mvvm;
 
     /// <summary>
     /// 画面に関するユーティリティ機能クラスです。

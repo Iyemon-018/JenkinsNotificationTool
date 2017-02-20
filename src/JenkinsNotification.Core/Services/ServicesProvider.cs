@@ -1,8 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Services
 {
     using System;
-    using JenkinsNotification.Core.Communicators;
-    using JenkinsNotification.Core.Logs;
+    using Logs;
 
     /// <summary>
     /// 各種サービスを提供するクラスです。
@@ -38,24 +37,20 @@
         /// <param name="viewService">画面表示サービス</param>
         /// <param name="balloonTipService">バルーン通知サービス</param>
         /// <exception cref="System.ArgumentNullException">
-        /// dialogService
-        /// or
-        /// viewService
-        /// or
-        /// balloonTipService
+        /// <paramref name="dialogService"/> or <paramref name="viewService"/> or <paramref name="balloonTipService"/> がnull の場合にスローされます。
         /// </exception>
         public ServicesProvider(IDialogService dialogService, IViewService viewService, IBalloonTipService balloonTipService)
         {
-            if (dialogService == null) throw new ArgumentNullException(nameof(dialogService));
-            if (viewService == null) throw new ArgumentNullException(nameof(viewService));
+            if (dialogService     == null) throw new ArgumentNullException(nameof(dialogService));
+            if (viewService       == null) throw new ArgumentNullException(nameof(viewService));
             if (balloonTipService == null) throw new ArgumentNullException(nameof(balloonTipService));
 
             LogManager.Info($"ダイアログ表示サービスを設定します。{dialogService.GetType()}");
             LogManager.Info($"画面表示サービスを設定します。{viewService.GetType()}");
             LogManager.Info($"バルーン通知サービスを設定します。{balloonTipService.GetType()}");
 
-            _dialogService = dialogService;
-            _viewService   = viewService;
+            _dialogService     = dialogService;
+            _viewService       = viewService;
             _balloonTipService = balloonTipService;
         }
 

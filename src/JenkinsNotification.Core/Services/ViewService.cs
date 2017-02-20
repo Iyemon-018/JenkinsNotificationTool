@@ -120,7 +120,7 @@
         private void View_Loaded(object sender, RoutedEventArgs e)
         {
             var view = sender as Window;
-            var viewModel = view?.DataContext as ApplicationViewModelBase;
+            var viewModel = view?.DataContext as ShellViewModelBase;
             viewModel?.Loaded();
         }
 
@@ -137,7 +137,7 @@
                 view.Loaded -= View_Loaded;
                 view.Closed -= View_OnClosed;
 
-                var vm = view.DataContext as ApplicationViewModelBase;
+                var vm = view.DataContext as ShellViewModelBase;
                 vm?.Unloaded();
 
                 var pair = _viewCash.FirstOrDefault(x => Equals(x.Value, view));

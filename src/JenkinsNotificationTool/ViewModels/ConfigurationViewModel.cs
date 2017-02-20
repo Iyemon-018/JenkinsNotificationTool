@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Windows.Controls.Primitives;
     using JenkinsNotification.Core;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Extensions;
@@ -18,8 +19,8 @@
     /// <summary>
     /// 構成情報変更用のViewModelクラスです。
     /// </summary>
-    /// <seealso cref="JenkinsNotification.Core.ComponentModels.ApplicationViewModelBase" />
-    public class ConfigurationViewModel : ApplicationViewModelBase
+    /// <seealso cref="ShellViewModelBase" />
+    public class ConfigurationViewModel : ShellViewModelBase
     {
         #region Fields
 
@@ -55,27 +56,15 @@
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <remarks>
-        /// このコンストラクタはXamlデザイナー用に用意したコンストラクタです。
-        /// 不要でも削除しないでください。
-        /// </remarks>
-        public ConfigurationViewModel() : this(null)
-        {
-            
-        }
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        /// <param name="servicesProvider">インジェクション サービス</param>
-        public ConfigurationViewModel(IServicesProvider servicesProvider) : base(servicesProvider)
+        /// <param name="servicesProvider">サービス提供インターフェース</param>
+        /// <param name="communicatorProvider">通信インターフェース</param>
+        /// <param name="dataStore">データ蓄積領域</param>
+        public ConfigurationViewModel(IServicesProvider servicesProvider, ICommunicatorProvider communicatorProvider, IDataStore dataStore) : base(servicesProvider, communicatorProvider, dataStore)
         {
             NotifyConfiguration = new NotifyConfigurationViewModel();
-            ApplicationManager.ApplicationConfiguration
-                              .NotifyConfiguration
-                              .Map(NotifyConfiguration);
+            dataStore.ApplicationConfiguration.NotifyConfiguration.Map(NotifyConfiguration);
 
-            var webSocket = ApplicationManager.WebSocketCommunicator;
+            var webSocket = communicatorProvider.WebSocketCommunicator;
             if (webSocket != null)
             {
                 LogManager.Info("WebSocket のイベント購読を開始する。");
@@ -89,6 +78,18 @@
             TestConnectionCommand = new DelegateCommand(ExecuteTestConnectionCommand);
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <remarks>
+        /// このコンストラクタはXamlデザイナー用に用意したコンストラクタです。
+        /// 不要でも削除しないでください。
+        /// </remarks>
+        public ConfigurationViewModel() : this(null, null, null)
+        {
+
+        }
+        
         #endregion
 
         #region Properties
@@ -187,7 +188,7 @@
         {
             base.OnUnloaded();
 
-            var webSocket = ApplicationManager.WebSocketCommunicator;
+            var webSocket = CommunicatorProvider.WebSocketCommunicator;
             if (webSocket != null)
             {
                 LogManager.Info("WebSocket のイベント購読を解除する。");
@@ -252,7 +253,7 @@
                 if (!DialogService.ShowQuestion(Resources.QuestionSaveConfiguration)) return;
 
                 // ファイルへの保存を実行する。
-                NotifyConfiguration.Map(ApplicationManager.ApplicationConfiguration.NotifyConfiguration);
+                NotifyConfiguration.Map(DataStore.ApplicationConfiguration.NotifyConfiguration);
                 var canSaved = ApplicationConfiguration.SaveCurrent();
                 if (canSaved)
                 {

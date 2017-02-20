@@ -1,81 +1,48 @@
 ﻿namespace JenkinsNotificationTool.ViewModels
 {
     using JenkinsNotification.Core;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Services;
-    using Properties;
+    using JenkinsNotificationTool.Properties;
     using Microsoft.Practices.Prism.Commands;
 
     /// <summary>
     /// タスクトレイに格納されるメイン画面のViewModel クラスです。
     /// </summary>
-    /// <seealso cref="ApplicationViewModelBase" />
-    public class MainViewModel : ApplicationViewModelBase
+    /// <seealso cref="ShellViewModelBase" />
+    public class MainViewModel : ShellViewModelBase
     {
         #region Ctor
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public MainViewModel()
-            : this(null)
+        /// <remarks>
+        /// このコンストラクタはXamlデザイナー用に用意したコンストラクタです。
+        /// 不要でも削除しないでください。
+        /// </remarks>
+        public MainViewModel() : this(null, null, null)
         {
+
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="servicesProvider">インジェクション サービス</param>
-        public MainViewModel(IServicesProvider servicesProvider) : base(servicesProvider)
+        /// <param name="servicesProvider">サービス提供インターフェース</param>
+        /// <param name="communicatorProvider">通信インターフェース</param>
+        /// <param name="dataStore">データ蓄積領域</param>
+        public MainViewModel(IServicesProvider servicesProvider, ICommunicatorProvider communicatorProvider, IDataStore dataStore)
+            : base(servicesProvider, communicatorProvider, dataStore)
         {
             //
             // 各コマンドの初期化を行う。
             //
-
-            //
-            // 終了コマンド
-            // コンテキストメニューからメッセージボックスを表示すると即時クローズされてしまうので
-            // メッセージ無しで終了する。
-            //
-            ExitCommand = new DelegateCommand(() =>
-                                              {
-                                                  var shutDown = DialogService.ShowQuestion(Resources.ExitConfirmMessage);
-                                                  if (shutDown)
-                                                  {
-                                                      ApplicationManager.Shutdown();
-                                                  }
-                                              });
-
-            ConfigurationCommand = new DelegateCommand(() =>
-                                                       {
-                                                           // TODO 構成情報画面を表示する。
-                                                           ViewService.Show(ScreenKey.Configuration);
-                                                       });
-
-
-            ReceivedNotificationListCommand = new DelegateCommand(() =>
-                                                                  {
-                                                                      // TODO 通知受信履歴一覧を表示する。
-                                                                      ViewService.Show(ScreenKey.NotificationHistory);
-                                                                  });
-
-            ShowBalloonCommand = new DelegateCommand(() =>
-                                                     {
-                                                         //DialogService.ShowProgress("進捗表示中です。", async (x) =>
-                                                         //                                       {
-                                                         //                                           foreach (var i in Enumerable.Range(0, 3))
-                                                         //                                           {
-                                                         //                                               await Task.Delay(TimeSpan.FromSeconds(1));
-                                                         //                                               x.SetMessage($"{i}/3 実行しました。");
-                                                         //                                           }
-
-                                                         //                                           await Task.Delay(TimeSpan.FromSeconds(1));
-                                                         //                                           x.SetMessage("完了しました。しばらくお待ちください。");
-                                                         //                                           await Task.Delay(TimeSpan.FromSeconds(3));
-                                                         //                                       });
-                                                         BalloonTipService.NotifyInformation("Test", "テスト的にバルーン出した。");
-                                                     });
-
+            ExitCommand                     = new DelegateCommand(ExecuteExitCommand);
+            ConfigurationCommand            = new DelegateCommand(ExecuteConfigurationCommand);
+            ReceivedNotificationListCommand = new DelegateCommand(ExecuteReceivedNotificationListCommand);
+            ShowBalloonCommand              = new DelegateCommand(ExecuteShowBalloonCommand);
         }
 
         #endregion
@@ -97,7 +64,65 @@
         /// </summary>
         public DelegateCommand ReceivedNotificationListCommand { get; private set; }
 
+        /// <summary>
+        /// 通知バルーン表示コマンドを設定、または取得します。
+        /// </summary>
         public DelegateCommand ShowBalloonCommand { get; private set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// 構成情報表示コマンドを実行します。
+        /// </summary>
+        private void ExecuteConfigurationCommand()
+        {
+            // TODO 構成情報画面を表示する。
+            ViewService.Show(ScreenKey.Configuration);
+        }
+
+        /// <summary>
+        /// 終了コマンドを実行します。
+        /// </summary>
+        private void ExecuteExitCommand()
+        {
+            var shutDown = DialogService.ShowQuestion(Resources.ExitConfirmMessage);
+            if (shutDown)
+            {
+                // TODO アプリケーションのシャットダウンを行う。
+                //ApplicationManager.Shutdown();
+            }
+        }
+
+        /// <summary>
+        /// 受信履歴表示コマンドを実行します。
+        /// </summary>
+        private void ExecuteReceivedNotificationListCommand()
+        {
+            // TODO 通知受信履歴一覧を表示する。
+            ViewService.Show(ScreenKey.NotificationHistory);
+        }
+
+        /// <summary>
+        /// 通知バルーン表示コマンドを実行します。
+        /// </summary>
+        private void ExecuteShowBalloonCommand()
+        {
+            //DialogService.ShowProgress("進捗表示中です。", async (x) =>
+            //                                       {
+            //                                           foreach (var i in Enumerable.Range(0, 3))
+            //                                           {
+            //                                               await Task.Delay(TimeSpan.FromSeconds(1));
+            //                                               x.SetMessage($"{i}/3 実行しました。");
+            //                                           }
+
+            //                                           await Task.Delay(TimeSpan.FromSeconds(1));
+            //                                           x.SetMessage("完了しました。しばらくお待ちください。");
+            //                                           await Task.Delay(TimeSpan.FromSeconds(3));
+            //                                       });
+            BalloonTipService.NotifyInformation("Test", "テスト的にバルーン出した。");
+        }
 
         #endregion
     }

@@ -62,7 +62,8 @@
             LogManager.Info("Jenkins ジョブ結果データを蓄積する。");
             var data = _result.Map<JobExecuteResultViewModel>();
             data.Received = DateTime.Now;
-            DataStore.Instance.AddJobResult(data);
+            // TODO データストアにジョブ結果データを蓄積する。
+            //DataStore.Instance.AddJobResult(data);
         }
 
         #endregion

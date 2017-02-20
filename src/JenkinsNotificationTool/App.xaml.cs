@@ -1,40 +1,18 @@
 ﻿namespace JenkinsNotificationTool
 {
     using System;
-    using System.Diagnostics;
-    using System.Runtime.ExceptionServices;
     using System.Windows;
     using System.Windows.Threading;
     using JenkinsNotification.Core;
-    using JenkinsNotification.Core.Communicators;
-    using JenkinsNotification.Core.Configurations;
-    using JenkinsNotification.Core.Executers;
     using JenkinsNotification.Core.Logs;
-    using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
     using JenkinsNotification.CustomControls;
-    using JenkinsNotification.CustomControls.Services;
-    using JenkinsNotificationTool.Views;
 
     /// <summary>
     /// このアプリケーションのエントリポイントです。
     /// </summary>
     public partial class App : Application
     {
-        //#region Fields
-
-        ///// <summary>
-        ///// 各種サービス提供機能
-        ///// </summary>
-        //private readonly IServicesProvider _servicesProvider;
-        
-        ///// <summary>
-        ///// WebSocket 通信が確立できたかどうか
-        ///// </summary>
-        //private bool _isConnectedWebSocket = true;
-
-        //#endregion
-
         #region Ctor
 
         /// <summary>
@@ -51,13 +29,6 @@
             AppDomain.CurrentDomain.FirstChanceException +=
                 (sender, e) => LogManager.Error(JenkinsNotificationTool.Properties.Resources.FirstChanceExceptionMessage, e.Exception);
 #endif
-
-            ////
-            //// ログ機能の初期化を行う。
-            ////
-            //LogManager.AddLogger(new NLogger());
-
-            //_servicesProvider = new ServicesProvider(new DialogService(), new ViewService(), new BalloonTipService());
         }
         
         #endregion
@@ -70,13 +41,6 @@
         /// <param name="e">イベント データを格納している <see cref="T:System.Windows.StartupEventArgs" />。</param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            //
-            // アプリケーションで使いまわすインジェクション サービスを設定する。
-            ////
-            //ViewService.RegisterView(ScreenKey.Configuration, typeof(ConfigurationView));
-            //ViewService.RegisterView(ScreenKey.NotificationHistory, typeof(NotifyHistoryView));
-            //ApplicationManager.SetDefaultViewModelLocater(_servicesProvider);
-
             base.OnStartup(e);
 
             //
@@ -142,18 +106,7 @@
             LogManager.Error(JenkinsNotificationTool.Properties.Resources.DispatcherUnhandledExceptionMessage, e.Exception);
             ShowExceptionMessage(e.Exception);
         }
-
-        ///// <summary>
-        ///// 当アプリケーションで例外が発生した際に最初に呼ばれるイベントハンドラです。
-        ///// </summary>
-        ///// <param name="sender">イベント送信元オブジェクト</param>
-        ///// <param name="e">イベント引数オブジェクト</param>
-        //[Conditional("DEBUG")]
-        //private void App_OnFirstChanceException(object sender, FirstChanceExceptionEventArgs e)
-        //{
-        //    LogManager.Error(JenkinsNotificationTool.Properties.Resources.FirstChanceExceptionMessage, e.Exception);
-        //}
-
+        
         /// <summary>
         /// 当アプリケーションのUIスレッドで補足できなかった例外をキャッチしたときに呼ばれるイベントハンドラです。
         /// </summary>
@@ -184,21 +137,7 @@
                 , MessageBoxButton.OK
                 , MessageBoxImage.Error);
         }
-
-        ///// <summary>
-        ///// WebSocket 通信接続の確率に失敗した際に呼び出されるイベントハンドラです。
-        ///// </summary>
-        ///// <param name="sender">イベント送信元オブジェクト</param>
-        ///// <param name="e">イベント引数オブジェクト</param>
-        //private void WebSocket_OnConnectionFailed(object sender, EventArgs e)
-        //{
-        //    _servicesProvider.DialogService
-        //                     .ShowError(
-        //                         $"{ApplicationManager.Instance.ApplicationConfiguration.NotifyConfiguration.TargetUri} との接続に失敗しました。{Environment.NewLine}"
-        //                         + "接続設定を確認してください。");
-        //    _servicesProvider.ViewService.Show(ScreenKey.Configuration);
-        //}
-
+        
         #endregion
     }
 }

@@ -49,21 +49,8 @@
         {
             base.OnStartup(e);
             
-            //
-            // ViewModel を生成する場合、コンストラクタの引数にダイアログ サービスを設定する。
-            //
-            ViewModelLocationProvider.SetDefaultViewModelFactory(
-                viewModelType => Activator.CreateInstance(viewModelType, _dialogService));
-
-            //
-            // View に設定したViewModel 属性の型によってView とViewModel を紐付けます。
-            //
-            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(
-                viewType =>
-                {
-                    var vmType = viewType.GetTypeInfo().GetCustomAttribute<ViewModelAttribute>();
-                    return vmType?.ViewModelType;
-                });
+            var bootstrapper = new Bootstrapper();
+            bootstrapper.Run();
         }
 
         /// <summary>

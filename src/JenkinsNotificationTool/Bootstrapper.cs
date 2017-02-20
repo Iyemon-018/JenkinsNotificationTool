@@ -57,6 +57,9 @@
             //
             LogManager.AddLogger(new NLogger());
 
+            // マッピングの初期化を行う。
+            InitializeMapping();
+
             // サービスを初期化する。
             ConfigureServices();
 
@@ -89,6 +92,17 @@
         #region Methods
 
         /// <summary>
+        /// データマッピング構成情報を初期化します。
+        /// </summary>
+        private void InitializeMapping()
+        {
+            var configure = new MappingConfigure();
+            configure.RegisterProfileType(typeof(Profile));
+
+            configure.Initialize();
+        }
+
+        /// <summary>
         /// Configures the <see cref="T:Prism.Mvvm.ViewModelLocator" /> used by Prism.
         /// </summary>
         protected override void ConfigureViewModelLocator()
@@ -107,7 +121,7 @@
             // ViewModel を生成する場合、コンストラクタの引数にインジェクション サービスを設定する。
             //
             ViewModelLocationProvider.SetDefaultViewModelFactory(
-                viewModelType => Activator.CreateInstance(viewModelType, _servicesProvider));
+                viewModelType => Activator.CreateInstance(viewModelType, _servicesProvider, _communicatorProvider, _dataStore));
         }
 
         /// <summary>
