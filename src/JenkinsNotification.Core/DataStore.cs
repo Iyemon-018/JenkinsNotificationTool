@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using JenkinsNotification.Core.Configurations;
     using ViewModels.Api;
     using Microsoft.Practices.Prism;
 
@@ -17,6 +18,11 @@
         /// 唯一のインスタンス
         /// </summary>
         private static readonly DataStore _instance = new DataStore();
+
+        /// <summary>
+        /// アプリケーション構成情報
+        /// </summary>
+        private readonly ApplicationConfiguration _applicationConfiguration;
 
         #endregion
 
@@ -89,6 +95,11 @@
         {
             // TODO ファイルからリストアする。
         }
+
+        /// <summary>
+        /// アプリケーション構成情報を取得します。
+        /// </summary>
+        public ApplicationConfiguration ApplicationConfiguration => _applicationConfiguration;
 
         #endregion
     }

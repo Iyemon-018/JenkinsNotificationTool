@@ -42,6 +42,14 @@
             _taskbarIcon = taskbarIcon;
         }
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public BalloonTipService()
+        {
+            _taskbarIcon = new TaskbarIcon();
+        }
+
         #endregion
 
         #region Methods

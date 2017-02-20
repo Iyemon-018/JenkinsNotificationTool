@@ -1,7 +1,5 @@
 ﻿namespace JenkinsNotification.Core.Services
 {
-    using JenkinsNotification.Core.Communicators;
-
     /// <summary>
     /// 各種サービスを提供するインターフェースです。
     /// </summary>
@@ -17,6 +15,9 @@
         /// </summary>
         IViewService ViewService { get; }
 
-        IWebSocketCommunicator _WebSocketCommunicator { get; }
+        /// <summary>
+        /// バルーン通知サービスを取得します。
+        /// </summary>
+        IBalloonTipService BalloonTipService { get; }
     }
 }

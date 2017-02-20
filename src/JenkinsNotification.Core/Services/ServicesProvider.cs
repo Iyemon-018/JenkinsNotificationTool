@@ -22,8 +22,10 @@
         /// </summary>
         private readonly IViewService _viewService;
 
-        // TODO これをコンストラクタで設定できるようにする。
-        private readonly IWebSocketCommunicator _webSocketCommunicator;
+        /// <summary>
+        /// バルーン通知サービス
+        /// </summary>
+        private readonly IBalloonTipService _balloonTipService;
 
         #endregion
 
@@ -34,16 +36,27 @@
         /// </summary>
         /// <param name="dialogService">ダイアログ表示サービス</param>
         /// <param name="viewService">画面表示サービス</param>
-        public ServicesProvider(IDialogService dialogService, IViewService viewService)
+        /// <param name="balloonTipService">バルーン通知サービス</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// dialogService
+        /// or
+        /// viewService
+        /// or
+        /// balloonTipService
+        /// </exception>
+        public ServicesProvider(IDialogService dialogService, IViewService viewService, IBalloonTipService balloonTipService)
         {
             if (dialogService == null) throw new ArgumentNullException(nameof(dialogService));
             if (viewService == null) throw new ArgumentNullException(nameof(viewService));
-            
+            if (balloonTipService == null) throw new ArgumentNullException(nameof(balloonTipService));
+
             LogManager.Info($"ダイアログ表示サービスを設定します。{dialogService.GetType()}");
             LogManager.Info($"画面表示サービスを設定します。{viewService.GetType()}");
+            LogManager.Info($"バルーン通知サービスを設定します。{balloonTipService.GetType()}");
 
             _dialogService = dialogService;
             _viewService   = viewService;
+            _balloonTipService = balloonTipService;
         }
 
         #endregion
@@ -60,7 +73,10 @@
         /// </summary>
         public IViewService ViewService => _viewService;
 
-        public IWebSocketCommunicator _WebSocketCommunicator => _webSocketCommunicator;
+        /// <summary>
+        /// バルーン通知サービスを取得します。
+        /// </summary>
+        public IBalloonTipService BalloonTipService => _balloonTipService;
 
         #endregion
     }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using JenkinsNotification.Core.Configurations;
     using ViewModels.Api;
 
     /// <summary>
@@ -15,6 +16,11 @@
         /// Jenkins 実行結果コレクションを取得します。
         /// </summary>
         ObservableCollection<IJobExecuteResult> JobResults { get; }
+
+        /// <summary>
+        /// アプリケーション構成情報を取得します。
+        /// </summary>
+        ApplicationConfiguration ApplicationConfiguration { get; }
 
         #endregion
 

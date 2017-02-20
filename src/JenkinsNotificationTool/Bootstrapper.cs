@@ -10,9 +10,9 @@
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.CustomControls.Services;
     using JenkinsNotificationTool.Views;
-    using Microsoft.Practices.Prism.Mvvm;
-    using Microsoft.Practices.Prism.UnityExtensions;
     using Microsoft.Practices.ServiceLocation;
+    using Prism.Mvvm;
+    using Prism.Unity;
 
     /// <summary>
     /// アプリケーションのBootstrapper 機能クラスです。
@@ -46,7 +46,10 @@
             //
             LogManager.AddLogger(new NLogger());
 
-            _servicesProvider = new ServicesProvider(new DialogService(), new ViewService());
+            var dialogService     = new DialogService();
+            var viewService       = new ViewService();
+            var balloonTipService = new BalloonTipService();
+            _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService);
 
             //
             // アプリケーション機能の初期化を実施する。
@@ -69,13 +72,28 @@
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// WebSocket通信が確立できたかどうか
+        /// </summary>
+        public bool IsConnectedWebSocket => _isConnectedWebSocket;
+
+        /// <summary>
+        /// 各種サービス提供機能
+        /// </summary>
+        public IServicesProvider ServicesProvider => _servicesProvider;
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        /// <see cref="T:Microsoft.Practices.ServiceLocation.ServiceLocator" /> のLocatorProviderを設定します。
+        /// Configures the <see cref="T:Prism.Mvvm.ViewModelLocator" /> used by Prism.
         /// </summary>
-        protected override void ConfigureServiceLocator()
+        protected override void ConfigureViewModelLocator()
         {
+            //base.ConfigureViewModelLocator();
             //
             // View に設定したViewModel 属性の型によってView とViewModel を紐付けます。
             //
