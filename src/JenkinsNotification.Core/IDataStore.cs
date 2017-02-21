@@ -25,29 +25,12 @@
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Jenkins 実行結果を追加します。
-        /// </summary>
-        /// <param name="newData">追加データ</param>
-        void AddJobResult(IJobExecuteResult newData);
-
-        /// <summary>
-        /// Jenkins 実行結果を追加します。
-        /// </summary>
-        /// <param name="newDataCollection">追加データ</param>
-        void AddJobResults(IEnumerable<IJobExecuteResult> newDataCollection);
-
+        
         /// <summary>
         /// 蓄積しているデータをバックアップします。
         /// </summary>
         void Backup();
-
-        /// <summary>
-        /// Jenkins 実行結果をすべてクリアします。
-        /// </summary>
-        void ClearJobResults();
-
+        
         /// <summary>
         /// バックアップしたデータをリストアします。
         /// </summary>

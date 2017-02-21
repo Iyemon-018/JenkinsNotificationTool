@@ -15,9 +15,29 @@
         #region Fields
 
         /// <summary>
+        /// データ蓄積領域
+        /// </summary>
+        private readonly IDataStore _dataStore;
+
+        /// <summary>
         /// ジョブ結果
         /// </summary>
         private JobExecuteResult _result;
+
+        #endregion
+
+        #region Ctor
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="dataStore">データ蓄積領域</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="dataStore"/> がnull の場合にスローされます。</exception>
+        public JobResultExecuter(IDataStore dataStore)
+        {
+            if (dataStore == null) throw new ArgumentNullException(nameof(dataStore));
+            _dataStore = dataStore;
+        }
 
         #endregion
 
@@ -62,8 +82,7 @@
             LogManager.Info("Jenkins ジョブ結果データを蓄積する。");
             var data = _result.Map<JobExecuteResultViewModel>();
             data.Received = DateTime.Now;
-            // TODO データストアにジョブ結果データを蓄積する。
-            //DataStore.Instance.AddJobResult(data);
+            _dataStore.JobResults.Add(data);
         }
 
         #endregion

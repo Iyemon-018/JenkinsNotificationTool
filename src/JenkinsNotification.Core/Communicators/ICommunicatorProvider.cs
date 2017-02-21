@@ -14,5 +14,10 @@
         /// WebAPI通信機能を取得します。
         /// </summary>
         IWebApiCommunicator WebApiCommunicator { get; }
+
+        /// <summary>
+        /// WebSocket通信のデータフローを管理インターフェースを取得します。
+        /// </summary>
+        IWebSocketDataFlow WebSocketDataFlow { get; }
     }
 }

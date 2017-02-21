@@ -82,6 +82,11 @@
         protected ICommunicatorProvider CommunicatorProvider => _communicatorProvider;
 
         /// <summary>
+        /// WebSocket通信インターフェースを取得します。
+        /// </summary>
+        protected IWebSocketCommunicator WebSocketCommunicator => _communicatorProvider.WebSocketCommunicator;
+
+        /// <summary>
         /// データ蓄積領域を取得します。
         /// </summary>
         protected IDataStore DataStore => _dataStore;

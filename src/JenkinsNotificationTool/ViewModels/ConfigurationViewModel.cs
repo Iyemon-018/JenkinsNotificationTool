@@ -77,7 +77,7 @@
             CancelCommand         = new DelegateCommand(ExecuteCancelCommand);
             TestConnectionCommand = new DelegateCommand(ExecuteTestConnectionCommand);
         }
-
+        
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -274,7 +274,7 @@
         /// </summary>
         private void ExecuteTestConnectionCommand()
         {
-            ApplicationManager.TryConnectionWebSocket();
+            WebSocketCommunicator.Connection(TargetUri, Constants.WebSocketRetryMaximum);
         }
         
         /// <summary>
@@ -323,6 +323,11 @@
         }
 
         /// <summary>
+        /// WebSocket 通信を実行できるかどうか
+        /// </summary>
+        private bool _canTryConnection = false;
+
+        /// <summary>
         /// WebSocket 通信で接続が確立できた場合に呼ばれるイベントハンドラです。
         /// </summary>
         /// <param name="sender">イベント送信元オブジェクト</param>
@@ -330,6 +335,7 @@
         private void WebSocket_OnConnected(object sender, EventArgs e)
         {
             DialogService.ShowInformation("接続しました。");
+            _canTryConnection = true;
         }
 
         /// <summary>
@@ -341,6 +347,7 @@
         {
             DialogService.ShowError("接続に失敗しました。");
             NotificationError(nameof(TargetUri), Resources.FailedConnectionWebSocketMessage);
+            _canTryConnection = true;
         }
 
         #endregion

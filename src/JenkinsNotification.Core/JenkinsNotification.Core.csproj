@@ -111,12 +111,15 @@
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="Communicators\CommunicatorProvider.cs" />
+    <Compile Include="Communicators\DataFlowRegistration.cs" />
     <Compile Include="Communicators\ICommunicatorProvider.cs" />
     <Compile Include="Communicators\IWebApiCommunicator.cs" />
+    <Compile Include="Communicators\IWebSocketDataFlow.cs" />
     <Compile Include="Communicators\JenkinsData.cs" />
     <Compile Include="Communicators\ReceivedErrorEventArgs.cs" />
     <Compile Include="Communicators\ReceivedEventArgs.cs" />
     <Compile Include="Communicators\WebSocketCommunicator.cs" />
+    <Compile Include="Communicators\WebSocketDataFlow.cs" />
     <Compile Include="ComponentModels\ShellViewModelBase.cs" />
     <Compile Include="ComponentModels\ErrorsContainerCustom.cs" />
     <Compile Include="ComponentModels\ShareViewModelBase.cs" />

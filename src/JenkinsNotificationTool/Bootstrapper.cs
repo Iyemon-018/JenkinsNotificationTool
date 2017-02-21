@@ -159,7 +159,12 @@
         {
             // TODO WebAPIインターフェースを実装する。
             var webSocketCommunicator = new WebSocketCommunicator();
-            _communicatorProvider = new CommunicatorProvider(webSocketCommunicator, null);
+            var webSocketDataFlow = new WebSocketDataFlow(webSocketCommunicator);
+            _communicatorProvider = new CommunicatorProvider(webSocketCommunicator, null, webSocketDataFlow);
+            _communicatorProvider.WebSocketDataFlow.ConfigureRegistration();
+
+            var register = new DataFlowRegistration(webSocketDataFlow, _dataStore);
+            register.Configure();
         }
 
         /// <summary>
@@ -195,6 +200,8 @@
             var balloonTipService = new BalloonTipService();
             _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService);
         }
+
+
 
         /// <summary>
         /// アプリケーションで使用するViewを登録する。
