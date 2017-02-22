@@ -109,7 +109,7 @@
         {
             if (self.IsEmpty())
             {
-                if (allowNullValue)
+                if (!allowNullValue)
                 {
                     throw new ArgumentNullException(nameof(self));
                 }
