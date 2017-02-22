@@ -26,6 +26,11 @@
         /// </summary>
         private readonly IBalloonTipService _balloonTipService;
 
+        /// <summary>
+        /// アプリケーション制御サービス
+        /// </summary>
+        private readonly IApplicationService _applicationService;
+
         #endregion
 
         #region Ctor
@@ -36,22 +41,25 @@
         /// <param name="dialogService">ダイアログ表示サービス</param>
         /// <param name="viewService">画面表示サービス</param>
         /// <param name="balloonTipService">バルーン通知サービス</param>
+        /// <param name="applicationService">アプリケーション制御サービス</param>
         /// <exception cref="System.ArgumentNullException">
-        /// <paramref name="dialogService"/> or <paramref name="viewService"/> or <paramref name="balloonTipService"/> がnull の場合にスローされます。
+        /// <paramref name="dialogService"/> or <paramref name="viewService"/> or <paramref name="balloonTipService"/> or <paramref name="applicationService"/>がnull の場合にスローされます。
         /// </exception>
-        public ServicesProvider(IDialogService dialogService, IViewService viewService, IBalloonTipService balloonTipService)
+        public ServicesProvider(IDialogService dialogService, IViewService viewService, IBalloonTipService balloonTipService, IApplicationService applicationService)
         {
-            if (dialogService     == null) throw new ArgumentNullException(nameof(dialogService));
-            if (viewService       == null) throw new ArgumentNullException(nameof(viewService));
-            if (balloonTipService == null) throw new ArgumentNullException(nameof(balloonTipService));
+            if (dialogService      == null) throw new ArgumentNullException(nameof(dialogService));
+            if (viewService        == null) throw new ArgumentNullException(nameof(viewService));
+            if (balloonTipService  == null) throw new ArgumentNullException(nameof(balloonTipService));
+            if (applicationService == null) throw new ArgumentNullException(nameof(applicationService));
 
             LogManager.Info($"ダイアログ表示サービスを設定します。{dialogService.GetType()}");
             LogManager.Info($"画面表示サービスを設定します。{viewService.GetType()}");
             LogManager.Info($"バルーン通知サービスを設定します。{balloonTipService.GetType()}");
 
-            _dialogService     = dialogService;
-            _viewService       = viewService;
-            _balloonTipService = balloonTipService;
+            _dialogService      = dialogService;
+            _viewService        = viewService;
+            _balloonTipService  = balloonTipService;
+            _applicationService = applicationService;
         }
 
         #endregion
@@ -72,6 +80,11 @@
         /// バルーン通知サービスを取得します。
         /// </summary>
         public IBalloonTipService BalloonTipService => _balloonTipService;
+
+        /// <summary>
+        /// アプリケーション制御サービスを取得します。
+        /// </summary>
+        public IApplicationService ApplicationService => _applicationService;
 
         #endregion
     }

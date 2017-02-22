@@ -10,6 +10,7 @@
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.CustomControls.Services;
+    using JenkinsNotificationTool.Services;
     using JenkinsNotificationTool.Views;
     using Microsoft.Practices.ServiceLocation;
     using Prism.Mvvm;
@@ -42,6 +43,11 @@
         /// 各種サービス提供機能
         /// </summary>
         private IServicesProvider _servicesProvider;
+        
+        /// <summary>
+        /// アプリケーション制御サービス
+        /// </summary>
+        private ApplicationService _applicationService;
 
         #endregion
 
@@ -68,7 +74,7 @@
 
             // 通信インターフェースを初期化します。
             ConfigureCommunicator();
-
+            
             // アプリケーションで使用するViewを登録する。
             RegisterViews();
         }
@@ -98,7 +104,6 @@
         {
             var configure = new MappingConfigure();
             configure.RegisterProfileType(typeof(Profile));
-
             configure.Initialize();
         }
 
@@ -108,6 +113,7 @@
         protected override void ConfigureViewModelLocator()
         {
             //base.ConfigureViewModelLocator();
+
             //
             // View に設定したViewModel 属性の型によってView とViewModel を紐付けます。
             //
@@ -146,6 +152,15 @@
             //base.InitializeShell();
             var app = Application.Current;
             app.MainWindow = Shell as Window;
+
+            // バルーン通知用のタスクバーアイコンを登録する。
+            var mainView = Shell as MainView;
+            if (mainView != null)
+            {
+                _servicesProvider.BalloonTipService
+                                 .SetBalloonTip(mainView.TaskbarIcon);
+            }
+
             if (!_isConnectedWebSocket)
             {
                 _servicesProvider.ViewService.Show(ScreenKey.Configuration);
@@ -159,8 +174,8 @@
         {
             // TODO WebAPIインターフェースを実装する。
             var webSocketCommunicator = new WebSocketCommunicator();
-            var webSocketDataFlow = new WebSocketDataFlow(webSocketCommunicator);
-            _communicatorProvider = new CommunicatorProvider(webSocketCommunicator, null, webSocketDataFlow);
+            var webSocketDataFlow     = new WebSocketDataFlow(webSocketCommunicator);
+            _communicatorProvider     = new CommunicatorProvider(webSocketCommunicator, null, webSocketDataFlow);
             _communicatorProvider.WebSocketDataFlow.ConfigureRegistration();
 
             var register = new DataFlowRegistration(webSocketDataFlow, _dataStore);
@@ -198,20 +213,23 @@
             var dialogService     = new DialogService();
             var viewService       = new ViewService();
             var balloonTipService = new BalloonTipService();
-            _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService);
+            _applicationService   = new ApplicationService();
+            _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService, _applicationService);
+
+            // アプリケーション終了時にタスクバーアイコンを解放する。
+            var disposeTaskIcon   = new Action(() => balloonTipService.Dispose());
+            _applicationService.AddShutdownTask(disposeTaskIcon);
         }
 
-
-
         /// <summary>
-        /// アプリケーションで使用するViewを登録する。
+        /// アプリケーションで使用するViewを登録します。
         /// </summary>
         private void RegisterViews()
         {
             ViewService.RegisterView(ScreenKey.Configuration, typeof(ConfigurationView));
             ViewService.RegisterView(ScreenKey.NotificationHistory, typeof(NotifyHistoryView));
         }
-
+        
         #endregion
     }
 }

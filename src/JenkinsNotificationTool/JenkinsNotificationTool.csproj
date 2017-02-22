@@ -145,6 +145,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DataStore.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Utility\BalloonDisplayTimeKindConverter.cs" />
     <Compile Include="Utility\NotifyHistoryCountKindConverter.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />

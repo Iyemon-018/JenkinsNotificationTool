@@ -78,7 +78,7 @@
         /// </summary>
         private void ExecuteConfigurationCommand()
         {
-            // TODO 構成情報画面を表示する。
+            // 構成情報画面を表示する。
             ViewService.Show(ScreenKey.Configuration);
         }
 
@@ -90,8 +90,8 @@
             var shutDown = DialogService.ShowQuestion(Resources.ExitConfirmMessage);
             if (shutDown)
             {
-                // TODO アプリケーションのシャットダウンを行う。
-                //ApplicationManager.Shutdown();
+                // アプリケーションのシャットダウンを行う。
+                ServiceProvider.ApplicationService.Shutdown();
             }
         }
 
@@ -100,7 +100,7 @@
         /// </summary>
         private void ExecuteReceivedNotificationListCommand()
         {
-            // TODO 通知受信履歴一覧を表示する。
+            // 通知受信履歴一覧を表示する。
             ViewService.Show(ScreenKey.NotificationHistory);
         }
 

@@ -175,6 +175,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\IApplicationService.cs" />
     <Compile Include="Services\IBalloonTipService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IProgress.cs" />

@@ -22,9 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsNotification.Core", "src\JenkinsNotification.Core\JenkinsNotification.Core.csproj", "{DD22EB0E-AD3C-49BB-9A37-AD58D67E8CD4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D04D0105-88BA-4C48-9E60-FC76AE23E5CF}"
-	ProjectSection(SolutionItems) = preProject
-		src\JenkinsNotificationTool\packages.config = src\JenkinsNotificationTool\packages.config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsNotificationTool.Tests", "Tests\JenkinsNotificationTool.Tests\JenkinsNotificationTool.Tests.csproj", "{D99B447C-A35F-49EF-A7A4-E3F59EB56E06}"
 EndProject

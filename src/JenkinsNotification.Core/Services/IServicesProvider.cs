@@ -19,5 +19,10 @@
         /// バルーン通知サービスを取得します。
         /// </summary>
         IBalloonTipService BalloonTipService { get; }
+
+        /// <summary>
+        /// アプリケーション制御サービスを取得します。
+        /// </summary>
+        IApplicationService ApplicationService { get; }
     }
 }

@@ -12,6 +12,7 @@ namespace JenkinsNotification.Debug.LogViewer
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.CustomControls.Services;
+    using JenkinsNotification.Debug.LogViewer.Services;
 
     /// <summary>
     /// App.xaml の相互作用ロジック
@@ -27,7 +28,7 @@ namespace JenkinsNotification.Debug.LogViewer
             //
             // アプリケーションで使いまわすインジェクション サービスを設定する。
             //
-            var servicesProvider = new ServicesProvider(new DialogService(), new ViewService(), new BalloonTipService());
+            var servicesProvider = new ServicesProvider(new DialogService(), new ViewService(), new BalloonTipService(), new ApplicationService());
             ApplicationManager.SetDefaultViewModelLocater(servicesProvider);
 
             base.OnStartup(e);

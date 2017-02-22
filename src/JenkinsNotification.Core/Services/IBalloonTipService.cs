@@ -8,6 +8,12 @@
     public interface IBalloonTipService
     {
         /// <summary>
+        /// このサービスで使用するバルーン通知オブジェクト インスタンスを設定します。
+        /// </summary>
+        /// <param name="balloonTip">バルーン通知オブジェクト</param>
+        void SetBalloonTip(object balloonTip);
+
+        /// <summary>
         /// 情報通知バルーンを表示します。
         /// </summary>
         /// <param name="title">タイトル</param>

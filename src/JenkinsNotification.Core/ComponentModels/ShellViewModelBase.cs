@@ -61,20 +61,25 @@
             _communicatorProvider = communicatorProvider;
             _dataStore            = dataStore;
         }
-        
+
         #endregion
 
         #region Properties
 
         /// <summary>
+        /// サービス提供インターフェース
+        /// </summary>
+        protected IServicesProvider ServiceProvider => _servicesProvider;
+
+        /// <summary>
         /// バルーン表示サービスの参照を取得します。
         /// </summary>
-        protected IBalloonTipService BalloonTipService => _servicesProvider.BalloonTipService;
+        protected IBalloonTipService BalloonTipService => ServiceProvider.BalloonTipService;
 
         /// <summary>
         /// View表示サービスを取得します。
         /// </summary>
-        protected IViewService ViewService => _servicesProvider.ViewService;
+        protected IViewService ViewService => ServiceProvider.ViewService;
 
         /// <summary>
         /// 通信インターフェースを取得します。
@@ -100,7 +105,7 @@
         /// </summary>
         public void Unloaded()
         {
-
+            OnUnloaded();
         }
 
         /// <summary>
