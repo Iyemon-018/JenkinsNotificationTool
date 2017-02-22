@@ -14,7 +14,7 @@
     /// ジョブ実行結果を受信してバルーン通知するための処理クラスです。
     /// </summary>
     /// <seealso cref="IExecuter" />
-    public class JobReceivedNotificationExecuter : IExecuter
+    public sealed class JobReceivedNotificationExecuter : IExecuter, IDisposable
     {
         #region Fields
 
@@ -31,7 +31,7 @@
         /// <summary>
         /// バルーン表示のための同期ロックオブジェクト
         /// </summary>
-        private readonly ReaderWriterLockSlim _lock;
+        private ReaderWriterLockSlim _lock;
 
         /// <summary>
         /// 受信したジョブ結果
@@ -115,6 +115,56 @@
         {
             var result = _jobResult.Map<JobExecuteResultViewModel>();
             _balloonTipService.NotifyJobResult(result);
+        }
+
+        #endregion
+
+        #region IDisposable Support
+
+        /// <summary>
+        /// このオブジェクトが解放されたかどうか
+        /// </summary>
+        private bool _disposedValue;
+
+        /// <summary>
+        /// このオブジェクトを解放します。
+        /// </summary>
+        /// <param name="disposing">明示的に解放するかどうか</param>
+        private void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // マネージ状態を破棄します (マネージ オブジェクト)。
+                }
+
+                // アンマネージ リソース (アンマネージ オブジェクト) を解放し、下のファイナライザーをオーバーライドします。
+                // 大きなフィールドを null に設定します。
+                if (_lock != null)
+                {
+                    _lock.Dispose();
+                    _lock = null;
+                }
+                _disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        /// ファイナライザ
+        /// </summary>
+        ~JobReceivedNotificationExecuter()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// アンマネージ リソースの解放またはリセットに関連付けられているアプリケーション定義のタスクを実行します。
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

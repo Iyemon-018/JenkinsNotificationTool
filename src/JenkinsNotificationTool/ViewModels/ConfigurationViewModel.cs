@@ -328,6 +328,15 @@
         private bool _canTryConnection = false;
 
         /// <summary>
+        /// WebSocket 通信を実行できるかどうかを取得します。
+        /// </summary>
+        public bool CanTryConnection
+        {
+            get { return _canTryConnection; }
+            private set { SetProperty(ref _canTryConnection, value); }
+        }
+
+        /// <summary>
         /// WebSocket 通信で接続が確立できた場合に呼ばれるイベントハンドラです。
         /// </summary>
         /// <param name="sender">イベント送信元オブジェクト</param>
