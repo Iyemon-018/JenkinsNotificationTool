@@ -67,6 +67,7 @@
         /// </summary>
         public void ConfigureRegistration()
         {
+            LogManager.Info("データフロー管理機能の初期化構成を行う。");
             _webSocketCommunicator.Connected        += WebSocket_OnConnected;
             _webSocketCommunicator.ConnectionFailed += WebSocket_OnConnectionFailed;
             _webSocketCommunicator.Received         += WebSocket_OnReceived;
@@ -76,8 +77,10 @@
         /// WebSocket 接続成功時のタスクを登録します。
         /// </summary>
         /// <param name="task">通信成功時に実行するタスク</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="task"/> がnull の場合にスローされます。</exception>
         public void RegisterConnectedTask(IExecuter task)
         {
+            if (task == null) throw new ArgumentNullException(nameof(task));
             _connectedTasks.Add(task);
         }
 
@@ -85,8 +88,10 @@
         /// WebSocket 接続失敗時のタスクを登録します。
         /// </summary>
         /// <param name="task">通信失敗時に実行するタスク</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="task"/> がnull の場合にスローされます。</exception>
         public void RegisterConnectionFailedTask(IExecuter task)
         {
+            if (task == null) throw new ArgumentNullException(nameof(task));
             _connectionFailedTasks.Add(task);
         }
 

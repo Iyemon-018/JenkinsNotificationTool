@@ -1,16 +1,13 @@
 ﻿namespace JenkinsNotification.CustomControls.Services
 {
     using System;
-    using System.Windows.Controls.Primitives;
     using Hardcodet.Wpf.TaskbarNotification;
     using Core;
-    using Core.Configurations;
     using Core.Services;
     using Core.ViewModels.Api;
     using BalloonTips;
-    using JenkinsNotification.Core.Communicators;
-    using JenkinsNotification.Core.Logs;
-    using JenkinsNotification.CustomControls.ViewModels;
+    using Core.Logs;
+    using ViewModels;
 
     /// <summary>
     /// バルーン通知サービス クラスです。
@@ -89,16 +86,13 @@
             var viewModel          = new JobExecuteResultBalloonTipViewModel(executeResult);
             var balloon            = new JobExecuteResultBalloonTip {DataContext = viewModel,};
             var taskbarIcon        = GetTaskbarIcon();
-            // TODO ここは、DIコンテナからDataStoreを取得できるようにする。
-            //var popupAnimationType = _dataStore.ApplicationConfiguration
-            //                                   .NotifyConfiguration
-            //                                   .PopupAnimationType;
-            //var popupTimeout = (int?)_dataStore.ApplicationConfiguration
-            //                                   .NotifyConfiguration
-            //                                   .PopupTimeout?
-            //                                   .TotalMilliseconds;
-            var popupAnimationType = PopupAnimation.Slide;
-            var popupTimeout = (int?)null;
+            var popupAnimationType = _dataStore.ApplicationConfiguration
+                                               .NotifyConfiguration
+                                               .PopupAnimationType;
+            var popupTimeout = (int?) _dataStore.ApplicationConfiguration
+                                               .NotifyConfiguration
+                                               .PopupTimeout?
+                                               .TotalMilliseconds;
             taskbarIcon.ShowCustomBalloon(balloon, popupAnimationType, popupTimeout);
         }
 

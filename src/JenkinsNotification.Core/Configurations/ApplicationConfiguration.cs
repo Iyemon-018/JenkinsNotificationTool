@@ -71,14 +71,19 @@
         /// <returns>読み込みに成功した場合はtrue, 失敗した場合はfalse を返します。</returns>
         public static void LoadCurrent()
         {
-            try
+            using (TimeTracer.StartNew("デフォルト　ファイルパスでアプリケーション構成ファイルを読み込む。"))
             {
-                _current = ConfigurationUtility.Load(DefaultFilePath, new ApplicationConfigurationVerify());
-            }
-            catch(Exception exception)
-            {
-                _current = new ApplicationConfiguration();
-                throw new ConfigurationLoadException(Resources.ConfigurationLoadFailedMessage, DefaultFilePath, exception);
+                try
+                {
+                    _current = ConfigurationUtility.Load(DefaultFilePath, new ApplicationConfigurationVerify());
+                }
+                catch (Exception exception)
+                {
+                    _current = new ApplicationConfiguration();
+                    throw new ConfigurationLoadException(Resources.ConfigurationLoadFailedMessage,
+                                                         DefaultFilePath,
+                                                         exception);
+                }
             }
         }
 

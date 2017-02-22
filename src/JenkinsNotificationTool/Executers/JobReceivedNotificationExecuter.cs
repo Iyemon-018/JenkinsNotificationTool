@@ -9,6 +9,7 @@
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
     using JenkinsNotification.Core.ViewModels.Api;
+    using Microsoft.Practices.Unity;
 
     /// <summary>
     /// ジョブ実行結果を受信してバルーン通知するための処理クラスです。
@@ -17,12 +18,7 @@
     public sealed class JobReceivedNotificationExecuter : IExecuter, IDisposable
     {
         #region Fields
-
-        /// <summary>
-        /// バルーン通知サービス
-        /// </summary>
-        private readonly IBalloonTipService _balloonTipService;
-
+        
         /// <summary>
         /// ジョブ結果受信時にUIスレッド上で実行するアクション
         /// </summary>
@@ -38,6 +34,11 @@
         /// </summary>
         private JobExecuteResult _jobResult;
 
+        /// <summary>
+        /// Unityコンテナ
+        /// </summary>
+        private readonly IUnityContainer _container;
+
         #endregion
 
         #region Ctor
@@ -45,12 +46,14 @@
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="balloonTipService">バルーン通知サービス</param>
-        public JobReceivedNotificationExecuter(IBalloonTipService balloonTipService)
+        /// <param name="container">Unityコンテナ</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="container"/> がnull の場合にスローされます。</exception>
+        public JobReceivedNotificationExecuter(IUnityContainer container)
         {
-            // TODO ここは、DIからballoonTipService を取得したい。
+            if (container == null) throw new ArgumentNullException(nameof(container));
+
             _lock = new ReaderWriterLockSlim();
-            _balloonTipService = balloonTipService;
+            _container = container;
             _executeAction = ExecuteNotifyJobResult;
         }
 
@@ -114,7 +117,8 @@
         private void ExecuteNotifyJobResult()
         {
             var result = _jobResult.Map<JobExecuteResultViewModel>();
-            _balloonTipService.NotifyJobResult(result);
+            var servicesProvider = _container.Resolve<IServicesProvider>();
+            servicesProvider.BalloonTipService.NotifyJobResult(result);
         }
 
         #endregion

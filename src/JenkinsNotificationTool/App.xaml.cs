@@ -41,6 +41,15 @@
         /// <param name="e">イベント データを格納している <see cref="T:System.Windows.StartupEventArgs" />。</param>
         protected override void OnStartup(StartupEventArgs e)
         {
+            // ログ機能の初期化を行う。
+            var logger = new NLogger();
+            var line = new string('-', 100);
+
+            LogManager.AddLogger(logger);
+            LogManager.Info(line);
+            LogManager.Info("☆☆☆  アプリケーションが起動された。 ☆☆☆");
+            LogManager.Info(line);
+
             base.OnStartup(e);
             
             //
@@ -48,14 +57,6 @@
             //
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();
-
-            //
-            // WebSocket接続に失敗した場合、構成情報を強制的に行う。
-            //
-            if (!bootstrapper.IsConnectedWebSocket)
-            {
-                bootstrapper.ServicesProvider.ViewService.Show(ScreenKey.Configuration);
-            }
         }
 
         /// <summary>

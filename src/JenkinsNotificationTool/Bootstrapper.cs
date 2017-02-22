@@ -14,7 +14,7 @@
     using JenkinsNotificationTool.Executers;
     using JenkinsNotificationTool.Services;
     using JenkinsNotificationTool.Views;
-    using Microsoft.Practices.ServiceLocation;
+    using Microsoft.Practices.Unity;
     using Prism.Mvvm;
     using Prism.Unity;
 
@@ -27,29 +27,9 @@
         #region Fields
 
         /// <summary>
-        /// 通信インターフェース
-        /// </summary>
-        private ICommunicatorProvider _communicatorProvider;
-
-        /// <summary>
-        /// データストア
-        /// </summary>
-        private IDataStore _dataStore;
-
-        /// <summary>
         /// WebSocket通信が確立できたかどうか
         /// </summary>
         private bool _isConnectedWebSocket = true;
-
-        /// <summary>
-        /// 各種サービス提供機能
-        /// </summary>
-        private IServicesProvider _servicesProvider;
-        
-        /// <summary>
-        /// アプリケーション制御サービス
-        /// </summary>
-        private ApplicationService _applicationService;
 
         #endregion
 
@@ -63,74 +43,83 @@
             // この時点のスレッドをUIスレッドと認識する。
             ThreadUtility.InitializeSynchronizationContext();
 
-            // ログ機能の初期化を行う。
-            LogManager.AddLogger(new NLogger());
-
             // マッピングの初期化を行う。
             InitializeMapping();
 
-            // サービスを初期化する。
-            ConfigureServices();
-
-            // データストアを初期化する。
-            ConfigureDataStore();
-
-            // 通信インターフェースを初期化します。
-            ConfigureCommunicator();
-            
             // アプリケーションで使用するViewを登録する。
             RegisterViews();
         }
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// WebSocket通信が確立できたかどうか
-        /// </summary>
-        public bool IsConnectedWebSocket => _isConnectedWebSocket;
-
-        /// <summary>
-        /// 各種サービス提供機能
-        /// </summary>
-        public IServicesProvider ServicesProvider => _servicesProvider;
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// データマッピング構成情報を初期化します。
+        /// DIコンテナにインスタンスを登録します。
         /// </summary>
-        private void InitializeMapping()
+        /// <typeparam name="TInstance">登録対象のインスタンスの型</typeparam>
+        /// <param name="container">Unity DIコンテナ</param>
+        /// <param name="instance">登録するインスタンス</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="instance"/> がnull の場合にスローされます。</exception>
+        private void RegisterInstanceForContainer<TInstance>(IUnityContainer container, TInstance instance)
         {
-            var configure = new MappingConfigure();
-            configure.RegisterProfileType(typeof(Profile));
-            configure.Initialize();
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+
+            LogManager.Info($"Unity DIコンテナに{typeof(TInstance)} インスタンスを登録する。");
+            container.RegisterInstance(instance);
         }
 
         /// <summary>
-        /// Configures the <see cref="T:Prism.Mvvm.ViewModelLocator" /> used by Prism.
+        /// <see cref="T:Microsoft.Practices.Unity.IUnityContainer" />を構成します。<para/>
+        /// 派生クラスで上書きされ、アプリケーションで必要な特定の型マッピングが追加されることがあります。
+        /// </summary>
+        protected override void ConfigureContainer()
+        {
+            LogManager.Info("Unityコンテナにインスタンスを登録します。");
+
+            base.ConfigureContainer();
+
+            // コンテナにインスタンスを登録する。
+            // これらのインスタンスは、コンテナ上で共有する。
+
+            // データストアを初期化する。
+            var dataStore = ConfigureDataStore();
+            RegisterInstanceForContainer(Container, dataStore);
+
+            // サービスを初期化する。
+            var servicesProvider = ConfigureServices();
+            RegisterInstanceForContainer(Container, servicesProvider);
+
+            // 通信インターフェースを初期化します。
+            var communicatorProvider = ConfigureCommunicator();
+            RegisterInstanceForContainer(Container, communicatorProvider);
+
+            // データ処理部の初期構成を実施する。
+            ConfigureDataFlow();
+        }
+
+        /// <summary>
+        /// Prism の<see cref="T:Prism.Mvvm.ViewModelLocator" /> の初期化構成を実行します。
         /// </summary>
         protected override void ConfigureViewModelLocator()
         {
+            LogManager.Info("ViewModelLocator の初期化構成を行う。");
+
             //base.ConfigureViewModelLocator();
 
             //
             // View に設定したViewModel 属性の型によってView とViewModel を紐付けます。
             //
-            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(
-                viewType =>
-                {
-                    var vmType = viewType.GetTypeInfo().GetCustomAttribute<ViewModelAttribute>();
-                    return vmType?.ViewModelType;
-                });
+            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType =>
+                                                                                {
+                                                                                    var vmType = viewType.GetTypeInfo().GetCustomAttribute<ViewModelAttribute>();
+                                                                                    return vmType?.ViewModelType;
+                                                                                });
+
             //
             // ViewModel を生成する場合、コンストラクタの引数にインジェクション サービスを設定する。
             //
-            ViewModelLocationProvider.SetDefaultViewModelFactory(
-                viewModelType => Activator.CreateInstance(viewModelType, _servicesProvider, _communicatorProvider, _dataStore));
+            ViewModelLocationProvider.SetDefaultViewModelFactory(viewModelType => Container.Resolve(viewModelType));
         }
 
         /// <summary>
@@ -144,7 +133,7 @@
         /// attached property from XAML.</remarks>
         protected override DependencyObject CreateShell()
         {
-            return ServiceLocator.Current.GetInstance<MainView>();
+            return Container.Resolve<MainView>();
         }
 
         /// <summary>
@@ -152,48 +141,77 @@
         /// </summary>
         protected override void InitializeShell()
         {
+            LogManager.Info("Shell の初期化処理を実行する。");
+
             //base.InitializeShell();
+
             var app = Application.Current;
+            var servicesProvider = Container.Resolve<IServicesProvider>();
             app.MainWindow = Shell as Window;
 
+            //
             // バルーン通知用のタスクバーアイコンを登録する。
+            // MainView に定義しているTaskIcon はインスタンス化された時点でタスクトレイに格納される。
+            // その為、MainView はShow する必要がない。
+            // （というか、Show すると表示されてしまうのでしてはいけない。）
+            //
             var mainView = Shell as MainView;
             if (mainView != null)
             {
-                _servicesProvider.BalloonTipService
-                                 .SetBalloonTip(mainView.TaskbarIcon);
+                servicesProvider.BalloonTipService
+                                .SetBalloonTip(mainView.TaskbarIcon);
             }
 
+            //
+            // WebSocket接続に失敗した場合、構成情報を強制的に行う。
+            //
             if (!_isConnectedWebSocket)
             {
-                _servicesProvider.ViewService.Show(ScreenKey.Configuration);
+                LogManager.Info("WebSocket接続に失敗したため、構成情報設定画面を表示する。");
+                servicesProvider.ViewService.Show(ScreenKey.Configuration);
             }
         }
 
         /// <summary>
-        /// 通信インターフェースを初期化します。
+        /// 通信機能提供インターフェースの初期化構成を行います。
         /// </summary>
-        private void ConfigureCommunicator()
+        /// <returns>初期化構成が完了した通信機能提供インターフェース</returns>
+        private ICommunicatorProvider ConfigureCommunicator()
         {
+            LogManager.Info("通信機能提供インターフェースの初期化構成を行う。");
+
             // TODO WebAPIインターフェースを実装する。
             var webSocketCommunicator = new WebSocketCommunicator();
             var webSocketDataFlow     = new WebSocketDataFlow(webSocketCommunicator);
-            _communicatorProvider     = new CommunicatorProvider(webSocketCommunicator, null, webSocketDataFlow);
-            _communicatorProvider.WebSocketDataFlow.ConfigureRegistration();
+            var communicatorProvider  = new CommunicatorProvider(webSocketCommunicator, null, webSocketDataFlow);
 
-            var register = new DataFlowRegistration(webSocketDataFlow, _dataStore);
-            register.AddTask(new JobReceivedNotificationExecuter(_servicesProvider.BalloonTipService));
+            communicatorProvider.WebSocketDataFlow.ConfigureRegistration();
+
+            return communicatorProvider;
+        }
+
+        /// <summary>
+        /// データ処理部の初期化構成を行います。
+        /// </summary>
+        private void ConfigureDataFlow()
+        {
+            LogManager.Info("データ処理部の初期化構成を行う。");
+            var communicatorProvider = Container.Resolve<ICommunicatorProvider>();
+            var dataStore            = Container.Resolve<IDataStore>();
+            var register             = new DataFlowRegistration(communicatorProvider.WebSocketDataFlow, dataStore);
+
+            register.AddTask(new JobReceivedNotificationExecuter(Container));
             register.Configure();
         }
 
         /// <summary>
-        /// データストアを初期化します。
+        /// データストアの初期化構成を行います。
         /// </summary>
-        private void ConfigureDataStore()
+        /// <returns>初期化構成が完了したデータストア</returns>
+        private IDataStore ConfigureDataStore()
         {
-            //
-            // アプリケーション機能の初期化を実施する。
-            //
+            LogManager.Info("データストアの初期化構成を行う。");
+
             try
             {
                 //
@@ -201,28 +219,44 @@
                 //
                 ApplicationConfiguration.LoadCurrent();
             }
-            catch (ConfigurationLoadException)
+            catch (ConfigurationLoadException e)
             {
                 _isConnectedWebSocket = false;
+                LogManager.Error("アプリケーション構成ファイルの読み込みに失敗した。", e);
             }
 
-            _dataStore = new DataStore(ApplicationConfiguration.Current);
+            return new DataStore(ApplicationConfiguration.Current);
         }
 
         /// <summary>
-        /// サービス提供インターフェースを構成します。
+        /// サービス機能提供インターフェースの初期化構成を行います。
         /// </summary>
-        private void ConfigureServices()
+        /// <returns>初期化構成が完了したサービス機能提供インターフェース</returns>
+        private IServicesProvider ConfigureServices()
         {
-            var dialogService     = new DialogService();
-            var viewService       = new ViewService();
-            var balloonTipService = new BalloonTipService(_dataStore);
-            _applicationService   = new ApplicationService();
-            _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService, _applicationService);
+            LogManager.Info("サービス機能提供インターフェースの初期化構成を行う。");
+            var dataStore          = Container.Resolve<IDataStore>();
+            var dialogService      = new DialogService();
+            var viewService        = new ViewService();
+            var balloonTipService  = new BalloonTipService(dataStore);
+            var applicationService = new ApplicationService();
 
             // アプリケーション終了時にタスクバーアイコンを解放する。
-            var disposeTaskIcon   = new Action(() => balloonTipService.Dispose());
-            _applicationService.AddShutdownTask(disposeTaskIcon);
+            var disposeTaskIcon = new Action(() => balloonTipService.Dispose());
+            applicationService.AddShutdownTask(disposeTaskIcon);
+
+            return new ServicesProvider(dialogService, viewService, balloonTipService, applicationService);
+        }
+
+        /// <summary>
+        /// データマッピング構成情報を初期化します。
+        /// </summary>
+        private void InitializeMapping()
+        {
+            LogManager.Info("データマッピングの初期化構成を行う。");
+            var configure = new MappingConfigure();
+            configure.RegisterProfileType(typeof(Profile));
+            configure.Initialize();
         }
 
         /// <summary>
@@ -230,10 +264,11 @@
         /// </summary>
         private void RegisterViews()
         {
+            LogManager.Info("アプリケーションで使用するView を登録する。");
             ViewService.RegisterView(ScreenKey.Configuration, typeof(ConfigurationView));
             ViewService.RegisterView(ScreenKey.NotificationHistory, typeof(NotifyHistoryView));
         }
-        
+
         #endregion
     }
 }

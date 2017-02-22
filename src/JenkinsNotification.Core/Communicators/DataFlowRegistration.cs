@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Executers;
+    using JenkinsNotification.Core.Logs;
 
     /// <summary>
     /// WebSocketデータフローの実行処理を登録するためのクラスです。
@@ -68,6 +69,8 @@
         /// </summary>
         public void Configure()
         {
+            LogManager.Info("データフローの初期化構成を行う。");
+
             // TODO WebSocket通信で受信時に実行するタスクを登録する。
             _webSocketDataFlow.RegisterExecuteTask(new JobResultExecuter(_dataStore));
 
