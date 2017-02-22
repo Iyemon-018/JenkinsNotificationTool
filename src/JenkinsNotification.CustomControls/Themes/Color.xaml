@@ -55,6 +55,18 @@
 
     <!--  #End Region View関連  -->
 
+    <!--  #Region BalloonTip関連  -->
+
+    <SolidColorBrush x:Key="BalloonTip.JobSuccess.Background" Color="#FF53D653" />
+    <SolidColorBrush x:Key="BalloonTip.JobSuccess.Foreground" Color="#FF14801E" />
+
+    <SolidColorBrush x:Key="BalloonTip.JobFailed.Background" Color="#FFF57B86" />
+    <SolidColorBrush x:Key="BalloonTip.JobFailed.Foreground" Color="#FFAC0000" />
+
+    <SolidColorBrush x:Key="BalloonTip.JobWarning.Background" Color="#FFEEEE93" />
+    <SolidColorBrush x:Key="BalloonTip.JobWarning.Foreground" Color="#FFDADA00" />
+    <!--  #End Region BalloonTip関連  -->
+
     <!--  #End Region 独自コンポーネントの色リソース定義  -->
 
 </ResourceDictionary>

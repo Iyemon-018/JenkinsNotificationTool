@@ -28,7 +28,11 @@ namespace JenkinsNotification.Debug.LogViewer
             //
             // アプリケーションで使いまわすインジェクション サービスを設定する。
             //
-            var servicesProvider = new ServicesProvider(new DialogService(), new ViewService(), new BalloonTipService(), new ApplicationService());
+            var dialogService = new DialogService();
+            var viewService = new ViewService();
+            var balloonTipService = new NoneNotifyBalloonTipService();
+            var applicationService = new ApplicationService();
+            var servicesProvider = new ServicesProvider(dialogService, viewService, balloonTipService, applicationService);
             ApplicationManager.SetDefaultViewModelLocater(servicesProvider);
 
             base.OnStartup(e);

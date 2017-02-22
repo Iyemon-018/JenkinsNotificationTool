@@ -9,7 +9,9 @@
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
+    using JenkinsNotification.Core.Utility;
     using JenkinsNotification.CustomControls.Services;
+    using JenkinsNotificationTool.Executers;
     using JenkinsNotificationTool.Services;
     using JenkinsNotificationTool.Views;
     using Microsoft.Practices.ServiceLocation;
@@ -58,9 +60,10 @@
         /// </summary>
         public Bootstrapper()
         {
-            //
+            // この時点のスレッドをUIスレッドと認識する。
+            ThreadUtility.InitializeSynchronizationContext();
+
             // ログ機能の初期化を行う。
-            //
             LogManager.AddLogger(new NLogger());
 
             // マッピングの初期化を行う。
@@ -179,6 +182,7 @@
             _communicatorProvider.WebSocketDataFlow.ConfigureRegistration();
 
             var register = new DataFlowRegistration(webSocketDataFlow, _dataStore);
+            register.AddTask(new JobReceivedNotificationExecuter(_servicesProvider.BalloonTipService));
             register.Configure();
         }
 
@@ -212,7 +216,7 @@
         {
             var dialogService     = new DialogService();
             var viewService       = new ViewService();
-            var balloonTipService = new BalloonTipService();
+            var balloonTipService = new BalloonTipService(_dataStore);
             _applicationService   = new ApplicationService();
             _servicesProvider     = new ServicesProvider(dialogService, viewService, balloonTipService, _applicationService);
 

@@ -107,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Template.JobExecuteResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BalloonTips\JobExecuteResultBalloonTip.xaml.cs">
@@ -114,6 +118,8 @@
     </Compile>
     <Compile Include="Converters\BooleanToEnumConverter.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
+    <Compile Include="Converters\JobResultTypeToBackgroundConverter.cs" />
+    <Compile Include="Converters\JobResultTypeToForegroundConverter.cs" />
     <Compile Include="ItemContent.cs" />
     <Compile Include="MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
@@ -137,8 +143,10 @@
     </Compile>
     <Compile Include="Services\BalloonTipService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Converters\JobResultTypeToMessageBoxImageConverter.cs" />
     <Compile Include="Utility\StoryboardUtility.cs" />
     <Compile Include="View.cs" />
+    <Compile Include="ViewModels\JobExecuteResultBalloonTipViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

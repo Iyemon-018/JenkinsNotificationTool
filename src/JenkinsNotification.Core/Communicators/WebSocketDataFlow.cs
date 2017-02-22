@@ -129,14 +129,17 @@
         {
             if (!_executeTasks.Any()) return;
 
-            var task = _executeTasks.FirstOrDefault(x => x.CanExecute(message));
-            if (task == null)
+            var tasks = _executeTasks.Where(x => x.CanExecute(message)).ToArray();
+            if (!tasks.Any())
             {
                 LogManager.Info($"実行可能なタスクはありませんでした。(受信データ:{message})");
                 return;
             }
 
-            task.Execute();
+            foreach (var executer in tasks)
+            {
+                executer.Execute();
+            }
         }
 
         /// <summary>

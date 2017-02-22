@@ -181,6 +181,7 @@
     <Compile Include="Services\IProgress.cs" />
     <Compile Include="Services\IServicesProvider.cs" />
     <Compile Include="Communicators\IWebSocketCommunicator.cs" />
+    <Compile Include="Services\NoneNotifyBalloonTipService.cs" />
     <Compile Include="Services\ServicesProvider.cs" />
     <Compile Include="Services\IViewService.cs" />
     <Compile Include="Services\ViewService.cs" />

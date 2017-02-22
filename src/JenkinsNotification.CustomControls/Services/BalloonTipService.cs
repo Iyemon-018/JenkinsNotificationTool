@@ -1,13 +1,16 @@
 ﻿namespace JenkinsNotification.CustomControls.Services
 {
     using System;
+    using System.Windows.Controls.Primitives;
     using Hardcodet.Wpf.TaskbarNotification;
     using Core;
     using Core.Configurations;
     using Core.Services;
     using Core.ViewModels.Api;
     using BalloonTips;
+    using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.Logs;
+    using JenkinsNotification.CustomControls.ViewModels;
 
     /// <summary>
     /// バルーン通知サービス クラスです。
@@ -18,9 +21,9 @@
         #region Fields
 
         /// <summary>
-        /// アプリケーション構成情報の参照
+        /// データ蓄積領域
         /// </summary>
-        private readonly ApplicationConfiguration _config = ApplicationManager.Instance?.ApplicationConfiguration;
+        private readonly IDataStore _dataStore;
 
         /// <summary>
         /// バルーン通知を表示するための<see cref="TaskbarIcon"/>
@@ -29,6 +32,15 @@
 
         #endregion
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="dataStore">データ蓄積領域</param>
+        public BalloonTipService(IDataStore dataStore)
+        {
+            _dataStore = dataStore;
+        }
+        
         #region Methods
 
         /// <summary>
@@ -74,11 +86,20 @@
             LogManager.Info($"ジョブ実行結果通知バルーンを表示する。(Job:{executeResult.Name}" +
                             $" #{executeResult.BuildNumber}, {executeResult.Status}, {executeResult.Result}");
 
-            var balloon     = new JobExecuteResultBalloonTip(executeResult);
-            var taskbarIcon = GetTaskbarIcon();
-            taskbarIcon.ShowCustomBalloon(balloon,
-                                          _config.NotifyConfiguration.PopupAnimationType,
-                                          (int?)_config.NotifyConfiguration.PopupTimeout?.TotalMilliseconds);
+            var viewModel          = new JobExecuteResultBalloonTipViewModel(executeResult);
+            var balloon            = new JobExecuteResultBalloonTip {DataContext = viewModel,};
+            var taskbarIcon        = GetTaskbarIcon();
+            // TODO ここは、DIコンテナからDataStoreを取得できるようにする。
+            //var popupAnimationType = _dataStore.ApplicationConfiguration
+            //                                   .NotifyConfiguration
+            //                                   .PopupAnimationType;
+            //var popupTimeout = (int?)_dataStore.ApplicationConfiguration
+            //                                   .NotifyConfiguration
+            //                                   .PopupTimeout?
+            //                                   .TotalMilliseconds;
+            var popupAnimationType = PopupAnimation.Slide;
+            var popupTimeout = (int?)null;
+            taskbarIcon.ShowCustomBalloon(balloon, popupAnimationType, popupTimeout);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@
     /// <seealso cref="IJobExecuteResult" />
     /// <seealso cref="ViewModelBase" />
     /// <remarks><see cref="Jenkins.Api.JobExecuteResult" /> クラスの情報を保持します。</remarks>
-    internal class JobExecuteResultViewModel : ViewModelBase, IJobExecuteResult
+    public class JobExecuteResultViewModel : ViewModelBase, IJobExecuteResult
     {
         #region Fields
 

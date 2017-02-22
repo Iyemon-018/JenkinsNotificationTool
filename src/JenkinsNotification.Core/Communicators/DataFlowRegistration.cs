@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotification.Core.Communicators
 {
     using System;
+    using System.Collections.Generic;
     using Executers;
 
     /// <summary>
@@ -19,6 +20,11 @@
         /// WebSocketデータフロー インターフェース
         /// </summary>
         private readonly IWebSocketDataFlow _webSocketDataFlow;
+
+        /// <summary>
+        /// データ受信時に実行するタスクコレクション
+        /// </summary>
+        private readonly List<IExecuter> _executers;
 
         #endregion
 
@@ -39,11 +45,23 @@
 
             _webSocketDataFlow = webSocketDataFlow;
             _dataStore         = dataStore;
+            _executers         = new List<IExecuter>();
         }
 
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// データ受信時に実行するタスクを登録します。
+        /// </summary>
+        /// <param name="task">タスク</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="task"/> がnull の場合にスローされます。</exception>
+        public void AddTask(IExecuter task)
+        {
+            if (task == null) throw new ArgumentNullException(nameof(task));
+            _executers.Add(task);
+        }
 
         /// <summary>
         /// データフローを初期構成を行います。
@@ -52,6 +70,11 @@
         {
             // TODO WebSocket通信で受信時に実行するタスクを登録する。
             _webSocketDataFlow.RegisterExecuteTask(new JobResultExecuter(_dataStore));
+
+            foreach (var executer in _executers)
+            {
+                _webSocketDataFlow.RegisterExecuteTask(executer);
+            }
         }
 
         #endregion

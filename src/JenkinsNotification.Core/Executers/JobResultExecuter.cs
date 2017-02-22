@@ -53,14 +53,15 @@
             try
             {
                 _result = message.JsonSerialize<JobExecuteResult>();
-                LogManager.Info("Jenkins ジョブ結果を受け取った。");
-                return true;
             }
             catch (Exception e)
             {
                 LogManager.Error("変換に失敗した。", e);
                 return false;
             }
+
+            LogManager.Info("Jenkins ジョブ結果を受け取った。");
+            return true;
         }
 
         /// <summary>
