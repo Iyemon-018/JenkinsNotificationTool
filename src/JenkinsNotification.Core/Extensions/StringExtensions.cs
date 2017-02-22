@@ -80,6 +80,46 @@
             return int.TryParse(self, out result) ? result : defaultValue;
         }
 
+        /// <summary>
+        /// 文字列が<see cref="T:TimeSpan"/> の値として使用できるかどうかを判定します。
+        /// </summary>
+        /// <param name="self">自分自身</param>
+        /// <returns>判定結果(true:使用可能, false:使用不可能)</returns>
+        public static bool IsTimeSpanValue(this string self)
+        {
+            TimeSpan result;
+            return TimeSpan.TryParse(self, out result);
+        }
+
+        /// <summary>
+        /// 文字列を<see cref="TimeSpan" /> 型の値に変換します。
+        /// </summary>
+        /// <param name="self">自分自身</param>
+        /// <param name="allowNullValue">
+        /// 文字列が空文字を許容するかどうか<para/>
+        /// true を設定した場合、空文字はnull を返します。<para/>
+        /// false を設定した場合、空文字は<see cref="ArgumentNullException"/> をスローします。
+        /// </param>
+        /// <returns>
+        /// 変換結果<para/>
+        /// 変換に失敗する文字列の場合、null を返します。
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException"><paramref name="self"/> がnull の場合にスローされます。</exception>
+        public static TimeSpan? ToTimeSpan(this string self, bool allowNullValue = false)
+        {
+            if (self.IsEmpty())
+            {
+                if (allowNullValue)
+                {
+                    throw new ArgumentNullException(nameof(self));
+                }
+                return null;
+            }
+
+            TimeSpan result;
+            return TimeSpan.TryParse(self, out result) ? (TimeSpan?)null : result;
+        }
+
         #endregion
     }
 }

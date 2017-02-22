@@ -10,7 +10,7 @@
         /// 構成情報の検証を行います。
         /// </summary>
         /// <param name="config">構成情報オブジェクト</param>
-        /// <returns>検証結果</returns>
-        VerifyResult Verify(T config);
+        /// <exception cref="ConfigurationVerifyException">構成情報にエラー値があった場合にスローされます。</exception>
+        void Verify(T config);
     }
 }

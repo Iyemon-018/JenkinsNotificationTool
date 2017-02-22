@@ -24,14 +24,7 @@
             using (TimeTracer.StartNew($"構成ファイルを読み込みます。Path:{filePath}"))
             {
                 var config = filePath.Deserialize<T>();
-                var result = verify.Verify(config);
-                if (!result.Correct)
-                {
-                    throw new ConfigurationVerifyException(Resources.ConfigurationVerifyLoadedErrorMessage,
-                                                           filePath,
-                                                           result);
-                }
-
+                verify.Verify(config);
                 return config;
             }
         }
@@ -48,13 +41,7 @@
         {
             using (TimeTracer.StartNew($"構成ファイルを保存します。Path:{filePath}"))
             {
-                var result = verify.Verify(config);
-                if (!result.Correct)
-                {
-                    throw new ConfigurationVerifyException(Resources.ConfigurationVerifySaveErrorMessage,
-                                                           filePath,
-                                                           result);
-                }
+                verify.Verify(config);
                 config.Serialize(filePath);
             }
         }

@@ -1,10 +1,9 @@
 ﻿namespace JenkinsNotification.Core.Configurations
 {
     using System;
-    using System.ComponentModel;
     using System.Windows.Controls.Primitives;
-    using System.Xml;
     using System.Xml.Serialization;
+    using Extensions;
 
     /// <summary>
     /// 通知に関する設定情報クラスです。
@@ -33,6 +32,11 @@
         /// バルーン通知が消えるまでのタイムアウト
         /// </summary>
         private TimeSpan? _popupTimeout;
+
+        /// <summary>
+        /// <see cref="PopupTimeout"/> のシリアライズ用文字列を設定、または取得します。
+        /// </summary>
+        private string _popupTimeoutValue;
 
         /// <summary>
         /// WebSocketの接続先URI
@@ -71,23 +75,34 @@
         public TimeSpan? PopupTimeout
         {
             get { return _popupTimeout; }
-            set { _popupTimeout = value; }
+            set
+            {
+                if (_popupTimeout != value)
+                {
+                    _popupTimeout = value;
+                    OnPopupTimeoutChanged(value);
+                }
+            }
         }
 
         /// <summary>
         /// <see cref="PopupTimeout"/> のシリアライズ用文字列を設定、または取得します。
         /// </summary>
         /// <remarks>
-        /// <see cref="TimeSpan"/> は、XMLシリアライザーに対応していないので、ファイルの読み書きにはこのプロパティを使用します。<para/>
-        /// 値の"PT10M" は"10分"を表す。
-        /// 参考：https://kennethxu.blogspot.jp/2008/09/xmlserializer-doesn-serialize-timespan.html
+        /// <see cref="TimeSpan"/> は、XMLシリアライザーに対応していないので、ファイルの読み書きにはこのプロパティを使用します。
         /// </remarks>
-        [XmlAttribute("PopupTimeout", DataType = "duration")]
-        [DefaultValue("PT10M")]
+        [XmlElement("PopupTimeout")]
         public string PopupTimeoutValue
         {
-            get { return _popupTimeout != null ? XmlConvert.ToString(_popupTimeout.Value) : string.Empty; }
-            set { _popupTimeout = XmlConvert.ToTimeSpan(value); }
+            get { return _popupTimeoutValue; }
+            set
+            {
+                if (_popupTimeoutValue != value)
+                {
+                    _popupTimeoutValue = value;
+                    OnPopupTimeoutValueChanged(value);
+                }
+            }
         }
 
         /// <summary>
@@ -106,6 +121,33 @@
         {
             get { return _isNotifySuccess; }
             set { _isNotifySuccess = value; }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// <see cref="PopupTimeout"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnPopupTimeoutChanged(TimeSpan? newValue)
+        {
+            var value = string.Empty;
+            if (newValue.HasValue)
+            {
+                value = newValue.Value.ToString();
+            }
+            _popupTimeoutValue = value;
+        }
+
+        /// <summary>
+        /// <see cref="PopupTimeoutValue"/> プロパティの値が更新されました。
+        /// </summary>
+        /// <param name="newValue">更新後の値</param>
+        private void OnPopupTimeoutValueChanged(string newValue)
+        {
+            _popupTimeout = newValue.ToTimeSpan(true);
         }
 
         #endregion

@@ -94,7 +94,7 @@
             var interval = IntervalForKindMapping[kind];
             return new DateTime(((self.Ticks + interval.Ticks) / interval.Ticks - 1) * interval.Ticks, self.Kind);
         }
-
+        
         #endregion
     }
 }

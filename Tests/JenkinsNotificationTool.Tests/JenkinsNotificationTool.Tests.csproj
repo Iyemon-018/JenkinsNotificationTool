@@ -92,6 +92,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Core\Configurations\Verify\NotifyConfigurationVerifyTests.cs" />
     <Compile Include="Core\DataManagerTests.cs" />
     <Compile Include="Core\Executers\MockExecuter.cs" />
     <Compile Include="Core\Extensions\CollectionExtensionsTests.cs" />
@@ -137,6 +138,7 @@
       <Name>JenkinsNotificationTool</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
