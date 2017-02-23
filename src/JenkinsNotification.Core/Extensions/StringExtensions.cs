@@ -117,7 +117,7 @@
             }
 
             TimeSpan result;
-            return TimeSpan.TryParse(self, out result) ? (TimeSpan?)null : result;
+            return TimeSpan.TryParse(self, out result) ? result : (TimeSpan?) null;
         }
 
         #endregion

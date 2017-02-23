@@ -215,5 +215,164 @@
         }
 
         #endregion
-    }
+
+        #region IsTimeSpanValue Method test
+
+        /// <summary>
+        /// <see cref="Test_IsTimeSpanValue_Theory"/> で使用するテストデータを取得します。
+        /// </summary>
+        public static IEnumerable<object[]> IsTimeSpanValueTestData
+            => new List<object[]>
+                   {
+                       new object[] {"(異常系) null を判定するとfalse を返すこと。", false, null, },
+                       new object[] {"(異常系) string.Empty を判定するとfalse を返すこと。", false, string.Empty, },
+                       new object[] {"(異常系) 半角スペースを判定するとfalse を返すこと。", false, " ", },
+                       new object[] {"(異常系) 記号を判定するとfalse を返すこと。", false, "abc", },
+                       new object[] {"(正常系) 時刻文字列を判定するとtrue を返すこと。", true, DateTime.Now.TimeOfDay.ToString(), },
+                   };
+
+        /// <summary>
+        /// <see cref="StringExtensions.IsTimeSpanValue" /> をテストします。
+        /// </summary>
+        /// <param name="caseName">テスト内容</param>
+        /// <param name="expected">期待する戻り値</param>
+        /// <param name="target">判定する値</param>
+        [Theory]
+        [MemberData(nameof(IsTimeSpanValueTestData))]
+        public void Test_IsTimeSpanValue_Theory(string caseName, bool expected, string target)
+        {
+            // arrange
+            var result = false;
+
+            // act
+            var ex = Record.Exception(() => result = target.IsTimeSpanValue());
+
+            // assert
+            Assert.Null(ex);
+            Assert.Equal(expected, result);
+
+            Output.WriteLine($"{caseName}{Environment.NewLine}" +
+                             $" {nameof(expected)}:{expected}{Environment.NewLine}" +
+                             $" {nameof(target)}:{target}");
+        }
+
+        #endregion
+
+        #region ToTimeSpan method test
+
+        /// <summary>
+        /// <see cref="Test_ToTimeSpan_Theory"/> で使用するテストデータを取得します。
+        /// </summary>
+        public static IEnumerable<object[]> ToTimeSpanTestData
+            => new List<object[]>
+                   {
+                       new object[]
+                           {
+                               $"(異常系) 文字列がnull で、null を許容しない場合、{typeof(ArgumentNullException)} をスローすること。",
+                               null,
+                               null,
+                               false,
+                               typeof(ArgumentNullException),
+                           },
+                       new object[]
+                           {
+                               $"(異常系) 文字列がstring.Empty で、null を許容しない場合、{typeof(ArgumentNullException)} をスローすること。",
+                               null,
+                               string.Empty,
+                               false,
+                               typeof(ArgumentNullException),
+                           },
+                       new object[]
+                           {
+                               $"(異常系) 文字列がnull で、null を許容する場合、戻り値がnull であること。",
+                               null,
+                               null,
+                               true,
+                               null,
+                           },
+                       new object[]
+                           {
+                               $"(異常系) 文字列がstring.Empty で、null を許容する場合、戻り値がnull であること。",
+                               null,
+                               string.Empty,
+                               true,
+                               null,
+                           },
+                       new object[]
+                           {
+                               $"(異常系) 文字列が時刻書式でなく、null を許容しない場合、null を返すこと。",
+                               null,
+                               "abc",
+                               false,
+                               null,
+                           },
+                       new object[]
+                           {
+                               $"(異常系) 文字列が時刻書式でなく、null を許容する場合、null を返すこと。",
+                               null,
+                               "abc",
+                               true,
+                               null,
+                           },
+                       new object[]
+                           {
+                               $"(正常系) 文字列が時刻書式で、null を許容しない場合、指定した時刻データを返すこと。",
+                               TimeSpan.Parse("12:34:56.789"),
+                               "12:34:56.789",
+                               false,
+                               null,
+                           },
+                       new object[]
+                           {
+                               $"(正常系) 文字列が時刻書式で、null を許容する場合、指定した時刻データを返すこと。",
+                               TimeSpan.Parse("12:34:56.789"),
+                               "12:34:56.789",
+                               true,
+                               null,
+                           },
+                   };
+
+        /// <summary>
+        /// <see cref="StringExtensions.ToTimeSpan" /> をテストします。
+        /// </summary>
+        /// <param name="caseName">テスト内容</param>
+        /// <param name="expected">期待する戻り値</param>
+        /// <param name="target">検証対象の文字列</param>
+        /// <param name="allowNullValue"><paramref name="target"/> がnull を許容するかどうか</param>
+        /// <param name="exceptionType">スローされる例外の型</param>
+        [Theory]
+        [MemberData(nameof(ToTimeSpanTestData))]
+        public void Test_ToTimeSpan_Theory(string caseName,
+                                           TimeSpan? expected,
+                                           string target,
+                                           bool allowNullValue,
+                                           Type exceptionType)
+        {
+            // arrange
+            TimeSpan? result = null;
+
+            // act
+            var ex = Record.Exception(() => result = target.ToTimeSpan(allowNullValue));
+
+            // assert
+            if (exceptionType == null)
+            {
+                Assert.Null(ex);
+                Assert.Equal(expected, result);
+            }
+            else
+            {
+                Assert.NotNull(ex);
+                Assert.IsType(exceptionType, ex);
+            }
+
+            Output.WriteLine($"{caseName}{Environment.NewLine}" +
+                             $" {nameof(expected)}:{expected}{Environment.NewLine}" +
+                             $" {nameof(target)}:{target}{Environment.NewLine}" +
+                             $" {nameof(allowNullValue)}:{allowNullValue}{Environment.NewLine}" +
+                             $" {nameof(exceptionType)}:{exceptionType}");
+        }
+
+        #endregion
+        }
 }
