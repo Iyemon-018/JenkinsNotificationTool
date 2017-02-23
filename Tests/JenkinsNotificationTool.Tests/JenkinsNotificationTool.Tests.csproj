@@ -92,6 +92,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Core\Configurations\Verify\ApplicationConfigurationVerifyTests.cs" />
     <Compile Include="Core\Configurations\Verify\NotifyConfigurationVerifyTests.cs" />
     <Compile Include="Core\DataManagerTests.cs" />
     <Compile Include="Core\Executers\MockExecuter.cs" />
