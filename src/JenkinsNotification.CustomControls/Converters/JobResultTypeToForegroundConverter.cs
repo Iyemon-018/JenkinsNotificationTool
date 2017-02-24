@@ -42,7 +42,7 @@
                                 {JobResultType.None, successBrush},
                                 {JobResultType.Success, successBrush},
                                 {JobResultType.Warning, warningBrush},
-                                {JobResultType.Failed, failedBrush}
+                                {JobResultType.Failure, failedBrush}
                             };
         }
 

@@ -4,6 +4,7 @@
     using Configurations;
     using Extensions;
     using Jenkins.Api;
+    using JenkinsNotification.Core.ViewModels.Api.Converter;
     using ViewModels.Api;
     using ViewModels.Configurations;
 
@@ -21,7 +22,8 @@
             //
             // 列挙体のマッピング
             //
-            CreateMap<string, JobStatus>().ConvertUsing(s => s.ToEnum(JobStatus.None));
+            CreateMap<string, JobStatus>().ConvertUsing(ApiConverter.JobStatusStringToEnum);
+            CreateMap<string, JobResultType>().ConvertUsing(ApiConverter.JobResultTypeStringToEnum);
 
             //
             // オブジェクトのマッピング

@@ -136,7 +136,6 @@
     <Compile Include="Configurations\Verify\ConfigurationVerifyException.cs" />
     <Compile Include="Configurations\Verify\IConfigurationVerify.cs" />
     <Compile Include="Configurations\Verify\NotifyConfigurationVerify.cs" />
-    <Compile Include="Configurations\Verify\VerifyResult.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="DataStore.cs" />

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading;
+    using JenkinsNotification.Core;
     using JenkinsNotification.Core.Executers;
     using JenkinsNotification.Core.Extensions;
     using JenkinsNotification.Core.Jenkins.Api;
@@ -32,12 +33,12 @@
         /// <summary>
         /// 受信したジョブ結果
         /// </summary>
-        private JobExecuteResult _jobResult;
+        private JobExecuteResultViewModel _jobResult;
 
         /// <summary>
-        /// Unityコンテナ
+        /// サービス提供インターフェース
         /// </summary>
-        private readonly IUnityContainer _container;
+        private readonly IServicesProvider _servicesProvider;
 
         #endregion
 
@@ -46,15 +47,14 @@
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="container">Unityコンテナ</param>
-        /// <exception cref="System.ArgumentNullException"><paramref name="container"/> がnull の場合にスローされます。</exception>
-        public JobReceivedNotificationExecuter(IUnityContainer container)
+        /// <param name="servicesProvider">サービス提供インターフェース</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="servicesProvider"/> がnull の場合にスローされます。</exception>
+        public JobReceivedNotificationExecuter(IServicesProvider servicesProvider)
         {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-
-            _lock = new ReaderWriterLockSlim();
-            _container = container;
-            _executeAction = ExecuteNotifyJobResult;
+            if (servicesProvider == null) throw new ArgumentNullException(nameof(servicesProvider));
+            _lock             = new ReaderWriterLockSlim();
+            _servicesProvider = servicesProvider;
+            _executeAction    = ExecuteNotifyJobResult;
         }
 
         #endregion
@@ -70,7 +70,8 @@
         {
             try
             {
-                _jobResult = message.JsonSerialize<JobExecuteResult>();
+                var jobResult = message.JsonSerialize<JobExecuteResult>();
+                _jobResult = jobResult.Map<JobExecuteResultViewModel>();
             }
             catch (Exception e)
             {
@@ -79,7 +80,12 @@
             }
 
             LogManager.Info("ジョブ実行結果を受け取った。");
-            return true;
+
+            //
+            // 実行結果None の場合、ジョブを開始を表すのでタスクは実行しない。
+            // 実行結果がわかってからタスクを実行する。
+            //
+            return _jobResult.Result != JobResultType.None;
         }
 
         /// <summary>
@@ -116,9 +122,7 @@
         /// </summary>
         private void ExecuteNotifyJobResult()
         {
-            var result = _jobResult.Map<JobExecuteResultViewModel>();
-            var servicesProvider = _container.Resolve<IServicesProvider>();
-            servicesProvider.BalloonTipService.NotifyJobResult(result);
+            _servicesProvider.BalloonTipService.NotifyJobResult(_jobResult);
         }
 
         #endregion

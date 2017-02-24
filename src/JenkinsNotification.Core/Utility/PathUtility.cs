@@ -44,23 +44,7 @@
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// 指定したView のURI文字列を生成します。
-        /// </summary>
-        /// <param name="assemblyName">View の配置されているアセンブリ名</param>
-        /// <param name="viewFolderPath">
-        /// アセンブリを基準とした、View のフォルダパス<para/>
-        /// 例) Example プロジェクトの "ViewModels\Example" フォルダの場合、以下のように指定する。<para/>
-        ///     "ViewModels/Example"
-        /// </param>
-        /// <param name="viewName">拡張子付きのView名称</param>
-        /// <returns>URI文字列</returns>
-        public static string FactoryFrameSourceUriString(string assemblyName, string viewFolderPath, string viewName)
-        {
-            return $"/{assemblyName};component/{viewFolderPath}/{viewName}";
-        }
-
+        
         /// <summary>
         /// 指定したディレクトリパスから特定のパターンに一致するファイルパスを全て取得します。
         /// </summary>

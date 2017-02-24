@@ -54,7 +54,7 @@
         /// <summary>
         /// 失敗であることを表します。
         /// </summary>
-        Failed,
+        Failure,
     }
 
     /// <summary>
@@ -77,6 +77,11 @@
         /// ジョブが完了したことを表します。
         /// </summary>
         Success,
+
+        /// <summary>
+        /// ジョブが失敗したことを表します。
+        /// </summary>
+        Failure,
     }
 
     /// <summary>

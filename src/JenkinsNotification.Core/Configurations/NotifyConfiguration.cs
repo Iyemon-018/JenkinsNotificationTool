@@ -11,6 +11,20 @@
     [Serializable]
     public class NotifyConfiguration
     {
+        /// <summary>
+        /// このオブジェクトの文字列へ変換します。
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return $"{nameof(TargetUri)}: {TargetUri}" +
+                   $", {nameof(PopupAnimationType)}: {PopupAnimationType}" +
+                   $", {nameof(PopupTimeout)}: {PopupTimeout}" +
+                   $", {nameof(PopupTimeoutValue)}: {PopupTimeoutValue}" +
+                   $", {nameof(DisplayHistoryCount)}: {DisplayHistoryCount}" +
+                   $", {nameof(IsNotifySuccess)}: {IsNotifySuccess}";
+        }
+
         #region Fields
 
         /// <summary>

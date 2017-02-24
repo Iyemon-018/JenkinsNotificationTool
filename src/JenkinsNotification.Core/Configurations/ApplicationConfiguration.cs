@@ -1,12 +1,12 @@
 ﻿namespace JenkinsNotification.Core.Configurations
 {
     using System;
-    using System.Configuration;
     using System.IO;
     using System.Windows.Controls.Primitives;
-    using System.Xml;
     using System.Xml.Serialization;
-    using JenkinsNotification.Core.Properties;
+    using Extensions;
+    using Logs;
+    using Properties;
     using Verify;
     using Utility;
 
@@ -47,6 +47,16 @@
             DisplayConfiguration = new DisplayConfiguration();
         }
 
+        /// <summary>
+        /// このオブジェクトの文字列へ変換します。
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return $"{nameof(DisplayConfiguration)}: {DisplayConfiguration}" +
+                   $", {nameof(NotifyConfiguration)}: {NotifyConfiguration}";
+        }
+
         #endregion
 
         #region Properties
@@ -54,7 +64,11 @@
         /// <summary>
         /// 現在の構成情報を取得します。
         /// </summary>
-        public static ApplicationConfiguration Current => _current;
+        public static ApplicationConfiguration Current
+        {
+            get { return _current; }
+            internal set { _current = value; }
+        }
 
         /// <summary>
         /// この構成ファイルのデフォルト パスを取得します。
@@ -68,14 +82,23 @@
         /// <summary>
         /// デフォルト パスのファイルを現在の構成情報に読み込みます。
         /// </summary>
+        /// <param name="filePath">
+        /// 構成情報ファイルパス<para/>
+        /// null の場合、<see cref="DefaultFilePath"/> を読み込みます。
+        /// </param>
         /// <returns>読み込みに成功した場合はtrue, 失敗した場合はfalse を返します。</returns>
-        public static void LoadCurrent()
+        public static void LoadCurrent(string filePath = null)
         {
             using (TimeTracer.StartNew("デフォルト　ファイルパスでアプリケーション構成ファイルを読み込む。"))
             {
+                if (filePath.IsEmpty())
+                {
+                    filePath = DefaultFilePath;
+                }
+
                 try
                 {
-                    _current = ConfigurationUtility.Load(DefaultFilePath, new ApplicationConfigurationVerify());
+                    _current = ConfigurationUtility.Load(filePath, new ApplicationConfigurationVerify());
                 }
                 catch (Exception exception)
                 {
@@ -90,15 +113,25 @@
         /// <summary>
         /// 現在の構成情報をデフォルト パスに保存します。
         /// </summary>
+        /// <param name="filePath">
+        /// 構成情報ファイルパス<para/>
+        /// null の場合、<see cref="DefaultFilePath"/> に保存します。
+        /// </param>
         /// <returns>保存に成功した場合はtrue, 失敗した場合はfalse を返します。</returns>
-        public static bool SaveCurrent()
+        public static bool SaveCurrent(string filePath = null)
         {
+            if (filePath.IsEmpty())
+            {
+                filePath = DefaultFilePath;
+            }
+
             try
             {
-                ConfigurationUtility.Save(_current, DefaultFilePath, new ApplicationConfigurationVerify());
+                ConfigurationUtility.Save(_current, filePath, new ApplicationConfigurationVerify());
             }
-            catch
+            catch(Exception exception)
             {
+                LogManager.Error("構成情報ファイルの保存に失敗した。", exception);
                 return false;
             }
             return true;

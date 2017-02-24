@@ -38,7 +38,7 @@
                     return MessageBoxImage.Information;
                 case JobResultType.Warning:
                     return MessageBoxImage.Warning;
-                case JobResultType.Failed:
+                case JobResultType.Failure:
                     return MessageBoxImage.Error;
                 default:
                     return DependencyProperty.UnsetValue;

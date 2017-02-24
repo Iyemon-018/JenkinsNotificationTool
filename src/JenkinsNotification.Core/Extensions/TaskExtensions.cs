@@ -24,7 +24,7 @@
         /// async void Main()
         /// {
         ///     //
-        ///     // Write console to "Task Failed....".
+        ///     // Write console to "Task Failure....".
         ///     //
         /// 	bool result = false;
         /// 	try
@@ -42,7 +42,7 @@
         /// 	}
         /// 	catch (TimeoutException tex)
         /// 	{
-        /// 		Console.Write($"Task Failed.{tex.Message}");
+        /// 		Console.Write($"Task Failure.{tex.Message}");
         /// 	}
         /// }
         /// ]]></code>
@@ -74,7 +74,7 @@
         /// async void Main()
         /// {
         ///     //
-        ///     // Write console to "Task Failed....".
+        ///     // Write console to "Task Failure....".
         ///     //
         /// 	try
         /// 	{
@@ -91,7 +91,7 @@
         /// 	}
         /// 	catch (TimeoutException tex)
         /// 	{
-        /// 		Console.Write($"Task Failed.{tex.Message}");
+        /// 		Console.Write($"Task Failure.{tex.Message}");
         /// 	}
         /// }
         /// ]]></code>

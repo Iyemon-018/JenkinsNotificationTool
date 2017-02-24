@@ -40,6 +40,12 @@
 
             yield return new object[]
                          {
+                             $"(異常系) 検証対象の構成情報がnull の場合、{typeof(ArgumentNullException)} をスローすること。",
+                             null,
+                             typeof(ArgumentNullException)
+                         };
+            yield return new object[]
+                         {
                              $"(異常系) DisplayHistoryCount が{NotifyConfigurationVerify.DisplayHistoryMinimum - 1} の場合、{typeof(ConfigurationVerifyException)} をスローすること。",
                              new NotifyConfiguration
                              {

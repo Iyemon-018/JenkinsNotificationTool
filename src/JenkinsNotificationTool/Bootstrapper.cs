@@ -198,9 +198,10 @@
             LogManager.Info("データ処理部の初期化構成を行う。");
             var communicatorProvider = Container.Resolve<ICommunicatorProvider>();
             var dataStore            = Container.Resolve<IDataStore>();
+            var servicesProvider     = Container.Resolve<IServicesProvider>();
             var register             = new DataFlowRegistration(communicatorProvider.WebSocketDataFlow, dataStore);
 
-            register.AddTask(new JobReceivedNotificationExecuter(Container));
+            register.AddTask(new JobReceivedNotificationExecuter(servicesProvider));
             register.Configure();
         }
 
