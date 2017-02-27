@@ -1,21 +1,65 @@
-﻿<UserControl x:Class="JenkinsNotification.CustomControls.BalloonTips.JobExecuteResultBalloonTip"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:JenkinsNotification.CustomControls.BalloonTips"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:JenkinsNotification.CustomControls.ViewModels"
-             d:DataContext="{d:DesignInstance {x:Type viewModels:JobExecuteResultBalloonTipViewModel}}"
-             d:DesignHeight="100"
-             d:DesignWidth="240"
-             Background="{Binding Result.Result,
-                                  Converter={StaticResource JobResultTypeToBackgroundConverter},
-                                  Mode=OneWay}"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="JenkinsNotification.CustomControls.BalloonTips.JobExecuteResultBalloonTip"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customControls="clr-namespace:JenkinsNotification.CustomControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:JenkinsNotification.CustomControls.ViewModels"
+    d:DataContext="{d:DesignInstance {x:Type viewModels:JobExecuteResultBalloonTipViewModel}}"
+    d:DesignHeight="100"
+    d:DesignWidth="240"
+    Background="{Binding Result.Result, Converter={StaticResource JobResultTypeToBackgroundConverter}, Mode=OneWay}"
+    BorderBrush="{Binding Result.Result, Converter={StaticResource JobResultTypeToForegroundConverter}}"
+    BorderThickness="2"
+    mc:Ignorable="d">
     <Grid x:Name="LayoutRoot">
-        <ContentControl x:Name="MainContent"
-                        Content="{Binding Result,
-                                          Mode=OneWay}"
-                        ContentTemplate="{DynamicResource JobExecuteResultSuccessTemplate}" />
+        <Button
+            Height="Auto"
+            MinWidth="0"
+            Margin="1"
+            Padding="4"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding CloseCommand, Mode=OneWay}"
+            Content="r"
+            FontFamily="Marlett" />
+        <Grid Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <customControls:MessageIcon
+                Grid.Column="0"
+                Width="48"
+                Height="48"
+                Margin="0,8,0,0"
+                VerticalAlignment="Top"
+                Foreground="{Binding Result.Result, Converter={StaticResource JobResultTypeToForegroundConverter}, Mode=OneTime}"
+                IconType="{Binding Result.Result, Mode=OneTime, Converter={StaticResource JobResultTypeToMessageBoxImageConverter}}" />
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0">
+                    <TextBlock
+                        FontSize="16"
+                        Foreground="{Binding Result.Result, Converter={StaticResource JobResultTypeToForegroundConverter}, Mode=OneWay}"
+                        Text="{Binding Result.Result, Mode=OneTime}" />
+                </Border>
+                <Border Grid.Row="1" Margin="0,4,0,2">
+                    <TextBlock
+                        FontSize="24"
+                        Text="{Binding Result.Name, Mode=OneTime}"
+                        TextWrapping="WrapWithOverflow" />
+                </Border>
+                <Border Grid.Row="2">
+                    <TextBlock HorizontalAlignment="Right" Text="{Binding Result.BuildNumber, Mode=OneTime, StringFormat=Build:{0}}" />
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

@@ -51,7 +51,8 @@
                 }
 
                 var popupTimeoutValue = config.PopupTimeoutValue;
-                if (!popupTimeoutValue.IsTimeSpanValue())
+                // null は許容する。
+                if (popupTimeoutValue.HasText() && !popupTimeoutValue.IsTimeSpanValue())
                 {
                     // TODO リソースに定義する。
                     throw new ConfigurationVerifyException("PopupTimeout の値が異常です。設定値を確認してください。");

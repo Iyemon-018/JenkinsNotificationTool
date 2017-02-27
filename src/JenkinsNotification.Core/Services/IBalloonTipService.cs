@@ -39,5 +39,10 @@
         /// </summary>
         /// <param name="executeResult">ジョブ実行結果</param>
         void NotifyJobResult(IJobExecuteResult executeResult);
+
+        /// <summary>
+        /// 表示中のバルーンを閉じます。
+        /// </summary>
+        void Close();
     }
 }

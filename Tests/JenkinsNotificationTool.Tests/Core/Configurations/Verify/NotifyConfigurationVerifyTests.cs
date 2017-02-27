@@ -259,7 +259,7 @@
                          };
             yield return new object[]
                          {
-                             $"(異常系) PopupTimeoutValue がString.Empty の場合、{typeof(ConfigurationVerifyException)} をスローすること。",
+                             $"(正常系) PopupTimeoutValue がString.Empty の場合、正常に終了すること。",
                              new NotifyConfiguration
                              {
                                  TargetUri = targetUri,
@@ -269,11 +269,11 @@
                                  DisplayHistoryCount = NotifyConfigurationVerify.DisplayHistoryMaximum,
                                  IsNotifySuccess = false
                              },
-                             typeof(ConfigurationVerifyException)
+                             null,
                          };
             yield return new object[]
                          {
-                             $"(異常系) PopupTimeoutValue がnull の場合、{typeof(ConfigurationVerifyException)} をスローすること。",
+                             $"(正常系) PopupTimeoutValue がnull の場合、正常に終了すること。",
                              new NotifyConfiguration
                              {
                                  TargetUri = targetUri,
@@ -283,7 +283,7 @@
                                  DisplayHistoryCount = NotifyConfigurationVerify.DisplayHistoryMaximum,
                                  IsNotifySuccess = false
                              },
-                             typeof(ConfigurationVerifyException)
+                             null,
                          };
             yield return new object[]
                          {

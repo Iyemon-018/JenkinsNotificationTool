@@ -83,7 +83,7 @@
             LogManager.Info($"ジョブ実行結果通知バルーンを表示する。(Job:{executeResult.Name}" +
                             $" #{executeResult.BuildNumber}, {executeResult.Status}, {executeResult.Result}");
 
-            var viewModel          = new JobExecuteResultBalloonTipViewModel(executeResult);
+            var viewModel          = new JobExecuteResultBalloonTipViewModel(this, executeResult);
             var balloon            = new JobExecuteResultBalloonTip {DataContext = viewModel,};
             var taskbarIcon        = GetTaskbarIcon();
             var popupAnimationType = _dataStore.ApplicationConfiguration
@@ -130,6 +130,15 @@
             // TODO リソース管理する。
             if (_taskbarIcon == null) throw new InvalidOperationException("Not initialized BalloonTip object.");
             return _taskbarIcon;
+        }
+
+        /// <summary>
+        /// 表示中のバルーンを閉じます。
+        /// </summary>
+        public void Close()
+        {
+            var taskbarIcon = GetTaskbarIcon();
+            taskbarIcon.CloseBalloon();
         }
 
         #region IDisposable Support

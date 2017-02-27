@@ -55,5 +55,13 @@
         {
             // Do Nothing.
         }
+
+        /// <summary>
+        /// 表示中のバルーンを閉じます。
+        /// </summary>
+        public void Close()
+        {
+            // Do Nothing.
+        }
     }
 }
