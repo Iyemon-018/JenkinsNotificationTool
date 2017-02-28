@@ -57,14 +57,17 @@
 
     <!--  #Region BalloonTip関連  -->
 
-    <SolidColorBrush x:Key="BalloonTip.JobSuccess.Background" Color="#FF97F797" />
-    <SolidColorBrush x:Key="BalloonTip.JobSuccess.Foreground" Color="#FF14801E" />
+    <SolidColorBrush x:Key="BalloonTip.JobSuccess.Background" Color="#FF43A047" />
+    <SolidColorBrush x:Key="BalloonTip.JobSuccess.BorderBrush" Color="#FF1B5E20" />
+    <SolidColorBrush x:Key="BalloonTip.JobSuccess.Foreground" Color="#FFFFFFFF" />
 
-    <SolidColorBrush x:Key="BalloonTip.JobFailed.Background" Color="#FFFFC6CB" />
-    <SolidColorBrush x:Key="BalloonTip.JobFailed.Foreground" Color="#FFAC0000" />
+    <SolidColorBrush x:Key="BalloonTip.JobFailed.Background" Color="#FFF44336" />
+    <SolidColorBrush x:Key="BalloonTip.JobFailed.BorderBrush" Color="#FFB71C1C" />
+    <SolidColorBrush x:Key="BalloonTip.JobFailed.Foreground" Color="#FFFFFFFF" />
 
-    <SolidColorBrush x:Key="BalloonTip.JobWarning.Background" Color="#FFFFFFCF" />
-    <SolidColorBrush x:Key="BalloonTip.JobWarning.Foreground" Color="#FFC79A00" />
+    <SolidColorBrush x:Key="BalloonTip.JobWarning.Background" Color="#FFFDD835" />
+    <SolidColorBrush x:Key="BalloonTip.JobWarning.BorderBrush" Color="#FFF57F17" />
+    <SolidColorBrush x:Key="BalloonTip.JobWarning.Foreground" Color="#FF212121" />
     <!--  #End Region BalloonTip関連  -->
 
     <!--  #End Region 独自コンポーネントの色リソース定義  -->

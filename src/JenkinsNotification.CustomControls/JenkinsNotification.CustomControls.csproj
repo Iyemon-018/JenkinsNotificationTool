@@ -115,6 +115,7 @@
     <Compile Include="Converters\BooleanToEnumConverter.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
     <Compile Include="Converters\JobResultTypeToBackgroundConverter.cs" />
+    <Compile Include="Converters\JobResultTypeToBorderBrushConverter.cs" />
     <Compile Include="Converters\JobResultTypeToForegroundConverter.cs" />
     <Compile Include="ItemContent.cs" />
     <Compile Include="MessageDialog.xaml.cs">
