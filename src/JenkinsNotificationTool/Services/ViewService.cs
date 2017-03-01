@@ -1,11 +1,13 @@
-﻿namespace JenkinsNotification.Core.Services
+﻿namespace JenkinsNotificationTool.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
+    using JenkinsNotification.Core;
     using JenkinsNotification.Core.ComponentModels;
-    using Logs;
+    using JenkinsNotification.Core.Logs;
+    using JenkinsNotification.Core.Services;
 
     /// <summary>
     /// 画面表示サービス クラスです。

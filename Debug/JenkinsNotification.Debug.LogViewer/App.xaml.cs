@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-
-namespace JenkinsNotification.Debug.LogViewer
+﻿namespace JenkinsNotification.Debug.LogViewer
 {
+    using System.Windows;
     using JenkinsNotification.Core;
-    using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.CustomControls.Services;
-    using JenkinsNotification.Debug.LogViewer.Services;
+    using JenkinsNotificationTool.Services;
+    using ApplicationService = JenkinsNotification.Debug.LogViewer.Services.ApplicationService;
 
     /// <summary>
     /// App.xaml の相互作用ロジック
     /// </summary>
     public partial class App : Application
     {
+        #region Methods
+
         /// <summary>
         /// <see cref="E:System.Windows.Application.Startup" /> イベントを発生させます。
         /// </summary>
@@ -42,5 +37,7 @@ namespace JenkinsNotification.Debug.LogViewer
             //
             ApplicationManager.Initialize(null, null);
         }
+
+        #endregion
     }
 }

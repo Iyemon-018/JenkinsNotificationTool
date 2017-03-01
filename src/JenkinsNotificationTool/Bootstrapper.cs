@@ -1,12 +1,14 @@
 ﻿namespace JenkinsNotificationTool
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using System.Windows;
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.Communicators;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
+    using JenkinsNotification.Core.Executers;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
@@ -199,10 +201,20 @@
             var communicatorProvider = Container.Resolve<ICommunicatorProvider>();
             var dataStore            = Container.Resolve<IDataStore>();
             var servicesProvider     = Container.Resolve<IServicesProvider>();
-            var register             = new DataFlowRegistration(communicatorProvider.WebSocketDataFlow, dataStore);
 
-            register.AddTask(new JobReceivedNotificationExecuter(servicesProvider));
-            register.Configure();
+            LogManager.Info("データフローの初期化構成を行う。");
+
+            // TODO WebSocket通信で受信時に実行するタスクを登録する。
+            var tasks = new List<IExecuter>
+                            {
+                                new JobResultExecuter(dataStore),
+                                new JobReceivedNotificationExecuter(servicesProvider)
+                            };
+
+            foreach (var task in tasks)
+            {
+                communicatorProvider.WebSocketDataFlow.RegisterExecuteTask(task);
+            }
         }
 
         /// <summary>

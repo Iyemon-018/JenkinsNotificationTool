@@ -111,11 +111,9 @@
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="Communicators\CommunicatorProvider.cs" />
-    <Compile Include="Communicators\DataFlowRegistration.cs" />
     <Compile Include="Communicators\ICommunicatorProvider.cs" />
     <Compile Include="Communicators\IWebApiCommunicator.cs" />
     <Compile Include="Communicators\IWebSocketDataFlow.cs" />
-    <Compile Include="Communicators\JenkinsData.cs" />
     <Compile Include="Communicators\ReceivedErrorEventArgs.cs" />
     <Compile Include="Communicators\ReceivedEventArgs.cs" />
     <Compile Include="Communicators\WebSocketCommunicator.cs" />
@@ -137,8 +135,6 @@
     <Compile Include="Configurations\Verify\IConfigurationVerify.cs" />
     <Compile Include="Configurations\Verify\NotifyConfigurationVerify.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DataManager.cs" />
-    <Compile Include="DataStore.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executers\IExecuter.cs" />
     <Compile Include="Executers\JobResultExecuter.cs" />
@@ -183,7 +179,6 @@
     <Compile Include="Services\NoneNotifyBalloonTipService.cs" />
     <Compile Include="Services\ServicesProvider.cs" />
     <Compile Include="Services\IViewService.cs" />
-    <Compile Include="Services\ViewService.cs" />
     <Compile Include="Utility\ConfigurationUtility.cs" />
     <Compile Include="Utility\EnumUtility.cs" />
     <Compile Include="Utility\FileUtility.cs" />

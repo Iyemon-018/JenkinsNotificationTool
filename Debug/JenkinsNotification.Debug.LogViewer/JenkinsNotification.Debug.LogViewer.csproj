@@ -114,6 +114,10 @@
       <Project>{7189b038-6ee8-4d9c-ab53-9279abb7ca09}</Project>
       <Name>JenkinsNotification.CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\JenkinsNotificationTool\JenkinsNotificationTool.csproj">
+      <Project>{62DCF7ED-D36B-4A37-90C8-BD6D0E5C72FB}</Project>
+      <Name>JenkinsNotificationTool</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

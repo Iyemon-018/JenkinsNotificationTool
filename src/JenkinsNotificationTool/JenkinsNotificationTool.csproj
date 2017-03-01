@@ -147,6 +147,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Executers\JobReceivedNotificationExecuter.cs" />
     <Compile Include="Services\ApplicationService.cs" />
+    <Compile Include="Services\ViewService.cs" />
     <Compile Include="Utility\BalloonDisplayTimeKindConverter.cs" />
     <Compile Include="Utility\NotifyHistoryCountKindConverter.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
