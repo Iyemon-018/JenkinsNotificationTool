@@ -1,5 +1,6 @@
 ﻿namespace JenkinsNotification.Core.ViewModels.Api.Converter
 {
+    using System.Collections.Generic;
     using JenkinsNotification.Core.Extensions;
 
     /// <summary>
@@ -7,27 +8,63 @@
     /// </summary>
     public static class ApiConverter
     {
-        #region Methods
+        #region Const
 
         /// <summary>
-        /// <see cref="JobResultType"/> をJson で使用できる文字列へ変換します。
+        /// <see cref="JobResultType.Failure"/> に該当する結果種別文字列です。
         /// </summary>
-        /// <param name="result">ジョブ結果種別</param>
-        /// <returns>変換結果</returns>
-        public static string JobResultTypeToString(JobResultType result)
-        {
-            switch (result)
-            {
-                case JobResultType.Success:
-                    return "SUCCESS";
-                case JobResultType.Warning:
-                    return "Warning";
-                case JobResultType.Failure:
-                    return "Failure";
-                default:
-                    return string.Empty;
-            }
-        }
+        public static readonly string JobResultFailure = "Failure";
+
+        /// <summary>
+        /// <see cref="JobResultType.Success"/> に該当する結果種別文字列です。
+        /// </summary>
+        public static readonly string JobResultSuccess = "SUCCESS";
+
+        /// <summary>
+        /// <see cref="JobResultType.Warning"/> に該当する結果種別文字列です。
+        /// </summary>
+        public static readonly string JobResultWarning = "Warning";
+
+        /// <summary>
+        /// <see cref="JobStatus.Failure"/> に該当する状態種別文字列です。
+        /// </summary>
+        public static readonly string JobStatusFailure = "FAILURE";
+
+        /// <summary>
+        /// <see cref="JobStatus.Start"/> に該当する状態種別文字列です。
+        /// </summary>
+        public static readonly string JobStatusStart = "START";
+
+        /// <summary>
+        /// <see cref="JobStatus.Success"/> に該当する状態種別文字列です。
+        /// </summary>
+        public static readonly string JobStatusSuccess = "SUCCESS";
+
+        /// <summary>
+        /// <see cref="JobResultType"/> に対する種別文字列のマッピング情報
+        /// </summary>
+        private static readonly IReadOnlyDictionary<JobResultType, string> JobResultValueMap
+                = new Dictionary<JobResultType, string>
+                      {
+                          {JobResultType.Success, JobResultSuccess},
+                          {JobResultType.Warning, JobResultWarning},
+                          {JobResultType.Failure, JobResultFailure}
+                      };
+
+        /// <summary>
+        /// <see cref="JobStatus"/> に対する状態文字列のマッピング情報
+        /// </summary>
+        private static readonly IReadOnlyDictionary<JobStatus, string> JobStatusValueMap
+                = new Dictionary<JobStatus, string>
+                      {
+                          {JobStatus.Success, JobStatusSuccess},
+                          {JobStatus.Start, JobStatusStart},
+                          {JobStatus.Failure, JobStatusFailure}
+                      };
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// 文字列を<see cref="JobResultType"/> へ変換します。
@@ -38,35 +75,22 @@
         {
             if (result.IsEmpty()) return JobResultType.None;
 
-            switch (result.ToUpper())
-            {
-                case "SUCCESS":
-                    return JobResultType.Success;
-                case "WARNING":
-                    return JobResultType.Warning;
-                case "FAILURE":
-                    return JobResultType.Failure;
-                default:
-                    return JobResultType.None;
-            }
+            var value = result.ToUpper();
+            if (value.Equals(JobResultSuccess.ToUpper())) return JobResultType.Success;
+            if (value.Equals(JobResultWarning.ToUpper())) return JobResultType.Warning;
+            if (value.Equals(JobResultFailure.ToUpper())) return JobResultType.Failure;
+
+            return JobResultType.None;
         }
 
         /// <summary>
-        /// <see cref="JobStatus"/> をJson で使用できる文字列へ変換します。
+        /// <see cref="JobResultType"/> をJson で使用できる文字列へ変換します。
         /// </summary>
-        /// <param name="status">ジョブ状態</param>
+        /// <param name="result">ジョブ結果種別</param>
         /// <returns>変換結果</returns>
-        public static string JobStatusToString(JobStatus status)
+        public static string JobResultTypeToString(JobResultType result)
         {
-            switch (status)
-            {
-                case JobStatus.Start:
-                    return "START";
-                case JobStatus.Success:
-                    return "SUCCESS";
-                default:
-                    return string.Empty;
-            }
+            return JobResultValueMap.ContainsKey(result) ? JobResultValueMap[result] : string.Empty;
         }
 
         /// <summary>
@@ -78,17 +102,22 @@
         {
             if (status.IsEmpty()) return JobStatus.None;
 
-            switch (status.ToUpper())
-            {
-                case "START":
-                    return JobStatus.Start;
-                case "SUCCESS":
-                    return JobStatus.Success;
-                case "FAILURE":
-                    return JobStatus.Failure;
-                default:
-                    return JobStatus.None;
-            }
+            var value = status.ToUpper();
+            if (value.Equals(JobStatusSuccess.ToUpper())) return JobStatus.Success;
+            if (value.Equals(JobStatusStart.ToUpper())) return JobStatus.Start;
+            if (value.Equals(JobStatusFailure.ToUpper())) return JobStatus.Failure;
+
+            return JobStatus.None;
+        }
+
+        /// <summary>
+        /// <see cref="JobStatus"/> をJson で使用できる文字列へ変換します。
+        /// </summary>
+        /// <param name="status">ジョブ状態</param>
+        /// <returns>変換結果</returns>
+        public static string JobStatusToString(JobStatus status)
+        {
+            return JobStatusValueMap.ContainsKey(status) ? JobStatusValueMap[status] : string.Empty;
         }
 
         #endregion

@@ -112,6 +112,7 @@
     <Compile Include="Core\Utility\EnumUtilityTests.cs" />
     <Compile Include="Core\Utility\FileUtilityTests.cs" />
     <Compile Include="Core\Utility\PathUtilityTests.cs" />
+    <Compile Include="Core\ViewModels\Api\ApiConverterTests.cs" />
     <Compile Include="Core\WebSocketClientEventArgs.cs" />
     <Compile Include="Core\Communicators\WebSocketCommunicatorTests.cs" />
     <Compile Include="Core\WebSocketReceivedRequestEventArgs.cs" />
