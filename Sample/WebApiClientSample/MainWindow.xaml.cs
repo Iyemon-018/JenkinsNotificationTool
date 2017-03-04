@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace WebApiClientSample
 {
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
@@ -23,6 +13,21 @@ namespace WebApiClientSample
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private async Task<string> GetRequest(int id)
+        {
+            var client = new HttpClient();
+            using (var response = await client.GetAsync($"http://weather.livedoor.com/forecast/webservice/json/v1?city={id}"))
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        private async void GetResponseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var request = await GetRequest(400040);
+            GetResponseTextBox.Text = request;
         }
     }
 }

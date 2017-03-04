@@ -116,6 +116,7 @@
     <Compile Include="Communicators\IWebSocketDataFlow.cs" />
     <Compile Include="Communicators\ReceivedErrorEventArgs.cs" />
     <Compile Include="Communicators\ReceivedEventArgs.cs" />
+    <Compile Include="Communicators\WebApiCommunicator.cs" />
     <Compile Include="Communicators\WebSocketCommunicator.cs" />
     <Compile Include="Communicators\WebSocketDataFlow.cs" />
     <Compile Include="ComponentModels\ShellViewModelBase.cs" />
