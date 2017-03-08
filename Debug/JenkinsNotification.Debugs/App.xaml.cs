@@ -8,10 +8,21 @@ using System.Windows;
 
 namespace JenkinsNotification.Debugs
 {
+    using JenkinsNotification.Core;
+
     /// <summary>
     /// App.xaml の相互作用ロジック
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // マッピングの初期化
+            var configure = new MappingConfigure();
+            configure.RegisterProfileType(typeof(Profile));
+            configure.Initialize();
+
+            base.OnStartup(e);
+        }
     }
 }

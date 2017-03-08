@@ -5,6 +5,7 @@
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.ViewModels.Api;
+    using JenkinsNotification.Core.ViewModels.WebApi;
 
     /// <summary>
     /// データ蓄積領域クラスです。
@@ -27,6 +28,11 @@
         /// </summary>
         private readonly ObservableCollection<IJobExecuteResult> _jobResults;
 
+        /// <summary>
+        /// ジョブ情報コレクション
+        /// </summary>
+        private readonly ObservableCollection<JobViewModel> _jobs;
+
         #endregion
 
         #region Ctor
@@ -42,6 +48,7 @@
 
             _applicationConfiguration = applicationConfiguration;
             _jobResults = new ObservableCollection<IJobExecuteResult>();
+            _jobs = new ObservableCollection<JobViewModel>();
         }
 
         #endregion
@@ -82,6 +89,11 @@
             //      復元するのはジョブ実行結果だけでいい。
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Jenkins の持つジョブ コレクションを取得します。
+        /// </summary>
+        public ObservableCollection<JobViewModel> Jobs => _jobs;
 
         #endregion
     }

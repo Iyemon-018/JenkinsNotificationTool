@@ -10,26 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace JenkinsNotification.Debugs
+namespace JenkinsNotification.Debugs.Views
 {
-    using JenkinsNotification.Debugs.Views;
-
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
+    /// WebApiDebugView.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WebApiDebugView : Window
     {
-        public MainWindow()
+        public WebApiDebugView()
         {
             InitializeComponent();
-        }
-
-        private void WebApiDebug_OnClick(object sender, RoutedEventArgs e)
-        {
-            new WebApiDebugView().Show();
         }
     }
 }

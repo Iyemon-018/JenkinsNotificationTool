@@ -6,9 +6,11 @@
     using System.Windows;
     using JenkinsNotification.Core;
     using JenkinsNotification.Core.Communicators;
+    using JenkinsNotification.Core.Communicators.WebApi;
     using JenkinsNotification.Core.ComponentModels;
     using JenkinsNotification.Core.Configurations;
     using JenkinsNotification.Core.Executers;
+    using JenkinsNotification.Core.Jenkins.WebApi;
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.Utility;
@@ -183,9 +185,12 @@
             LogManager.Info("通信機能提供インターフェースの初期化構成を行う。");
 
             // TODO WebAPIインターフェースを実装する。
+            var dataStore             = Container.Resolve<IDataStore>();
             var webSocketCommunicator = new WebSocketCommunicator();
             var webSocketDataFlow     = new WebSocketDataFlow(webSocketCommunicator);
-            var communicatorProvider  = new CommunicatorProvider(webSocketCommunicator, null, webSocketDataFlow);
+            var webApiCommunicator    = new WebApiCommunicator();
+            var jenkinsWebApiManager  = new JenkinsWebApiManager(webApiCommunicator, dataStore);
+            var communicatorProvider  = new CommunicatorProvider(webSocketCommunicator, webSocketDataFlow, jenkinsWebApiManager);
 
             communicatorProvider.WebSocketDataFlow.ConfigureRegistration();
 

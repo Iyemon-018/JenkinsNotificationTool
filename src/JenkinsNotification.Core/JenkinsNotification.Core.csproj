@@ -112,11 +112,12 @@
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="Communicators\CommunicatorProvider.cs" />
     <Compile Include="Communicators\ICommunicatorProvider.cs" />
-    <Compile Include="Communicators\IWebApiCommunicator.cs" />
+    <Compile Include="Communicators\WebApi\IWebApiCommunicator.cs" />
     <Compile Include="Communicators\IWebSocketDataFlow.cs" />
     <Compile Include="Communicators\ReceivedErrorEventArgs.cs" />
     <Compile Include="Communicators\ReceivedEventArgs.cs" />
-    <Compile Include="Communicators\WebApiCommunicator.cs" />
+    <Compile Include="Communicators\WebApi\IWebApiTask.cs" />
+    <Compile Include="Communicators\WebApi\WebApiCommunicator.cs" />
     <Compile Include="Communicators\WebSocketCommunicator.cs" />
     <Compile Include="Communicators\WebSocketDataFlow.cs" />
     <Compile Include="ComponentModels\ShellViewModelBase.cs" />
@@ -152,6 +153,12 @@
     <Compile Include="IDataManager.cs" />
     <Compile Include="IDataStore.cs" />
     <Compile Include="Jenkins\Api\JobExecuteResult.cs" />
+    <Compile Include="Jenkins\WebApi\GetJobDetailApiTask.cs" />
+    <Compile Include="Jenkins\WebApi\GetJobListApiTask.cs" />
+    <Compile Include="Jenkins\WebApi\GetLastBuildApiTask.cs" />
+    <Compile Include="Jenkins\WebApi\IJenkinsWebApiManager.cs" />
+    <Compile Include="Jenkins\WebApi\JenkinsWebApiManager.cs" />
+    <Compile Include="Jenkins\WebApi\Response\JobListResponse.cs" />
     <Compile Include="Logs\ConsoleLogger.cs" />
     <Compile Include="Logs\ILogger.cs" />
     <Compile Include="Logs\LogManager.cs" />
@@ -194,6 +201,8 @@
     <Compile Include="ViewModels\Api\IJobExecuteResult.cs" />
     <Compile Include="ViewModels\Api\JobExecuteResultViewModel.cs" />
     <Compile Include="ViewModels\Configurations\NotifyConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\WebApi\JobViewModel.cs" />
+    <Compile Include="ViewModels\WebApi\WebApiConverter.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

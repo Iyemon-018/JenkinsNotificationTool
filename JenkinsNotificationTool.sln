@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Simulator", "Tools\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiClientSample", "Sample\WebApiClientSample\WebApiClientSample.csproj", "{C0EACA37-772A-45A3-ABB3-8CD2BF7CA946}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsNotification.Debugs", "Debug\JenkinsNotification.Debugs\JenkinsNotification.Debugs.csproj", "{D5ED7C0E-55B2-4937-91B7-55005798C244}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{C0EACA37-772A-45A3-ABB3-8CD2BF7CA946}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0EACA37-772A-45A3-ABB3-8CD2BF7CA946}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0EACA37-772A-45A3-ABB3-8CD2BF7CA946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5ED7C0E-55B2-4937-91B7-55005798C244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5ED7C0E-55B2-4937-91B7-55005798C244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5ED7C0E-55B2-4937-91B7-55005798C244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5ED7C0E-55B2-4937-91B7-55005798C244}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +93,6 @@ Global
 		{24EADDDF-CD68-4721-A496-602A3F8F0DB5} = {BD339A9F-E738-43C8-A365-9ABD8D3123BD}
 		{5ECA6238-E3BC-4C43-8C92-9299AAB3FAF8} = {0E04A54D-97BF-40A2-A617-76363E47EE3C}
 		{C0EACA37-772A-45A3-ABB3-8CD2BF7CA946} = {283F340C-86F5-4ACA-86F2-2A0B676B80B0}
+		{D5ED7C0E-55B2-4937-91B7-55005798C244} = {BD339A9F-E738-43C8-A365-9ABD8D3123BD}
 	EndGlobalSection
 EndGlobal
