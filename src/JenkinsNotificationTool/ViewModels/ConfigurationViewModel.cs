@@ -1,6 +1,7 @@
 ﻿namespace JenkinsNotificationTool.ViewModels
 {
     using System;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Windows.Controls.Primitives;
@@ -12,6 +13,7 @@
     using JenkinsNotification.Core.Logs;
     using JenkinsNotification.Core.Services;
     using JenkinsNotification.Core.ViewModels.Configurations;
+    using JenkinsNotification.Core.ViewModels.WebApi;
     using Properties;
     using Utility;
     using Microsoft.Practices.Prism.Commands;
@@ -76,8 +78,14 @@
             SaveCommand           = new DelegateCommand(ExecuteSaveCommand);
             CancelCommand         = new DelegateCommand(ExecuteCancelCommand);
             TestConnectionCommand = new DelegateCommand(ExecuteTestConnectionCommand);
+            RefreshJobsCommand = new DelegateCommand(ExecuteRefreshJobsCommand);
         }
-        
+
+        private void ExecuteRefreshJobsCommand()
+        {
+            CommunicatorProvider.JenkinsWebApiManager.GetJobList();
+        }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -159,6 +167,10 @@
             get { return _notifyHistoryCountKind; }
             set { SetProperty(ref _notifyHistoryCountKind, value); }
         }
+
+        public DelegateCommand RefreshJobsCommand { get; private set; }
+
+        public ObservableCollection<JobViewModel> Jobs => DataStore.Jobs;
 
         #endregion
 
